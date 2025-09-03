@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Boda Cristina & Manu</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@144,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="text-[#004466] font-sans">
+
+  <!-- NAVBAR -->
+  <nav id="navbar" class="fixed top-0 left-0 w-full z-[9999] transition-all duration-300 px-6 py-4 backdrop-blur-md">
+    <div class="flex justify-between items-center max-w-5xl mx-auto">
+      <span class="font-serif text-lg">Boda Cristina & Manu</span>
+      <button id="menu-btn" class="md:hidden focus:outline-none" aria-label="Abrir menú">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+
+      <!-- Menú -->
+      <ul
+        id="menu"
+        class="
+          hidden z-[9998]
+          fixed inset-0 w-full h-full
+          flex-col items-center justify-center
+          bg-white md:bg-transparent
+          space-y-8 md:space-y-0 md:flex md:flex-row md:space-x-4
+          text-2xl md:text-sm font-medium uppercase
+          p-8 md:p-0
+        "
+      >
+        <li><a href="#inicio" class="nav-link block md:inline-block">Inicio</a></li>
+        <li><a href="#historia" class="nav-link block md:inline-block">Historia</a></li>
+        <li><a href="#fecha-lugar" class="nav-link block md:inline-block">El Gran Día</a></li>
+        <li><a href="#horario" class="nav-link block md:inline-block">Horario</a></li>
+        <li><a href="#alojamiento" class="nav-link block md:inline-block">Alojamiento</a></li>
+        <li><a href="#transporte" class="nav-link block md:inline-block">Transporte</a></li>
+        <li><a href="#rsvp" class="nav-link block md:inline-block">RSVP</a></li>
+        <li><a href="#dresscode" class="nav-link block md:inline-block">Dresscode</a></li>
+        <li><a href="#regalo" class="nav-link block md:inline-block">Regalo</a></li>
+        <li><a href="#contacto" class="nav-link block md:inline-block">Contacto</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- SCROLL CONTAINER -->
+  <div data-scroll-container>
+
+    <!-- HERO -->
+    <header id="inicio" class="video-section relative w-full h-screen overflow-hidden">
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        class="w-full h-full object-cover"
+      >
+        <source src="video/video_intro.mp4" type="video/mp4" />
+        Tu navegador no soporta video.
+      </video>
+      <div class="absolute inset-0 z-10 px-4 text-center">
+        <!-- título un poco más grande, siempre en una línea -->
+        <h1 class="absolute top-[20%] left-1/2 transform -translate-x-1/2 text-4xl md:text-5xl text-white drop-shadow-lg font-[Georgia] whitespace-nowrap">
+          ¡Nos casamos!
+        </h1>
+
+        <!-- párrafo forzado a 2 líneas -->
+        <p class="absolute top-[70%] left-1/2 transform -translate-x-1/2 text-xl md:text-2xl italic leading-snug text-gray-100 font-[Georgia] max-w-lg mx-auto">
+          "No es que no pueda vivir sin ti,<br>
+          es que prefiero que sea contigo"
+        </p>
+      </div>
+    </header>
+
+    <main class="pt-[2rem]">
+
+      <!-- NUESTRA HISTORIA -->
+      <section id="historia" class="py-12 px-6 overflow-visible">
+        <h2 class="text-3xl font-serif mb-6 text-center px-6">Nuestra Historia</h2>
+        <div id="historia-scroll" class="no-scrollbar flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-4 items-center">
+          <div class="historia-item snap-center">
+            <img src="img/foto1.jpg" alt="Historia 1" class="historia-img">
+            <div class="caption">Nos conocimos</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto2.jpg" alt="Historia 2" class="historia-img">
+            <div class="caption">Primer viaje</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto3.jpg" alt="Historia 3" class="historia-img">
+            <div class="caption">Nuestra primera casa</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto4.jpg" alt="Historia 4" class="historia-img">
+            <div class="caption">La pedida</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto5.jpg" alt="Historia 5" class="historia-img">
+            <div class="caption">Preparando la boda</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto6.jpg" alt="Historia 6" class="historia-img">
+            <div class="caption">aaaaaa</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto7.jpg" alt="Historia 7" class="historia-img">
+            <div class="caption">bbbbbbb</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto8.jpg" alt="Historia 8" class="historia-img">
+            <div class="caption">cccccccccc</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto9.jpg" alt="Historia 9" class="historia-img">
+            <div class="caption">dddddddd</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto10.jpg" alt="Historia 10" class="historia-img">
+            <div class="caption">eeeeeeee</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto11.jpg" alt="Historia 11" class="historia-img">
+            <div class="caption">bbbbbbb</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto12.jpg" alt="Historia 12" class="historia-img">
+            <div class="caption">cccccccccc</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto13.jpg" alt="Historia 13" class="historia-img">
+            <div class="caption">dddddddd</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto14.jpg" alt="Historia 14" class="historia-img">
+            <div class="caption">eeeeeeee</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EL GRAN DÍA -->
+    <section id="fecha-lugar" class="relative px-6 py-12 text-white">
+      <div class="max-container mx-auto grid"
+          style="grid-template-columns: 80px 1fr; gap: 0.5rem;">
+
+        <!-- 1. Cuenta atrás: columna 1, dos filas -->
+        <div class="countdown-box" style="grid-row: 1 / span 2; min-height: 100%;">
+          <div>
+            <div id="days" class="text-2xl font-mono">--</div>
+            <div class="text-xs font-mono">DÍAS</div>
+          </div>
+          <div>
+            <div id="hours" class="text-2xl font-mono">--</div>
+            <div class="text-xs font-mono">HORAS</div>
+          </div>
+          <div>
+            <div id="minutes" class="text-2xl font-mono">--</div>
+            <div class="text-xs font-mono">MINUTOS</div>
+          </div>
+          <div>
+            <div id="seconds" class="text-2xl font-mono">--</div>
+            <div class="text-xs font-mono">SEGUNDOS</div>
+          </div>
+        </div>
+
+        <!-- 2. Fecha: fila 1, columna 2 -->
+        <div class="bg-[#F8EBD8] rounded-2xl p-6 flex items-center justify-start">
+          <p class="text-2xl font-serif">2 de mayo 2026 – 18:00h</p>
+        </div>
+
+        <!-- 3. Imagen: fila 2, columna 2 -->
+        <div class="overflow-hidden rounded-2xl">
+          <img src="img/paraisso_fecha.jpeg" alt="Paraisso al Mar"
+              class="w-full h-auto object-cover">
+        </div>
+
+        <!-- 4. Nombre del sitio: fila 3, columnas 1–2 -->
+        <!-- Rectángulo del lugar con texto y enlace a Google Maps -->
+        <div class="venue-box rounded-2xl bg-white p-6 flex flex-col items-center text-center">
+          <p class="text-lg font-serif text-[#B58360] mb-2">Paraisso al Mar</p>
+          <p class="text-sm text-gray-600">
+            Pulsa en el icono para ver la localización exacta:
+          </p>
+          <a
+            href="https://www.google.com/maps/place/Paraiso+al+mar(Guardias+viejas)/@36.7070854,-2.8568984,17z/data=!3m1!4b1!4m6!3m5!1s0xd705dd449f465d1:0x346edc4f61d5d523!8m2!3d36.7070811!4d-2.8543235!16s%2Fg%2F11str_r0vt?entry=ttu"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-2 inline-block hover:scale-110 transition-transform"
+          >
+            <!-- Usamos un simple icono SVG de Google Maps -->
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="#B58360"
+            >
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+      
+      <!-- HORARIO -->
+      <section id="horario">
+        <div class="horario-padding">
+          <div class="video-wrapper">
+            <video
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="auto"
+            >
+              <source src="video/video_horario.mp4" type="video/mp4" />
+              Tu navegador no soporta video.
+            </video>
+          </div>
+        </div>
+      </section>
+
+      <!-- Alojamiento -->
+      <section id="alojamiento" class="py-12 px-6 text-center">
+        <h2 class="text-3xl font-serif mb-4">Alojamiento</h2>
+      </section>
+
+      <!-- Transporte -->
+      <section id="transporte" class="py-12 px-6 text-center">
+        <h2 class="text-3xl font-serif mb-4">Transporte</h2>
+      </section>
+
+      <!-- RSVP -->
+      <section id="rsvp" class="py-12 px-6 text-center">
+        <h2 class="text-3xl font-serif mb-4">¿Nos acompañas?</h2>
+
+        <p class="max-w-2xl mx-auto mb-6">
+          Para confirmar asistencia y completar todos los detalles (acompañantes, menú, alojamiento, canción, etc.) pulsa en:
+        </p>
+
+        <div class="mb-6">
+          <a href="/rsvp.html"
+            class="btn-primary inline-block px-6 py-3 text-lg"
+            aria-label="Ir al formulario completo de RSVP">
+            Ir al formulario
+          </a>
+        </div>
+      </section>
+
+      <!-- DRESSCODE -->
+      <section id="dresscode" class="py-12 text-center">
+        <h2 class="text-3xl font-serif mb-12 text-center px-6">Dresscode</h2>
+        <p class="max-w-2xl mx-auto text-lg">
+          El código de vestimenta es <strong>formal</strong>.  
+          <br><br>
+          Los hombres deben acudir con traje y chaqueta.  
+          Las mujeres pueden ir tanto de corto como de largo, según prefieran.  
+          <br><br>
+          Rogamos evitar los colores pastel.
+          <br><br>
+        </p>
+
+        <button id="showInspirationBtn" class="btn-primary">
+          Pulsa para mostrar inspiración
+        </button>
+      </section>
+
+      <!-- Modal -->
+      <div id="inspirationModal" class="modal">
+        <div class="modal-content">
+          <img src="img/dresscode.jpg" alt="Inspiración de vestidos" />
+        </div>
+      </div>
+
+      <!-- Regalo -->
+      <section id="regalo" class="py-12 px-6 text-center">
+        <h2 class="text-3xl font-serif mb-4">Regalo</h2>
+      </section>
+
+      <!-- Contacto -->
+      <section id="contacto" class="py-12 px-6 text-center">
+        <h2 class="text-3xl font-serif mb-4">Contacto</h2>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-center py-6 text-sm text-[#004466]">
+      Con cariño, Cristina y Manu · Paraisso al Mar 2026
+    </footer>
+  </div>
+  <!-- SCROLL CONTAINER FIN -->
+
+  <!-- LIBRERÍAS Y SCRIPTS -->
+  <script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

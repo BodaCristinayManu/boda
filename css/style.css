@@ -1,0 +1,322 @@
+/* ===== Reset y base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+/* ===== Fondo general blanco ===== */
+body {
+  background-color: #ffffff; /* blanco puro */
+}
+
+/* ===== Títulos ===== */
+h2 {
+  font-family: 'Bodoni Moda', serif;
+  font-variation-settings: "opsz" 144, "wght" 600;
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  line-height: 1.1;
+  letter-spacing: 0.3px;
+  color: #B58360;
+}
+
+/* ===== Navbar dinámico ===== */
+#navbar {
+  background-color: transparent;
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#navbar a {
+  color: white;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+#navbar a:hover {
+  color: #B58360;
+}
+
+#navbar a.active {
+  border-bottom: 2px solid #B58360;
+}
+
+#navbar.scrolled {
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #004466;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Descomenta para que los enlaces cambien de color al hacer scroll */
+/* #navbar.scrolled a {
+  color: #004466;
+} */
+
+#navbar.scrolled a:hover {
+  color: #B58360;
+}
+
+/* ===== Menú responsive ===== */
+#menu {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#menu-btn {
+  cursor: pointer;
+}
+
+/* ===== Video responsive ===== */
+.video-section video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===== Galería Historia ===== */
+#historia-scroll {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  height: 450px;
+  padding: 1rem 0;
+  scrollbar-width: none; /* Firefox */
+  -webkit-overflow-scrolling: touch;
+}
+#historia-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.historia-item {
+  flex: 0 0 auto;
+  width: 180px;
+  margin: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  will-change: transform, opacity;
+}
+
+.historia-img {
+  width: 100%;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  display: block;
+}
+
+.caption {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #333;
+  text-align: center;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+}
+
+/* Ajustes responsive para galería */
+@media (max-width: 768px) {
+  #historia-scroll {
+    height: 320px;
+  }
+  .historia-item {
+    width: 140px;
+    margin: 0 0.5rem;
+  }
+}
+
+/* ===== Estilo “tarjeta” beige para secciones ===== */
+/* ==== Ancho y márgenes comunes ==== */
+main section {
+  margin: 2rem auto;
+  max-width: 800px;
+}
+
+/* ==== Tarjetas beige (todas menos #horario y #fecha-lugar) ==== */
+main section:not(#fecha-lugar):not(#horario):not(#historia) {
+  background: #F8EBD8;
+  border-radius: 1.5rem;
+  padding: 3rem 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+main section:not(#fecha-lugar):not(#horario):not(#historia):hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* Menos padding para los móviles */
+@media (max-width: 768px) {
+  main section:not(#horario) {
+    padding: 2rem 1rem;
+    margin: 1.5rem 1rem;
+  }
+}
+
+/* ==== HORARIO ==== */
+#horario {
+  margin: 1.5rem auto;
+  max-width: 800px;
+}
+
+.horario-padding {
+  padding: 0 1rem; /* espacio lateral para que no toque bordes pantalla */
+}
+
+.video-wrapper {
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  height: 500px; /* ajusta la altura como quieras */
+}
+
+#horario video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0; /* no redondees el video, lo hace el contenedor */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#horario video:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* ===== Fecha y lugar (Puzzle) ===== */
+
+/* 1) Contenedor ancho (igual que las secciones beiges) */
+.max-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* 2) Grid Puzzle: dos columnas, tres filas */
+#fecha-lugar .grid {
+  display: grid;
+  grid-template-columns: 80px 1fr;  /* Columna izquierda estrecha */
+  grid-template-rows: auto auto auto;
+  gap: 0.5rem;                      /* Menos espacio entre bloques */
+}
+
+/* 3) Cuenta atrás vertical (ocupa fila 1–2, columna 1) */
+#fecha-lugar .countdown-box {
+  width: 80px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* centrado en lugar de separado */
+  gap: 0.6rem; /* menos espacio entre bloques */
+  padding: 0.75rem;
+  border-radius: 1rem;
+  background-color: #B58360;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+#fecha-lugar .countdown-box > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem; /* número y etiqueta más pegados */
+}
+
+/* 4) Bloque fecha (fila 1, columna 2) */
+#fecha-lugar .date-box {
+  background: #F8EBD8;
+  color: #B58360;
+  border-radius: 1rem;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+/* 5) Bloque imagen (fila 2, columna 2) */
+#fecha-lugar .image-box {
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+/* 6) Bloque sitio (fila 3, columnas 1–2) */
+#fecha-lugar .venue-box {
+  grid-column: 1 / span 2;
+  background: #F8EBD8;
+  color: #B58360;
+  border-radius: 1rem;
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 7) Texto con sombra para contraste */
+#fecha-lugar p,
+#fecha-lugar div[id] {
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* 8) Padding general de la sección */
+#fecha-lugar {
+  padding: 3rem 2rem;
+}
+
+/* ===== Dresscode (modal) ===== */
+/* Modal oculto por defecto */
+#inspirationModal {
+  display: none;
+  position: fixed;
+  inset: 0;                
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Clase que muestra el modal */
+#inspirationModal.open {
+  display: flex;
+}
+
+/* Contenido del modal */
+#inspirationModal .modal-content {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  max-width: 500px;
+  width: 90%;
+  max-height: 70vh;
+  padding: 10px;
+}
+
+/* Imagen del modal */
+#inspirationModal img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* ===== Botón primario común ===== */
+.btn-primary {
+  display: inline-block;
+  background-color: #B58360;      /* color principal */
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;        /* equivalente a px-6 py-3 */
+  border-radius: 0.75rem;         /* rounded-xl */
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.btn-primary:hover {
+  background-color: #9C6F4F;      /* un tono ligeramente más oscuro */
+  transform: translateY(-2px);
+}
