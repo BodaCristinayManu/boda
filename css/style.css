@@ -320,3 +320,54 @@ main section:not(#fecha-lugar):not(#horario):not(#historia):hover {
   background-color: #9C6F4F;      /* un tono ligeramente más oscuro */
   transform: translateY(-2px);
 }
+
+/* ===== BANNER  DESCUENTO ===== */
+/* CONTROL DE VELOCIDAD: cambia 30s por 40s/50s si quieres aún más lento */
+:root {
+  --marquee-duration: 10s;
+}
+
+/* wrapper y máscara */
+.marquee-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* la franja que se mueve */
+.marquee {
+  display: inline-flex;
+  gap: 3rem;
+  white-space: nowrap;
+  will-change: transform;
+  align-items: center;
+  animation: marquee var(--marquee-duration) linear infinite;
+}
+
+/* items dentro de la franja */
+.marquee-item {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0 1rem;
+}
+
+/* keyframes: de derecha -> izquierda */
+@keyframes marquee {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-50%); } /* -50% porque repetimos contenido */
+}
+
+/* pausa al hover / focus para accesibilidad */
+#hotel-banner:hover .marquee,
+#hotel-banner:focus-within .marquee {
+  animation-play-state: paused;
+  cursor: pointer;
+}
+
+/* respeta preferencia de reducir movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none;
+    transform: translateX(0);
+  }
+}
