@@ -38,7 +38,6 @@
         "
       >
         <li><a href="#inicio" class="nav-link block md:inline-block">Inicio</a></li>
-        <li><a href="#historia" class="nav-link block md:inline-block">Historia</a></li>
         <li><a href="#fecha-lugar" class="nav-link block md:inline-block">El Gran Día</a></li>
         <li><a href="#horario" class="nav-link block md:inline-block">Horario</a></li>
         <li><a href="#alojamiento" class="nav-link block md:inline-block">Alojamiento</a></li>
@@ -46,6 +45,7 @@
         <li><a href="#rsvp" class="nav-link block md:inline-block">RSVP</a></li>
         <li><a href="#dresscode" class="nav-link block md:inline-block">Dresscode</a></li>
         <li><a href="#regalo" class="nav-link block md:inline-block">Regalo</a></li>
+        <li><a href="#historia" class="nav-link block md:inline-block">Historia</a></li>
         <li><a href="#contacto" class="nav-link block md:inline-block">Contacto</a></li>
       </ul>
     </div>
@@ -83,132 +83,69 @@
 
     <main class="pt-[2rem]">
 
-      <!-- NUESTRA HISTORIA -->
-      <section id="historia" class="py-12 px-6 overflow-visible">
-        <h2 class="text-3xl font-serif mb-6 text-center px-6">Nuestra Historia</h2>
-        <div id="historia-scroll" class="no-scrollbar flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-4 items-center">
-          <div class="historia-item snap-center">
-            <img src="img/foto1.JPG" alt="Historia 1" class="historia-img">
-            <div class="caption">Nos conocimos</div>
+        <!-- EL GRAN DÍA -->
+      <section id="fecha-lugar" class="relative px-6 py-12 text-white">
+        <div class="max-container mx-auto grid"
+            style="grid-template-columns: 80px 1fr; gap: 0.5rem;">
+
+          <!-- 1. Cuenta atrás: columna 1, dos filas -->
+          <div class="countdown-box" style="grid-row: 1 / span 2; min-height: 100%;">
+            <div>
+              <div id="days" class="text-2xl font-mono">--</div>
+              <div class="text-xs font-mono">DÍAS</div>
+            </div>
+            <div>
+              <div id="hours" class="text-2xl font-mono">--</div>
+              <div class="text-xs font-mono">HORAS</div>
+            </div>
+            <div>
+              <div id="minutes" class="text-2xl font-mono">--</div>
+              <div class="text-xs font-mono">MINUTOS</div>
+            </div>
+            <div>
+              <div id="seconds" class="text-2xl font-mono">--</div>
+              <div class="text-xs font-mono">SEGUNDOS</div>
+            </div>
           </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto2.JPG" alt="Historia 2" class="historia-img">
-            <div class="caption">Primer viaje</div>
+
+          <!-- 2. Fecha: fila 1, columna 2 -->
+          <div class="date-box rounded-2xl p-6 flex items-center justify-start">
+            <p class="text-2xl font-serif">2 de mayo 2026 – 18:00h</p>
           </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto3.JPG" alt="Historia 3" class="historia-img">
-            <div class="caption">Nuestra primera casa</div>
+
+          <!-- 3. Imagen: fila 2, columna 2 -->
+          <div class="overflow-hidden rounded-2xl">
+            <img src="img/paraisso_fecha.jpeg" alt="Paraisso al Mar"
+                class="w-full h-auto object-cover">
           </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto4.JPG" alt="Historia 4" class="historia-img">
-            <div class="caption">La pedida</div>
-          </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto5.JPG" alt="Historia 5" class="historia-img">
-            <div class="caption">Preparando la boda</div>
-          </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto6.JPG" alt="Historia 6" class="historia-img">
-            <div class="caption">aaaaaa</div>
-          </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto7.JPG" alt="Historia 7" class="historia-img">
-            <div class="caption">bbbbbbb</div>
-          </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto8.JPG" alt="Historia 8" class="historia-img">
-            <div class="caption">cccccccccc</div>
-          </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto9.JPG" alt="Historia 9" class="historia-img">
-            <div class="caption">dddddddd</div>
-          </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto10.JPG" alt="Historia 10" class="historia-img">
-            <div class="caption">eeeeeeee</div>
-          </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto11.JPG" alt="Historia 11" class="historia-img">
-            <div class="caption">bbbbbbb</div>
-          </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto12.JPG" alt="Historia 12" class="historia-img">
-            <div class="caption">cccccccccc</div>
-          </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto13.JPG" alt="Historia 13" class="historia-img">
-            <div class="caption">dddddddd</div>
-          </div>
-          <div class="historia-item snap-center">
-            <img src="img/foto14.JPG" alt="Historia 14" class="historia-img">
-            <div class="caption">eeeeeeee</div>
+
+          <!-- 4. Nombre del sitio: fila 3, columnas 1–2 -->
+          <!-- Rectángulo del lugar con texto y enlace a Google Maps -->
+          <div class="venue-box rounded-2xl bg-white p-6 flex flex-col items-center text-center">
+            <p class="text-lg font-serif text-[#B58360] mb-2">Paraisso al Mar</p>
+            <p class="text-sm text-gray-600">
+              Pulsa en el icono para ver la localización exacta:
+            </p>
+            <a
+              href="https://www.google.com/maps/place/Paraiso+al+mar(Guardias+viejas)/@36.7070854,-2.8568984,17z/data=!3m1!4b1!4m6!3m5!1s0xd705dd449f465d1:0x346edc4f61d5d523!8m2!3d36.7070811!4d-2.8543235!16s%2Fg%2F11str_r0vt?entry=ttu"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-2 inline-block hover:scale-110 transition-transform"
+            >
+              <!-- Usamos un simple icono SVG de Google Maps -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="#B58360"
+              >
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+              </svg>
+            </a>
           </div>
         </div>
       </section>
-
-      <!-- EL GRAN DÍA -->
-    <section id="fecha-lugar" class="relative px-6 py-12 text-white">
-      <div class="max-container mx-auto grid"
-          style="grid-template-columns: 80px 1fr; gap: 0.5rem;">
-
-        <!-- 1. Cuenta atrás: columna 1, dos filas -->
-        <div class="countdown-box" style="grid-row: 1 / span 2; min-height: 100%;">
-          <div>
-            <div id="days" class="text-2xl font-mono">--</div>
-            <div class="text-xs font-mono">DÍAS</div>
-          </div>
-          <div>
-            <div id="hours" class="text-2xl font-mono">--</div>
-            <div class="text-xs font-mono">HORAS</div>
-          </div>
-          <div>
-            <div id="minutes" class="text-2xl font-mono">--</div>
-            <div class="text-xs font-mono">MINUTOS</div>
-          </div>
-          <div>
-            <div id="seconds" class="text-2xl font-mono">--</div>
-            <div class="text-xs font-mono">SEGUNDOS</div>
-          </div>
-        </div>
-
-        <!-- 2. Fecha: fila 1, columna 2 -->
-        <div class="date-box rounded-2xl p-6 flex items-center justify-start">
-          <p class="text-2xl font-serif">2 de mayo 2026 – 18:00h</p>
-        </div>
-
-        <!-- 3. Imagen: fila 2, columna 2 -->
-        <div class="overflow-hidden rounded-2xl">
-          <img src="img/paraisso_fecha.jpeg" alt="Paraisso al Mar"
-              class="w-full h-auto object-cover">
-        </div>
-
-        <!-- 4. Nombre del sitio: fila 3, columnas 1–2 -->
-        <!-- Rectángulo del lugar con texto y enlace a Google Maps -->
-        <div class="venue-box rounded-2xl bg-white p-6 flex flex-col items-center text-center">
-          <p class="text-lg font-serif text-[#B58360] mb-2">Paraisso al Mar</p>
-          <p class="text-sm text-gray-600">
-            Pulsa en el icono para ver la localización exacta:
-          </p>
-          <a
-            href="https://www.google.com/maps/place/Paraiso+al+mar(Guardias+viejas)/@36.7070854,-2.8568984,17z/data=!3m1!4b1!4m6!3m5!1s0xd705dd449f465d1:0x346edc4f61d5d523!8m2!3d36.7070811!4d-2.8543235!16s%2Fg%2F11str_r0vt?entry=ttu"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="mt-2 inline-block hover:scale-110 transition-transform"
-          >
-            <!-- Usamos un simple icono SVG de Google Maps -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              fill="#B58360"
-            >
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </section>
       
       <!-- HORARIO -->
       <section id="horario">
@@ -292,6 +229,69 @@
       <!-- Regalo -->
       <section id="regalo" class="py-12 px-6 text-center">
         <h2 class="text-3xl font-serif mb-4">Regalo</h2>
+      </section>
+
+            <!-- NUESTRA HISTORIA -->
+      <section id="historia" class="py-12 px-6 overflow-visible">
+        <h2 class="text-3xl font-serif mb-6 text-center px-6">Nuestra Historia</h2>
+        <div id="historia-scroll" class="no-scrollbar flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-4 items-center">
+          <div class="historia-item snap-center">
+            <img src="img/foto1.JPG" alt="Historia 1" class="historia-img">
+            <div class="caption">Nos conocimos</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto2.JPG" alt="Historia 2" class="historia-img">
+            <div class="caption">Primer viaje</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto3.JPG" alt="Historia 3" class="historia-img">
+            <div class="caption">Nuestra primera casa</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto4.JPG" alt="Historia 4" class="historia-img">
+            <div class="caption">La pedida</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto5.JPG" alt="Historia 5" class="historia-img">
+            <div class="caption">Preparando la boda</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto6.JPG" alt="Historia 6" class="historia-img">
+            <div class="caption">aaaaaa</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto7.JPG" alt="Historia 7" class="historia-img">
+            <div class="caption">bbbbbbb</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto8.JPG" alt="Historia 8" class="historia-img">
+            <div class="caption">cccccccccc</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto9.JPG" alt="Historia 9" class="historia-img">
+            <div class="caption">dddddddd</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto10.JPG" alt="Historia 10" class="historia-img">
+            <div class="caption">eeeeeeee</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto11.JPG" alt="Historia 11" class="historia-img">
+            <div class="caption">bbbbbbb</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto12.JPG" alt="Historia 12" class="historia-img">
+            <div class="caption">cccccccccc</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto13.JPG" alt="Historia 13" class="historia-img">
+            <div class="caption">dddddddd</div>
+          </div>
+          <div class="historia-item snap-center">
+            <img src="img/foto14.JPG" alt="Historia 14" class="historia-img">
+            <div class="caption">eeeeeeee</div>
+          </div>
+        </div>
       </section>
 
       <!-- Contacto -->
