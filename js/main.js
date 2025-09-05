@@ -236,6 +236,98 @@ window.addEventListener('load', () => {
     });
   })();
 
+  // ====== AUTOPLAY ROBUSTO (sin botón) ======
+  (function robustAutoPlay() {
+    const videos = Array.from(document.querySelectorAll('video'));
+
+    if (!videos.length) return;
+
+    videos.forEach(video => {
+      // Asegurar atributos mínimos
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = video.preload || 'auto';
+
+      // Si hay overlays dentro del contenedor cercano, permitimos pasar los eventos al vídeo
+      try {
+        const container = video.parentElement;
+        if (container) {
+          // Buscar elementos absolutamente posicionados que puedan tapar el vídeo
+          Array.from(container.querySelectorAll('*')).forEach(el => {
+            const style = window.getComputedStyle(el);
+            if (style.position === 'absolute' || style.position === 'fixed') {
+              // Sólo quitar pointer-events si el elemento no contiene controles interactivos
+              if (!el.matches('a,button,input,textarea,select')) {
+                el.style.pointerEvents = 'none';
+              }
+            }
+          });
+        }
+      } catch (e) {
+        // no fatal
+        console.warn('No se pudo ajustar overlays:', e);
+      }
+
+      // Intentos con backoff
+      video._playAttempts = 0;
+      function tryPlay() {
+        video._playAttempts = (video._playAttempts || 0) + 1;
+        // aseguramos que está muteado antes de intentar
+        video.muted = true;
+        const promise = video.play();
+        if (promise !== undefined) {
+          promise.then(() => {
+            // éxito: nada más que hacer
+            // console.log('Vídeo reproduciéndose:', video);
+          }).catch((err) => {
+            // Si la reproducción falla, reintentamos con backoff, hasta N intentos
+            const MAX_ATTEMPTS = 8;
+            if (video._playAttempts >= MAX_ATTEMPTS) {
+              // damos por perdido hasta la interacción del usuario
+              // console.warn('Máximos intentos de reproducción alcanzados', video);
+              return;
+            }
+            const delay = Math.min(500 * Math.pow(2, video._playAttempts - 1), 8000); // 500ms,1s,2s,4s... cap 8s
+            setTimeout(() => tryPlay(), delay);
+          });
+        }
+      }
+
+      // Reintentar cuando haya eventos de carga que indican que se puede reproducir
+      ['canplay', 'canplaythrough', 'loadeddata', 'loadedmetadata'].forEach(ev => {
+        video.addEventListener(ev, () => {
+          tryPlay();
+        }, { once: true });
+      });
+
+      // Intento inicial (puede fallar si no hay datos aún)
+      tryPlay();
+
+      // Reintento en la PRIMERA interacción del usuario (gesture) si sigue bloqueado
+      function onFirstUserGesture() {
+        tryPlay();
+        window.removeEventListener('pointerdown', onFirstUserGesture);
+        window.removeEventListener('touchstart', onFirstUserGesture);
+        window.removeEventListener('keydown', onFirstUserGesture);
+      }
+      window.addEventListener('pointerdown', onFirstUserGesture, { once: true });
+      window.addEventListener('touchstart', onFirstUserGesture, { once: true });
+      window.addEventListener('keydown', onFirstUserGesture, { once: true });
+
+      // Opcional: cuando el vídeo suene 'pause' o 'stalled', reintentamos suavemente
+      video.addEventListener('stalled', () => {
+        setTimeout(() => tryPlay(), 1000);
+      });
+      video.addEventListener('pause', () => {
+        // intentamos reanudar si no fue pausado por el usuario
+        setTimeout(() => {
+          if (!video.paused) return;
+          tryPlay();
+        }, 500);
+      });
+    });
+  })();
 
   // ====== REFRESCO FINAL ======
   setTimeout(() => {
