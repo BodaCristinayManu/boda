@@ -8,6 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@144,600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body class="text-[#000000] font-sans">
@@ -38,10 +39,10 @@
         "
       >
         <li><a href="#inicio" class="nav-link block md:inline-block">Inicio</a></li>
-        <li><a href="#fecha-lugar" class="nav-link block md:inline-block">El Gran Día</a></li>
+        <li><a href="#lugar" class="nav-link block md:inline-block">Cuenta atrás (cambiar por lugar)</a></li>
         <li><a href="#horario" class="nav-link block md:inline-block">Horario</a></li>
         <li><a href="#alojamiento" class="nav-link block md:inline-block">Alojamiento</a></li>
-        <li><a href="#transporte" class="nav-link block md:inline-block">Transporte</a></li>
+        <li><a href="#fecha-lugar" class="nav-link block md:inline-block">El Gran Día</a></li>
         <li><a href="#rsvp" class="nav-link block md:inline-block">RSVP</a></li>
         <li><a href="#dresscode" class="nav-link block md:inline-block">Dresscode</a></li>
         <li><a href="#regalo" class="nav-link block md:inline-block">Regalo</a></li>
@@ -69,21 +70,98 @@
       </video>
       <div class="absolute inset-0 z-10 px-4 text-center pointer-events-none">
         <!-- título (si quieres que el título reciba clicks, añade pointer-events-auto) -->
-        <h1 class="absolute top-[20%] left-1/2 transform -translate-x-1/2 text-4xl md:text-5xl text-white drop-shadow-lg font-[Georgia] whitespace-nowrap">
+        <!-- <h1 class="absolute top-[20%] left-1/2 transform -translate-x-1/2 text-4xl md:text-5xl text-white drop-shadow-lg font-[Georgia] whitespace-nowrap">
           ¡Nos casamos!
-        </h1>
+        </h1> -->
 
         <!-- párrafo -->
-        <p class="absolute top-[70%] left-1/2 transform -translate-x-1/2 text-xl md:text-2xl italic leading-snug text-gray-100 font-[Georgia] max-w-lg mx-auto">
-          "No es que no pueda vivir sin ti,<br>
-          es que prefiero que sea contigo"
+        <!-- Texto del hero: 6 líneas en mayúsculas con 3 tonalidades -->
+        <p class="hero-quote" role="heading" aria-level="1" aria-label="NO ES QUE NO PUEDA VIVIR SIN TI, ES QUE PREFIERO QUE SEA CONTIGO">
+          <span class="line line-1">NO ES QUE</span>
+          <span class="line line-2">NO PUEDA VIVIR</span>
+          <span class="line line-3">SIN TI,</span>
+          <span class="line line-4">ES QUE PREFIERO</span>
+          <span class="line line-5">QUE SEA</span>
+          <span class="line line-6">CONTIGO</span>
         </p>
+
       </div>
     </header>
 
     <main class="pt-[2rem]">
 
-        <!-- EL GRAN DÍA -->
+      <!-- Cuenta atrás -->
+      <section id="cuenta-atras" class="py-12 px-6 text-center" role="region" aria-label="Cuenta atrás hasta la boda">
+        <div class="countdown">
+
+          <!-- Días -->
+          <div class="count-group">
+            <div class="digits">
+              <div class="digit" id="days_h_hundreds"></div>
+              <div class="digit" id="days_h_tens"></div>
+              <div class="digit" id="days_h_units"></div>
+            </div>
+            <div class="count-label">DÍAS</div>
+          </div>
+
+          <!-- Horas -->
+          <div class="count-group">
+            <div class="digits">
+              <div class="digit" id="hours_h_tens"></div>
+              <div class="digit" id="hours_h_units"></div>
+            </div>
+            <div class="count-label">HORAS</div>
+          </div>
+
+          <!-- Minutos -->
+          <div class="count-group">
+            <div class="digits">
+              <div class="digit" id="minutes_h_tens"></div>
+              <div class="digit" id="minutes_h_units"></div>
+            </div>
+            <div class="count-label">MINUTOS</div>
+          </div>
+
+          <!-- Segundos -->
+          <div class="count-group">
+            <div class="digits">
+              <div class="digit" id="seconds_h_tens"></div>
+              <div class="digit" id="seconds_h_units"></div>
+            </div>
+            <div class="count-label">SEGUNDOS</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Lugar -->
+      <section id="lugar" class="py-12 px-6 text-center">
+        <h2 class="text-3xl font-serif mb-4">Paraisso al mar</h2>
+      </section>
+
+      <!-- HORARIO -->
+      <section id="horario">
+        <div class="video-wrapper">
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+          >
+            <source src="video/video_horario.mp4" type="video/mp4" />
+            Tu navegador no soporta video.
+          </video>
+        </div>
+      </section>
+
+      <!-- Alojamiento -->
+      <section id="alojamiento" class="py-12 px-6 text-center">
+        <h2 class="text-3xl font-serif mb-4">Alojamiento</h2>
+      </section>
+
+
+            <!-- EL GRAN DÍA -->
       <section id="fecha-lugar" class="relative px-6 py-12 text-white">
         <div class="max-container mx-auto grid"
             style="grid-template-columns: 80px 1fr; gap: 0.5rem;">
@@ -146,27 +224,6 @@
           </div>
         </div>
       </section>
-      
-      <!-- HORARIO -->
-      <section id="horario">
-        <div class="video-wrapper">
-          <video
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="auto"
-          >
-            <source src="video/video_horario.mp4" type="video/mp4" />
-            Tu navegador no soporta video.
-          </video>
-        </div>
-      </section>
-
-      <!-- Alojamiento -->
-      <section id="alojamiento" class="py-12 px-6 text-center">
-        <h2 class="text-3xl font-serif mb-4">Alojamiento</h2>
-      </section>
 
       <!-- BANNER DESCUENTO -->
       <div id="hotel-banner" class="relative overflow-hidden bg-[#eb568e] text-white py-2 mt-6" role="region" aria-label="Oferta de hotel con descuento">
@@ -178,11 +235,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Transporte -->
-      <section id="transporte" class="py-12 px-6 text-center">
-        <h2 class="text-3xl font-serif mb-4">Transporte</h2>
-      </section>
 
       <!-- RSVP -->
       <section id="rsvp" class="py-12 px-6 text-center">

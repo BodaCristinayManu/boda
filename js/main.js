@@ -25,6 +25,142 @@ window.addEventListener('load', () => {
   window.addEventListener('scroll', onScrollNav);
   onScrollNav();
 
+  // ====== HORIZONTAL COUNTDOWN (inserta esto DENTRO del load(), justo después del COUNTDOWN vertical) ======
+  (function initFlipCountdown() {
+    const targetTime = new Date(2026, 4, 2, 18, 0, 0).getTime(); // 2 mayo 2026 18:00
+    const pad2 = n => String(n).padStart(2, '0');
+
+    // Inicializa .digit con estructura fiable
+    document.querySelectorAll(".digit").forEach(digit => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="face top" data-value="0"><span class="num">0</span></div>
+        <div class="face bottom" data-value="0"><span class="num">0</span></div>
+      `;
+      digit.appendChild(card);
+      digit.dataset.value = "0";
+    });
+
+    function calcRemaining(now = Date.now()) {
+      const diff = Math.max(0, targetTime - now);
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      return { days, hours, minutes, seconds };
+    }
+
+    // update visual sin animación (usa para primer render o cuando no cambie)
+    function setFaceValues(digitEl, val) {
+      const card = digitEl.querySelector('.card');
+      const top = card.querySelector('.face.top');
+      const bottom = card.querySelector('.face.bottom');
+      top.setAttribute('data-value', val);
+      bottom.setAttribute('data-value', val);
+      top.querySelector('.num').textContent = val;
+      bottom.querySelector('.num').textContent = val;
+      digitEl.dataset.value = val;
+    }
+
+    function animateFlip(digitEl, newVal) {
+      const currentVal = digitEl.dataset.value;
+      if (currentVal === newVal) return;
+
+      const card = digitEl.querySelector('.card');
+      const top = card.querySelector('.face.top');
+      const bottom = card.querySelector('.face.bottom');
+
+      // preparar valores visibles antes de animar
+      top.querySelector('.num').textContent = currentVal;
+      bottom.querySelector('.num').textContent = newVal;
+
+      // primera mitad: plegar top (creamos overlay flip-top para evitar "saltos")
+      const overlayTop = document.createElement('div');
+      overlayTop.className = 'flip-top';
+      overlayTop.innerHTML = `<span class="num">${currentVal}</span>`;
+      digitEl.appendChild(overlayTop);
+
+      // al terminar plegado, actualizamos top y lanzamos unfold de bottom
+      overlayTop.addEventListener('animationend', () => {
+        overlayTop.remove();
+        // actualizar top permanently
+        top.querySelector('.num').textContent = newVal;
+
+        // overlay bottom que se despliega
+        const overlayBottom = document.createElement('div');
+        overlayBottom.className = 'flip-bottom';
+        overlayBottom.innerHTML = `<span class="num">${newVal}</span>`;
+        digitEl.appendChild(overlayBottom);
+
+        overlayBottom.addEventListener('animationend', () => {
+          overlayBottom.remove();
+          // actualizar bottom permanently y dataset
+          bottom.querySelector('.num').textContent = newVal;
+          digitEl.dataset.value = newVal;
+        }, { once: true });
+
+        // activar la animación unfold
+        // forzamos reflow para que la animación se aplique
+        void overlayBottom.offsetWidth;
+        overlayBottom.classList.add('animate'); // requiere clase para keyframes
+      }, { once: true });
+
+      // activar la animación fold
+      // forzamos reflow y añadimos clase animate
+      void overlayTop.offsetWidth;
+      overlayTop.classList.add('animate');
+    }
+
+    // wrapper que decide animar o simplemente actualizar (por primera vez usamos setFaceValues)
+    function updateDigit(digitEl, newVal, first = false) {
+      if (first) {
+        setFaceValues(digitEl, newVal);
+        return;
+      }
+      // preferimos animación si el navegador admite motion
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) {
+        setFaceValues(digitEl, newVal);
+      } else {
+        animateFlip(digitEl, newVal);
+      }
+    }
+
+    function renderParts(obj, first = false) {
+      const d = String(obj.days).padStart(3, '0'); // tres cifras
+      const h = pad2(obj.hours);
+      const m = pad2(obj.minutes);
+      const s = pad2(obj.seconds);
+
+      updateDigit(document.getElementById("days_h_hundreds"), d[0], first);
+      updateDigit(document.getElementById("days_h_tens"),     d[1], first);
+      updateDigit(document.getElementById("days_h_units"),    d[2], first);
+
+      updateDigit(document.getElementById("hours_h_tens"),    h[0], first);
+      updateDigit(document.getElementById("hours_h_units"),   h[1], first);
+
+      updateDigit(document.getElementById("minutes_h_tens"),  m[0], first);
+      updateDigit(document.getElementById("minutes_h_units"), m[1], first);
+
+      updateDigit(document.getElementById("seconds_h_tens"),  s[0], first);
+      updateDigit(document.getElementById("seconds_h_units"), s[1], first);
+    }
+
+    // primer render (sin animaciones)
+    renderParts(calcRemaining(), true);
+
+    // luego, tick cada segundo (animando según sea necesario)
+    setInterval(() => {
+      renderParts(calcRemaining(), false);
+    }, 1000);
+
+    // sync on visibility change
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) renderParts(calcRemaining(), false);
+    });
+  })();
+
   // ====== COUNTDOWN ======
   (function initCountdown() {
     const daysEl    = document.getElementById('days');

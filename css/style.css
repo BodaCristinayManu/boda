@@ -76,6 +76,123 @@ h2 {
   display: block;
 }
 
+/* ===== Flip: ajuste fino para eliminar huecos y alinear números ===== */
+:root{
+  --digit-size: clamp(56px, 16vw, 96px);
+  --digit-radius: 12px;
+  --digit-bg: #111;
+  --digit-color: #fff;
+  --num-nudge: 0%; /* ajusta si la cifra queda muy alta o baja (ej: 2% o -2%) */
+}
+
+/* contenedor general */
+.countdown { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; }
+.count-group { display:flex; flex-direction:column; align-items:center; }
+.digits { display:flex; gap:0.35rem; }
+
+/* dígito: fondo continuo y cuadrado perfecto */
+.digit {
+  position: relative;
+  width: var(--digit-size);
+  aspect-ratio: 1/1;
+  height: auto;
+  background: var(--digit-bg);
+  border-radius: var(--digit-radius);
+  perspective: 1000px;
+  overflow: visible;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+}
+
+/* Card 3D (usado para animaciones) */
+.digit .card {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  transition: transform 0.6s cubic-bezier(.2,.9,.2,1);
+}
+
+/* Las "mitades" no pintan fondo, solo muestran la parte correspondiente del número.
+   Damos un pequeño solapamiento (+1px) para ocultar seams por antialias */
+.digit .face {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: calc(50% + 1px); /* +1px solapa para evitar línea */
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* top y bottom posicionados con solapamiento */
+.digit .face.top { top: 0; }
+.digit .face.bottom { bottom: -1px; } /* bajamos 1px para empalmar perfectamente */
+
+/* el número (.num) ocupa 200% de la altura y se centra con flex;
+   usamos translateY para mostrar la mitad correcta y una variable --num-nudge para ajuste fino */
+.digit .face .num {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "SF Pro Text", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 5.5vw, 3.2rem);
+  color: var(--digit-color);
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-variant-numeric: tabular-nums; /* evita que las cifras desalineen por ancho */
+  text-rendering: optimizeLegibility;
+  transform: translateZ(0);
+}
+
+/* top muestra la mitad superior (no desplazada más que el nudge) */
+.digit .face.top .num { transform: translateY(calc(var(--num-nudge))); }
+
+/* bottom muestra la mitad inferior (subimos 50% y aplicamos el mismo nudge) */
+.digit .face.bottom .num { transform: translateY(calc(-50% + var(--num-nudge))); }
+
+/* overlays de animación — fondo igual al .digit para continuidad visual */
+.flip-top, .flip-bottom {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: var(--digit-bg);
+  color: var(--digit-color);
+  overflow:hidden;
+  backface-visibility: hidden;
+  z-index: 50;
+}
+.flip-top { top: 0; transform-origin: bottom; }
+.flip-bottom { bottom: 0; transform-origin: top; }
+
+/* keyframes (añadir/clase .animate desde JS para ejecutar) */
+@keyframes fold { 0% { transform: rotateX(0deg); } 100% { transform: rotateX(-90deg); } }
+@keyframes unfold { 0% { transform: rotateX(90deg); } 100% { transform: rotateX(0deg); } }
+.flip-top.animate    { animation: fold 0.28s cubic-bezier(.2,.9,.2,1) forwards; }
+.flip-bottom.animate { animation: unfold 0.28s cubic-bezier(.2,.9,.2,1) forwards; }
+
+/* label y responsive */
+.count-label { margin-top:0.6rem; font-size:0.8rem; color:#444; text-transform:uppercase; letter-spacing:.08em; }
+
+@media (max-width:480px){
+  :root{ --digit-size: clamp(40px, 20vw, 56px); }
+  .digit .face .num { font-size: clamp(1.2rem, 5vw, 1.6rem); }
+}
+
+/* reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .digit .card { transition: none !important; }
+  .flip-top.animate, .flip-bottom.animate { animation: none !important; }
+}
+
 /* ===== Galería Historia ===== */
 #historia-scroll {
   display: flex;
@@ -137,7 +254,7 @@ main section {
 }
 
 /* ==== Tarjetas beige (todas menos #horario y #fecha-lugar) ==== */
-main section:not(#fecha-lugar):not(#horario):not(#historia) {
+main section:not(#fecha-lugar):not(#horario):not(#historia):not(#cuenta-atras) {
   background: #FDCFB2;
   border-radius: 1.5rem;
   padding: 3rem 2rem;
@@ -146,7 +263,7 @@ main section:not(#fecha-lugar):not(#horario):not(#historia) {
   z-index: 1;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-main section:not(#fecha-lugar):not(#horario):not(#historia):hover {
+main section:not(#fecha-lugar):not(#horario):not(#historia):not(#cuenta-atras):hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
@@ -367,4 +484,99 @@ main section:not(#fecha-lugar):not(#horario):not(#historia):hover {
     animation: none;
     transform: translateX(0);
   }
+}
+
+
+
+
+/* ===== PRUEBA LETRAS VIDEO ===== */
+/* === Posicionamiento: mover más abajo y justificar a la derecha en desktop === */
+#inicio { position: relative; } /* asegura que el hero sea contenedor pos. relativo */
+
+.hero-quote {
+  position: absolute;
+  top: 60%;
+  right: 6%;
+  transform: translateY(-50%);
+  max-width: 52%;
+  text-align: right;
+  display: block;
+
+  /* USAR ABRIL FATFACE */
+  font-family: 'Abril Fatface', Georgia, 'Times New Roman', serif;
+
+  text-transform: uppercase;
+  line-height: 1.05;
+  letter-spacing: 0.06em;
+  word-spacing: 0.45rem;
+  font-size: clamp(1.4rem, 4.5vw, 3.4rem);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.55);
+  z-index: 40;
+  pointer-events: none;
+}
+
+
+/* Forzar que cada línea sea bloque y mantenga el estilo */
+.hero-quote .line {
+  display: block;
+  margin: 0;
+  padding: 0.05em 0;
+}
+
+/* Tonalidades: 3 niveles (ajusta al gusto) */
+/* 1) Más transparente (pero legible) - líneas 1 y 2 */
+.hero-quote .line-1,
+.hero-quote .line-2 {
+  color: rgba(255,255,255,0.70);
+}
+
+/* 2) Color intermedio - líneas 3 y 4 */
+.hero-quote .line-3,
+.hero-quote .line-4 {
+  color: rgba(255,255,255,0.90);
+}
+
+/* 3) Blanco total - líneas 5 y 6 */
+.hero-quote .line-5,
+.hero-quote .line-6 {
+  color: rgba(255,255,255,1);
+}
+
+/* Énfasis última línea */
+.hero-quote .line-6 {
+  font-weight: 700;
+  font-size: clamp(calc(1.02 * 1.4rem), calc(1.03 * 4.5vw), calc(1.02 * 3.4rem));
+}
+
+/* ===== Responsive: en pantallas pequeñas centramos y ampliamos el ancho ===== */
+@media (max-width: 900px) {
+  .hero-quote {
+    right: 6%;
+    max-width: 60%;
+    top: 62%;
+    transform: translateY(-50%);
+    font-size: clamp(1.15rem, 5.8vw, 2.6rem);
+    text-align: right;
+  }
+}
+
+@media (max-width: 520px) {
+  /* En móviles lo pegamos al centro y evitamos que se salga horizontalmente */
+  .hero-quote {
+    position: absolute;
+    left: 50%;
+    right: auto;
+    top: 62%;
+    transform: translate(-50%, -50%);
+    max-width: 90%;
+    text-align: center;
+    font-size: clamp(1rem, 6.5vw, 1.9rem);
+    word-spacing: 0.25rem;
+    pointer-events: none;
+  }
+}
+
+/* Respeta prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-quote { transition: none; }
 }
