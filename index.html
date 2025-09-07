@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@144,600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body class="text-[#000000] font-sans">
@@ -39,7 +40,7 @@
         "
       >
         <li><a href="#inicio" class="nav-link block md:inline-block">Inicio</a></li>
-        <li><a href="#lugar" class="nav-link block md:inline-block">Cuenta atrás (cambiar por lugar)</a></li>
+        <li><a href="#lugar" class="nav-link block md:inline-block">Lugar</a></li>
         <li><a href="#horario" class="nav-link block md:inline-block">Horario</a></li>
         <li><a href="#alojamiento" class="nav-link block md:inline-block">Alojamiento</a></li>
         <li><a href="#fecha-lugar" class="nav-link block md:inline-block">El Gran Día</a></li>
@@ -68,24 +69,6 @@
         <source src="video/video_intro.mp4" type="video/mp4" />
         Tu navegador no soporta video.
       </video>
-      <div class="absolute inset-0 z-10 px-4 text-center pointer-events-none">
-        <!-- título (si quieres que el título reciba clicks, añade pointer-events-auto) -->
-        <!-- <h1 class="absolute top-[20%] left-1/2 transform -translate-x-1/2 text-4xl md:text-5xl text-white drop-shadow-lg font-[Georgia] whitespace-nowrap">
-          ¡Nos casamos!
-        </h1> -->
-
-        <!-- párrafo -->
-        <!-- Texto del hero: 6 líneas en mayúsculas con 3 tonalidades -->
-        <p class="hero-quote" role="heading" aria-level="1" aria-label="NO ES QUE NO PUEDA VIVIR SIN TI, ES QUE PREFIERO QUE SEA CONTIGO">
-          <span class="line line-1">NO ES QUE</span>
-          <span class="line line-2">NO PUEDA VIVIR</span>
-          <span class="line line-3">SIN TI,</span>
-          <span class="line line-4">ES QUE PREFIERO</span>
-          <span class="line line-5">QUE SEA</span>
-          <span class="line line-6">CONTIGO</span>
-        </p>
-
-      </div>
     </header>
 
     <main class="pt-[2rem]">
@@ -136,7 +119,26 @@
 
       <!-- Lugar -->
       <section id="lugar" class="py-12 px-6 text-center">
-        <h2 class="text-3xl font-serif mb-4">Paraisso al mar</h2>
+        <h2 class="text-5xl font-serif mb-4">Paraisso</h2>
+        <h3 class="text-5xl font-serif mb-4"><i>al Mar</i></h2>
+        <p>
+          Todo pasará en <b><i>Paraisso al Mar</i></b>:<br> el lugar ideal con el estilo moderno
+          que le encanta a Manu y la vista al mar que Cristina siempre soñó...<br>
+          ¡El sitio perfecto para todos!
+        </p>
+        <p>
+          <br><i><span style="font-size: 0.8em;">Toca la imagen para ver la ubicación</span></i><br><br><br>
+        </p>
+        <div class="lugar-imagen">
+          <a
+            href="https://www.google.com/maps/place/Paraiso+al+mar(Guardias+viejas)/@36.7070854,-2.8568984,17z/data=!3m1!4b1!4m6!3m5!1s0xd705dd449f465d1:0x346edc4f61d5d523!8m2!3d36.7070811!4d-2.8543235!16s%2Fg%2F11str_r0vt?entry=ttu"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-2 inline-block hover:scale-110 transition-transform"
+          >
+            <img src="img/paraisso.jpeg" alt="Paraisso al Mar">
+          </a>
+        </div>
       </section>
 
       <!-- HORARIO -->
@@ -254,29 +256,50 @@
       </section>
 
       <!-- DRESSCODE -->
-      <section id="dresscode" class="py-12 text-center">
-        <h2 class="text-3xl font-serif mb-12 text-center px-6">Dresscode</h2>
-        <p class="max-w-2xl mx-auto text-lg">
-          El código de vestimenta es <strong>formal</strong>.  
-          <br><br>
-          Los hombres deben acudir con traje y chaqueta.  
-          Las mujeres pueden ir tanto de corto como de largo, según prefieran.  
-          <br><br>
-          Rogamos evitar los colores pastel.
-          <br><br>
-        </p>
+      <section id="dresscode" class="py-12 text-center overflow-hidden">
+        <h2 class="text-3xl font-serif mb-4">Dresscode</h2>
 
-        <button id="showInspirationBtn" class="btn-primary">
-          Pulsa para mostrar inspiración
-        </button>
-      </section>
+        <!-- Contenedor del carrusel -->
+        <div class="carousel no-scrollbar flex overflow-x-auto snap-x snap-mandatory w-full h-[400px] md:h-[500px] scroll-smooth">
+          
+          <!-- Slide 1: contenido original -->
+          <div class="slide snap-center shrink-0 w-full h-full flex flex-col justify-center items-center px-6">
+            <p class="max-w-2xl mx-auto text-lg">
+              El código de vestimenta es <strong>formal</strong>.  
+              <br><br>
+              Los hombres deben acudir con traje y chaqueta.  
+              Las mujeres pueden ir tanto de corto como de largo, según prefieran.  
+              <br><br>
+              Rogamos evitar los colores pastel.
+              <br><br>
+              <i><span style="font-size: 0.8em;">Desliza para ver las inspiraciones.</span></i>
+            </p>
+          </div>
 
-      <!-- Modal -->
-      <div id="inspirationModal" class="modal">
-        <div class="modal-content">
-          <img src="img/dresscode.jpg" alt="Inspiración de vestidos" />
+          <!-- Slide 2: inspiración -->
+          <div class="slide snap-center shrink-0 w-full h-full flex items-center justify-center">
+            <img src="img/dresscode_rosa.png" alt="Inspiración 1" class="w-full h-full object-cover rounded-2xl" />
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="slide snap-center shrink-0 w-full h-full flex items-center justify-center">
+            <img src="img/dresscode_verde_lima.PNG" alt="Inspiración 2" class="w-full h-full object-cover rounded-2xl" />
+          </div>
+
+          <!-- Slide 4 -->
+          <div class="slide snap-center shrink-0 w-full h-full flex items-center justify-center">
+            <img src="img/dresscode_amarillo.PNG" alt="Inspiración 3" class="w-full h-full object-cover rounded-2xl" />
+          </div>
         </div>
-      </div>
+
+        <!-- Indicadores -->
+        <div class="flex justify-center mt-4 space-x-2">
+          <span class="dot w-3 h-3 rounded-full bg-gray-400"></span>
+          <span class="dot w-3 h-3 rounded-full bg-gray-300"></span>
+          <span class="dot w-3 h-3 rounded-full bg-gray-300"></span>
+          <span class="dot w-3 h-3 rounded-full bg-gray-300"></span>
+        </div>
+      </section>
 
       <!-- Regalo -->
       <section id="regalo" class="py-12 px-6 text-center">

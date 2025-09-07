@@ -64,52 +64,65 @@ window.addEventListener('load', () => {
     }
 
     function animateFlip(digitEl, newVal) {
+      if (!digitEl) return;
       const currentVal = digitEl.dataset.value;
       if (currentVal === newVal) return;
 
+      // Si ya está animando este dígito, ignoramos para evitar solapamientos
+      if (digitEl.dataset.animating === "1") return;
+      digitEl.dataset.animating = "1";
+
       const card = digitEl.querySelector('.card');
-      const top = card.querySelector('.face.top');
-      const bottom = card.querySelector('.face.bottom');
+      const topFace = card.querySelector('.face.top');
+      const bottomFace = card.querySelector('.face.bottom');
 
-      // preparar valores visibles antes de animar
-      top.querySelector('.num').textContent = currentVal;
-      bottom.querySelector('.num').textContent = newVal;
+      // 1) aseguramos que ambas caras muestren el valor actual al empezar
+      topFace.querySelector('.num').textContent = currentVal;
+      bottomFace.querySelector('.num').textContent = currentVal;
 
-      // primera mitad: plegar top (creamos overlay flip-top para evitar "saltos")
+      // 2) crear overlayTop que muestra el valor ACTUAL y se pliega (fold)
       const overlayTop = document.createElement('div');
       overlayTop.className = 'flip-top';
       overlayTop.innerHTML = `<span class="num">${currentVal}</span>`;
+      // garantizar cobertura completa y que esté por encima
+      overlayTop.style.zIndex = 1000;
       digitEl.appendChild(overlayTop);
 
-      // al terminar plegado, actualizamos top y lanzamos unfold de bottom
-      overlayTop.addEventListener('animationend', () => {
-        overlayTop.remove();
-        // actualizar top permanently
-        top.querySelector('.num').textContent = newVal;
+      // forzamos reflow antes de animar
+      void overlayTop.offsetWidth;
+      overlayTop.classList.add('animate');
 
-        // overlay bottom que se despliega
+      // cuando termina el plegado de overlayTop:
+      overlayTop.addEventListener('animationend', () => {
+        // quitar overlayTop (ya no necesitamos)
+        overlayTop.remove();
+
+        // 3) AHORA actualizamos la cara superior al nuevo valor (nuevo "top" ya visible)
+        topFace.querySelector('.num').textContent = newVal;
+
+        // 4) Creamos overlayBottom que se desplegará (unfold) mostrando la mitad inferior del nuevo valor
         const overlayBottom = document.createElement('div');
         overlayBottom.className = 'flip-bottom';
         overlayBottom.innerHTML = `<span class="num">${newVal}</span>`;
+        overlayBottom.style.zIndex = 1000;
         digitEl.appendChild(overlayBottom);
 
+        // forzar reflow y arrancar unfold
+        void overlayBottom.offsetWidth;
+        overlayBottom.classList.add('animate');
+
+        // cuando termina la animación unfold:
         overlayBottom.addEventListener('animationend', () => {
+          // limpiar overlayBottom
           overlayBottom.remove();
-          // actualizar bottom permanently y dataset
-          bottom.querySelector('.num').textContent = newVal;
+          // 5) actualizar la cara inferior con el nuevo valor (ya visible)
+          bottomFace.querySelector('.num').textContent = newVal;
           digitEl.dataset.value = newVal;
+          // desbloquear animación para este dígito
+          digitEl.dataset.animating = "0";
         }, { once: true });
 
-        // activar la animación unfold
-        // forzamos reflow para que la animación se aplique
-        void overlayBottom.offsetWidth;
-        overlayBottom.classList.add('animate'); // requiere clase para keyframes
       }, { once: true });
-
-      // activar la animación fold
-      // forzamos reflow y añadimos clase animate
-      void overlayTop.offsetWidth;
-      overlayTop.classList.add('animate');
     }
 
     // wrapper que decide animar o simplemente actualizar (por primera vez usamos setFaceValues)
@@ -354,22 +367,172 @@ window.addEventListener('load', () => {
   })();
 
   // ====== DRESSCODE ======
-  (function initDresscode() {
-    const btn          = document.getElementById('showInspirationBtn');
-    const modal        = document.getElementById('inspirationModal');
-    const modalContent = modal.querySelector('.modal-content');
+  (function initDresscodeCarouselMobile() {
+    const carousel = document.querySelector('#dresscode .carousel');
+    const dots = Array.from(document.querySelectorAll('#dresscode .dot'));
+    const btn = document.getElementById('showInspirationBtn'); // fallback si no has cambiado HTML
+    const modal = document.getElementById('inspirationModal'); // fallback
 
-    if (!btn || !modal || !modalContent) return;
+    // Fallback al modal si aún no existe el carrusel
+    if (!carousel) {
+      if (!btn || !modal) return;
+      const modalContent = modal.querySelector('.modal-content');
+      btn.addEventListener('click', () => modal.classList.add('open'));
+      modal.addEventListener('click', (e) => {
+        if (!modalContent.contains(e.target)) modal.classList.remove('open');
+      });
+      return;
+    }
 
-    btn.addEventListener('click', () => {
-      modal.classList.add('open');
-    });
+    // Accessibility y comportamiento
+    carousel.tabIndex = 0;
+    carousel.style.scrollBehavior = 'smooth';
+    carousel.style.WebkitOverflowScrolling = 'touch'; // inercia iOS
 
-    modal.addEventListener('click', (e) => {
-      if (!modalContent.contains(e.target)) {
-        modal.classList.remove('open');
+    // Estado para gesture
+    let isDown = false;
+    let startX = 0;
+    let startScroll = 0;
+    let startTime = 0;
+    let isDragging = false;
+
+    // rAF scroll update
+    let rafPending = false;
+    function updateOnScroll() {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(() => {
+        const idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
+        updateDots(idx);
+        rafPending = false;
+      });
+    }
+    carousel.addEventListener('scroll', updateOnScroll, { passive: true });
+
+    // Actualiza dots + aria-current
+    function updateDots(activeIndex) {
+      if (!dots.length) return;
+      dots.forEach((d, i) => {
+        d.classList.toggle('active', i === activeIndex);
+        d.setAttribute('aria-current', i === activeIndex ? 'true' : 'false');
+      });
+    }
+
+    // Snap al slide (uso central)
+    function scrollToIndex(index) {
+      index = Math.max(0, Math.min(dots.length - 1, index));
+      carousel.scrollTo({ left: index * carousel.clientWidth, behavior: 'smooth' });
+      // refresh loco/ScrollTrigger después de la animación
+      setTimeout(() => {
+        try { if (window.locoScroll) window.locoScroll.update(); } catch(e){}
+        try { ScrollTrigger.refresh(); } catch(e){}
+      }, 320);
+      updateDots(index);
+    }
+
+    // Pointer / touch handlers con cálculo de velocidad
+    function onPointerDown(e) {
+      isDown = true;
+      isDragging = false;
+      startX = e.touches ? e.touches[0].clientX : e.clientX;
+      startScroll = carousel.scrollLeft;
+      startTime = Date.now();
+      carousel.classList.add('is-dragging');
+      // evito seleccionar texto mientras arrastra
+      document.body.style.userSelect = 'none';
+      document.body.style.cursor = 'grabbing';
+    }
+    function onPointerMove(e) {
+      if (!isDown) return;
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      const dx = x - startX;
+      if (Math.abs(dx) > 4) isDragging = true;
+      // invertir dx para scroll natural (arrastrar izquierda -> avanzar)
+      carousel.scrollLeft = startScroll - dx;
+      updateOnScroll();
+    }
+    function onPointerUp(e) {
+      if (!isDown) return;
+      isDown = false;
+      carousel.classList.remove('is-dragging');
+      document.body.style.userSelect = '';
+      document.body.style.cursor = '';
+
+      const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : (e.clientX || startX);
+      const dx = endX - startX;
+      const dt = Math.max(1, Date.now() - startTime); // ms
+      const velocity = dx / dt; // px per ms
+
+      const width = carousel.clientWidth;
+      const currentIndexFloat = carousel.scrollLeft / width;
+      const nearest = Math.round(currentIndexFloat);
+
+      // reglas para decidir next/prev:
+      // - swipe suficientemente largo (>=20% ancho) -> cambiar slide
+      // - o swipe rápido (velocidad absoluta > 0.5 px/ms) -> cambiar según dirección
+      const distThreshold = width * 0.18;
+      const velocityThreshold = 0.5; // px/ms
+
+      let targetIndex = nearest;
+      if (Math.abs(dx) > distThreshold || Math.abs(velocity) > velocityThreshold) {
+        // si dx < 0 => swipe left -> next (+1)
+        const direction = dx < 0 ? 1 : -1;
+        targetIndex = Math.round(startScroll / width) + direction;
+      } else {
+        targetIndex = nearest;
       }
+
+      // clamp y scrollTo
+      targetIndex = Math.max(0, Math.min(dots.length - 1, targetIndex));
+      scrollToIndex(targetIndex);
+    }
+
+    // Listeners (pointer y touch)
+    carousel.addEventListener('pointerdown', onPointerDown, { passive: true });
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('pointerup', onPointerUp);
+
+    // fallback touch events (por si)
+    carousel.addEventListener('touchstart', onPointerDown, { passive: true });
+    window.addEventListener('touchmove', onPointerMove, { passive: true });
+    window.addEventListener('touchend', onPointerUp);
+
+    // Dots: área táctil mayor y accesibilidad
+    dots.forEach((dot, i) => {
+      // incrementar area táctil si no tienes CSS ya
+      dot.style.touchAction = 'manipulation';
+      dot.style.padding = '6px'; // aumenta hit area sin romper diseño
+      dot.setAttribute('role', 'button');
+      dot.setAttribute('aria-label', `Ir a inspiración ${i + 1}`);
+      dot.tabIndex = 0;
+      dot.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        scrollToIndex(i);
+      });
+      dot.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') dot.click();
+      });
     });
+
+    // Teclado (útil en tablets con teclado)
+    carousel.addEventListener('keydown', (ev) => {
+      const idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
+      if (ev.key === 'ArrowRight') scrollToIndex(Math.min(dots.length - 1, idx + 1));
+      if (ev.key === 'ArrowLeft')  scrollToIndex(Math.max(0, idx - 1));
+    });
+
+    // Resize: recalcula posición
+    window.addEventListener('resize', () => {
+      const idx = Math.round(carousel.scrollLeft / carousel.clientWidth);
+      carousel.scrollLeft = idx * carousel.clientWidth;
+      updateDots(idx);
+      try { if (window.locoScroll) window.locoScroll.update(); } catch(e){}
+    });
+
+    // Posición inicial (texto)
+    updateDots(0);
+    carousel.scrollLeft = 0;
+    try { if (window.locoScroll) window.locoScroll.update(); } catch(e){}
   })();
 
   // ====== AUTOPLAY ROBUSTO (sin botón) ======
