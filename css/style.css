@@ -337,7 +337,7 @@ main section {
 }
 
 /* ==== Tarjetas beige (todas menos #horario y #fecha-lugar) ==== */
-main section:not(#fecha-lugar):not(#horario):not(#historia):not(#cuenta-atras) {
+main section:not(#fecha-lugar):not(#horario):not(#historia):not(#cuenta-atras):not(#dresscode) {
   background: #FDCFB2;
   border-radius: 1.5rem;
   padding: 3rem 2rem;
@@ -346,7 +346,7 @@ main section:not(#fecha-lugar):not(#horario):not(#historia):not(#cuenta-atras) {
   z-index: 1;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-main section:not(#fecha-lugar):not(#horario):not(#historia):not(#cuenta-atras):hover {
+main section:not(#fecha-lugar):not(#horario):not(#historia):not(#cuenta-atras):not(#dresscode):hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
@@ -368,7 +368,7 @@ main section#lugar { /* muy parecida a la generica salvo por el padding */
   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   position: relative;
   z-index: 1;
-  transition: tr
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 main section#lugar:hover {
@@ -502,109 +502,163 @@ main section#lugar .lugar-imagen img {
 }
 
 /* ===== Dresscode (carrusel) ===== */
-/* contenedor del carrusel: touch-action para permitir scroll vertical de la página
-   y scroll horizontal dentro del carrusel; altura adaptativa pensada para móviles */
+/* Forzar que la sección no reciba padding/beige genérico */
+main section#dresscode {
+    background: #FDCFB2;
+    border-radius: 1.5rem;
+    padding: 0 !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* El carousel controla la forma y tamaño del rectángulo. Usamos height calculado para Safari */
 #dresscode .carousel {
-  touch-action: pan-y;                 /* permite scroll vertical de la página */
-  -webkit-overflow-scrolling: touch;   /* inercia en iOS */
-  height: clamp(260px, 45vh, 420px);   /* min 260px, ideal 45vh, max 420px */
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  display: flex;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  gap: 0;                              /* las slides ocupan todo el ancho */
-  -ms-overflow-style: none;            /* ocultar scrollbar en IE/Edge */
-  scrollbar-width: none;               /* ocultar scrollbar en Firefox */
+    position: relative; /* para posicionar las dots encima */
+    width: 100%;
+    height: calc(100vw * 1.776); /* 785/442 = 1.776 - misma proporción que tus fotos */
+    min-height: 200px;
+    max-height: 60vh;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    display: flex;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
-/* Ocultar scrollbar (Chrome, Safari) */
-#dresscode .carousel::-webkit-scrollbar { display: none; }
+/* Para navegadores que soporten aspect-ratio correctamente (no Safari móvil) */
+@supports (aspect-ratio: 1) and (not (-webkit-touch-callout: none)) {
+    #dresscode .carousel {
+        height: auto;
+        aspect-ratio: 442 / 785;
+    }
+}
 
-/* cada slide ocupa exactamente el ancho visible */
+/* ocultar scrollbar visual */
+#dresscode .carousel::-webkit-scrollbar {
+    display: none;
+}
+
+/* slides sin padding y ocupando todo */
 #dresscode .slide {
-  scroll-snap-align: center;
-  flex: 0 0 100%;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 1rem;                     /* pequeño padding lateral para estética */
-  box-sizing: border-box;
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: stretch !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    scroll-snap-align: center;
 }
 
-/* imágenes dentro de slides: cubrir todo el hueco sin deformar */
+/* Si quieres que el primer slide de texto tenga centrado el contenido */
+#dresscode .slide .slide-inner {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+}
+
+/* imágenes cubriendo TODO el slide (y sin border-radius propio) */
 #dresscode .slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  border-radius: 12px;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    display: block !important;
+    border-radius: 0 !important; /* las esquinas las controla el section */
 }
 
-/* cantidad de toque para arrastrar (cursor) */
-#dresscode .is-dragging { cursor: grabbing; }
+/* Dots: encima de la imagen, centrados, con alto z-index */
+#dresscode .dots-wrapper {
+    position: absolute !important;
+    bottom: 10px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 90 !important;
+    display: inline-flex !important;
+    gap: 0.5rem !important;
+    padding: 6px 8px !important;
+    border-radius: 999px !important;
+    background: rgba(0,0,0,0.22) !important;
+    backdrop-filter: blur(3px) !important;
+    -webkit-backdrop-filter: blur(3px) !important;
+    pointer-events: auto !important;
+}
 
-/* mejora de área táctil para dots (se espera que .dot existan como spans) */
-/* algunos de estos estilos sobreescriben clases tailwind si las tienes */
+/* puntos (mejor usar button por accesibilidad) */
 #dresscode .dot {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 14px;
-  height: 14px;
-  margin: 0 8px;
-  border-radius: 9999px;
-  background: rgba(0,0,0,0.20);
-  transition: transform .18s ease, background .18s ease, opacity .18s ease;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.12) inset;
-  cursor: pointer;
-  outline: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.12) inset;
+    transition: all 0.2s ease;
 }
 
-/* estado activo más visible */
-#dresscode .dot.active {
-  transform: scale(1.25);
-  background: rgba(0,0,0,0.60);
-}
-
-/* accesibilidad: focus visible para teclado */
 #dresscode .dot:focus {
-  box-shadow: 0 0 0 3px rgba(0,0,0,0.12);
-  transform: scale(1.18);
+    outline: 2px solid rgba(255,255,255,0.8);
 }
 
-/* wrapper de dots (si usas un contenedor) — centrado y con más separación en mobile */
-#dresscode .dots-wrapper,
-#dresscode > .dots-wrapper,
-#dresscode .flex.justify-center { /* compatibles con tu HTML actual */ 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 0.75rem;
-  gap: 0.5rem;
-  padding: 0.25rem 0;
+/* active */
+#dresscode .dot.active {
+    transform: scale(1.25);
+    background: rgba(255,255,255,1);
 }
-
-/* ocultar el botón de "mostrar inspiración" si decides eliminarlo visualmente
-   (descomenta si quieres esconderlo automáticamente) */
-/* #showInspirationBtn { display: none !important; } */
 
 /* Pequeños ajustes responsivos */
 @media (max-width: 420px) {
-  #dresscode .dot { width: 12px; height: 12px; margin: 0 6px; }
-  #dresscode .slide { padding: 0 0.6rem; }
-  #dresscode .carousel { height: clamp(220px, 40vh, 360px); }
+    #dresscode .dot {
+        width: 12px;
+        height: 12px;
+    }
+    
+    #dresscode .dots-wrapper {
+        gap: 0.3rem !important;
+    }
+    
+    #dresscode .slide .slide-inner {
+        padding: 0.8rem;
+    }
+    
+    /* Ajuste del carousel para móviles muy pequeños */
+    #dresscode .carousel {
+        max-height: 60vh;
+        height: calc(100vw * 1.776);
+    }
 }
 
 /* Respeta preferencia de reducir movimiento */
 @media (prefers-reduced-motion: reduce) {
-  #dresscode .carousel { scroll-behavior: auto; }
-  #dresscode .dot, #dresscode .dot.active { transition: none !important; }
+    #dresscode .carousel {
+        scroll-behavior: auto;
+    }
+    
+    #dresscode .dot, 
+    #dresscode .dot.active {
+        transition: none !important;
+    }
+}
+
+/* Ajustes específicos para dispositivos con viewport muy ancho (tablets en landscape) */
+@media (min-width: 768px) {
+    #dresscode .carousel {
+        height: calc(60vh);
+        max-width: 500px;
+        margin: 0 auto;
+    }
 }
 
 /* ===== Botón primario común ===== */

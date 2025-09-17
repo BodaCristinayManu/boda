@@ -120,7 +120,7 @@
       <!-- Lugar -->
       <section id="lugar" class="py-12 px-6 text-center">
         <h2 class="text-5xl font-serif mb-4">Paraisso</h2>
-        <h3 class="text-5xl font-serif mb-4"><i>al Mar</i></h2>
+        <h3 class="text-5xl font-serif mb-4"><i>al Mar</i></h3>
         <p>
           Todo pasará en <b><i>Paraisso al Mar</i></b>:<br> el lugar ideal con el estilo moderno
           que le encanta a Manu y la vista al mar que Cristina siempre soñó...<br>
@@ -256,48 +256,46 @@
       </section>
 
       <!-- DRESSCODE -->
-      <section id="dresscode" class="py-12 text-center overflow-hidden">
-        <h2 class="text-3xl font-serif mb-4">Dresscode</h2>
+      <section id="dresscode" class="text-center overflow-hidden">
+        <!-- título: lo dejamos en el HTML por accesibilidad, se ocultará visualmente por CSS -->
 
-        <!-- Contenedor del carrusel -->
-        <div class="carousel no-scrollbar flex overflow-x-auto snap-x snap-mandatory w-full h-[400px] md:h-[500px] scroll-smooth">
-          
-          <!-- Slide 1: contenido original -->
-          <div class="slide snap-center shrink-0 w-full h-full flex flex-col justify-center items-center px-6">
-            <p class="max-w-2xl mx-auto text-lg">
-              El código de vestimenta es <strong>formal</strong>.  
-              <br><br>
-              Los hombres deben acudir con traje y chaqueta.  
-              Las mujeres pueden ir tanto de corto como de largo, según prefieran.  
-              <br><br>
-              Rogamos evitar los colores pastel.
+        <!-- Contenedor del carrusel: NOTA importante -> dots dentro para superposición -->
+        <div class="carousel no-scrollbar flex overflow-x-auto snap-x snap-mandatory w-full scroll-smooth">
+
+          <!-- Slide 1: texto (si quieres que el texto también ocupe todo, lo centré) -->
+          <div class="slide snap-center shrink-0 w-full h-full flex items-center justify-center">
+            <div class="slide-inner max-w-2xl text-center px-4">
+              <h2 class="text-3xl font-serif mb-4">Dresscode</h2>
+              <p>
+                El código de vestimenta es <strong>formal</strong>.<br><br>
+                Los hombres deben acudir con traje y chaqueta. Las mujeres pueden ir tanto de corto como de largo.
               <br><br>
               <i><span style="font-size: 0.8em;">Desliza para ver las inspiraciones.</span></i>
-            </p>
+              </p>
+            </div>
           </div>
 
-          <!-- Slide 2: inspiración -->
-          <div class="slide snap-center shrink-0 w-full h-full flex items-center justify-center">
-            <img src="img/dresscode_rosa.png" alt="Inspiración 1" class="w-full h-full object-cover rounded-2xl" />
+          <!-- Slide 2: imagen -->
+          <div class="slide snap-center shrink-0 w-full h-full">
+            <img src="img/dresscode_rosa.png" alt="Inspiración 1" />
           </div>
 
           <!-- Slide 3 -->
-          <div class="slide snap-center shrink-0 w-full h-full flex items-center justify-center">
-            <img src="img/dresscode_verde_lima.PNG" alt="Inspiración 2" class="w-full h-full object-cover rounded-2xl" />
+          <div class="slide snap-center shrink-0 w-full h-full">
+            <img src="img/dresscode_verde_lima.PNG" alt="Inspiración 2" />
           </div>
 
           <!-- Slide 4 -->
-          <div class="slide snap-center shrink-0 w-full h-full flex items-center justify-center">
-            <img src="img/dresscode_amarillo.PNG" alt="Inspiración 3" class="w-full h-full object-cover rounded-2xl" />
+          <div class="slide snap-center shrink-0 w-full h-full">
+            <img src="img/dresscode_amarillo.PNG" alt="Inspiración 3" />
           </div>
         </div>
-
-        <!-- Indicadores -->
-        <div class="flex justify-center mt-4 space-x-2">
-          <span class="dot w-3 h-3 rounded-full bg-gray-400"></span>
-          <span class="dot w-3 h-3 rounded-full bg-gray-300"></span>
-          <span class="dot w-3 h-3 rounded-full bg-gray-300"></span>
-          <span class="dot w-3 h-3 rounded-full bg-gray-300"></span>
+        <!-- DOTS: dentro del carousel para que se superpongan -->
+        <div class="dots-wrapper" role="tablist" aria-label="Indicador de inspiración">
+          <button class="dot" role="tab" aria-label="Slide 1"></button>
+          <button class="dot" role="tab" aria-label="Slide 2"></button>
+          <button class="dot" role="tab" aria-label="Slide 3"></button>
+          <button class="dot" role="tab" aria-label="Slide 4"></button>
         </div>
       </section>
 
