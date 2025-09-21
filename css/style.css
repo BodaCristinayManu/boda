@@ -337,7 +337,7 @@ main section {
 }
 
 /* ==== Tarjetas beige (todas menos #horario y #fecha-lugar) ==== */
-main section:not(#fecha-lugar):not(#horario):not(#historia):not(#cuenta-atras):not(#dresscode) {
+main section:not(#horario):not(#historia):not(#cuenta-atras):not(#dresscode):not(#alojamiento) {
   background: #FDCFB2;
   border-radius: 1.5rem;
   padding: 3rem 2rem;
@@ -346,7 +346,7 @@ main section:not(#fecha-lugar):not(#horario):not(#historia):not(#cuenta-atras):n
   z-index: 1;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-main section:not(#fecha-lugar):not(#horario):not(#historia):not(#cuenta-atras):not(#dresscode):hover {
+main section:not(#horario):not(#historia):not(#cuenta-atras):not(#dresscode):not(#alojamiento):hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
@@ -421,84 +421,108 @@ main section#lugar .lugar-imagen img {
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
 
-/* ===== Fecha y lugar (Puzzle) ===== */
-
-/* 1) Contenedor ancho (igual que las secciones beiges) */
-.max-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-/* 2) Grid Puzzle: dos columnas, tres filas */
-#fecha-lugar .grid {
-  display: grid;
-  grid-template-columns: 80px 1fr;  /* Columna izquierda estrecha */
-  grid-template-rows: auto auto auto;
-  gap: 0.5rem;                      /* Menos espacio entre bloques */
-}
-
-/* 3) Cuenta atrás vertical (ocupa fila 1–2, columna 1) */
-#fecha-lugar .countdown-box {
-  width: 80px; 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* centrado en lugar de separado */
-  gap: 0.6rem; /* menos espacio entre bloques */
-  padding: 0.75rem;
-  border-radius: 1rem;
-  background-color: #E9713F;   /* naranja fuerte */
-  color: white;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-}
-
-#fecha-lugar .countdown-box > div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.1rem; /* número y etiqueta más pegados */
-}
-
-/* 4) Bloque fecha (fila 1, columna 2) */
-#fecha-lugar .date-box {
-  background: #f5a3b7;
-  color: #B58360;
-  border-radius: 1rem;
-  padding: 0.75rem;
-  display: flex;
-  align-items: center;
-}
-
-/* 5) Bloque imagen (fila 2, columna 2) */
-#fecha-lugar .image-box {
-  overflow: hidden;
-  border-radius: 1rem;
-}
-
-/* #FFB292; naranja intermedio */
-
-/* 6) Bloque sitio (fila 3, columnas 1–2) */
-#fecha-lugar .venue-box {
-  grid-column: 1 / span 2;
-  background: #a6a87a;   /* naranja intermedio */
-  color: #B58360;
-  border-radius: 1rem;
-  padding: 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 7) Texto con sombra para contraste */
-#fecha-lugar p,
-#fecha-lugar div[id] {
-  color: #fff;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-}
-
-/* 8) Padding general de la sección */
-#fecha-lugar {
+/* ===== ALOJAMIENTO ===== */
+/* 2. "Escenario" que contiene todas las capas y controla los desbordes */
+/* ===== ALOJAMIENTO ===== */
+/* Asegura el ancho similar a la referencia y centra */
+#alojamiento .alx-stage {
+  width: min(92vw, 560px);
+  position: relative;
   padding: 3rem 2rem;
+  margin: 1.5rem 1rem;
+  overflow: visible;
+}
+
+/* Tarjeta beige: mantener detrás, alineada a la derecha */
+#alojamiento .alx-card {
+  position: relative;
+  z-index: 1;
+  width: 78%;
+  margin-left: auto; /* Empuja la tarjeta a la derecha */
+  background: #FDCFB2;
+  border-radius: 24px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.10);
+  text-align: center;
+  transform: none; /* Asegura que no haya transformaciones previas */
+}
+
+/* Badge naranja dentro de la tarjeta: prominente */
+#alojamiento .alx-badge {
+  position: relative;
+  top: -3rem;
+  background: #F9823F;
+  color: #fff;
+  font-weight: 800;
+  padding: .55em 1.25em;
+  border-radius: 24px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.10);
+  z-index: 2; /* Asegura que el badge esté encima de la tarjeta */
+}
+
+/* Foto: debe solaparse por encima de la tarjeta, más ancha y con sombra mayor */
+#alojamiento .alx-photo {
+  position: absolute;
+  z-index: 2; /* Encima de la tarjeta */
+  width: 56%;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+  transform: translateZ(0); /* Mejor rendimiento para animaciones/GPU */
+}
+#alojamiento .alx-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Nota rosa: encima de todo, centrada respecto a la fotografía y la tarjeta */
+#alojamiento .alx-note {
+  position: absolute;
+  z-index: 1; /* Encima de la foto y la tarjeta */
+  bottom: 5rem; /* Ligeramente por debajo del contenedor, efecto "colgante" */
+  width: 80%;
+  background: #f5a3b7;
+  color: #eb568e;
+  padding: .85rem 1rem;
+  line-height: 1;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+  transform: translateY(30px); /* Pequeño empuje para que parezca flotante */
+}
+
+/* Texto dentro de la tarjeta - evitar que el párrafo ocupe todo el ancho */
+#alojamiento .alx-card p {
+  max-width: 100%; /* Limita el ancho del párrafo */
+  font-size: 0.98rem;
+  margin-top: -20%;
+}
+
+/* Ajustes responsive */
+@media (max-width: 720px) {
+  #alojamiento .alx-stage {
+    width: 100%; /* Ancho completo menos un margen */
+    padding: 2rem 1rem;
+    margin: 0rem 1rem;
+    margin-bottom: -20%;
+  }
+  #alojamiento .alx-photo {
+    left: -5%;
+    top: 45px;
+    width: 40%;
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.22);
+    margin: 1.5rem 1rem;
+  }
+  #alojamiento .alx-card {
+    width: 70%;
+    padding: 1rem 2rem 6rem;
+  }
+  #alojamiento .alx-note {
+    left: -5%;
+    width: 103%;
+    padding: .7rem .9rem;
+  }
 }
 
 /* ===== Dresscode (carrusel) ===== */

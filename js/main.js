@@ -174,29 +174,6 @@ window.addEventListener('load', () => {
     });
   })();
 
-  // ====== COUNTDOWN ======
-  (function initCountdown() {
-    const daysEl    = document.getElementById('days');
-    const hoursEl   = document.getElementById('hours');
-    const minutesEl = document.getElementById('minutes');
-    const secondsEl = document.getElementById('seconds');
-    const targetTime = new Date("2026-05-02T18:00:00").getTime();
-
-    function update() {
-      const diff = targetTime - Date.now();
-      const d = Math.max(0, Math.floor(diff / 86400000));
-      const h = Math.max(0, Math.floor((diff % 86400000) / 3600000));
-      const m = Math.max(0, Math.floor((diff % 3600000) / 60000));
-      const s = Math.max(0, Math.floor((diff % 60000) / 1000));
-      daysEl.innerText    = d;
-      hoursEl.innerText   = h;
-      minutesEl.innerText = m;
-      secondsEl.innerText = s;
-    }
-    update();
-    setInterval(update, 1000);
-  })();
-
   // ====== LOCOMOTIVE + GSAP SCROLLTRIGGER ======
   gsap.registerPlugin(ScrollTrigger);
 

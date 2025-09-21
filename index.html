@@ -159,71 +159,31 @@
 
       <!-- Alojamiento -->
       <section id="alojamiento" class="py-12 px-6 text-center">
-        <h2 class="text-3xl font-serif mb-4">Alojamiento</h2>
-      </section>
+        <!-- 1. Título: Usa tu h2 global, pero el CSS lo alineará a la izquierda -->
+        <h2 class="text-4xl font-serif text-left mb-">Para los que venís de fuera...</h2>
 
+        <!-- 2. "Escenario" contenedor para las capas -->
+        <div class="alx-stage">
 
-            <!-- EL GRAN DÍA -->
-      <section id="fecha-lugar" class="relative px-6 py-12 text-white">
-        <div class="max-container mx-auto grid"
-            style="grid-template-columns: 80px 1fr; gap: 0.5rem;">
-
-          <!-- 1. Cuenta atrás: columna 1, dos filas -->
-          <div class="countdown-box" style="grid-row: 1 / span 2; min-height: 100%;">
-            <div>
-              <div id="days" class="text-2xl font-mono">--</div>
-              <div class="text-xs font-mono">DÍAS</div>
-            </div>
-            <div>
-              <div id="hours" class="text-2xl font-mono">--</div>
-              <div class="text-xs font-mono">HORAS</div>
-            </div>
-            <div>
-              <div id="minutes" class="text-2xl font-mono">--</div>
-              <div class="text-xs font-mono">MINUTOS</div>
-            </div>
-            <div>
-              <div id="seconds" class="text-2xl font-mono">--</div>
-              <div class="text-xs font-mono">SEGUNDOS</div>
-            </div>
-          </div>
-
-          <!-- 2. Fecha: fila 1, columna 2 -->
-          <div class="date-box rounded-2xl p-6 flex items-center justify-start">
-            <p class="text-2xl font-serif">2 de mayo 2026 – 18:00h</p>
-          </div>
-
-          <!-- 3. Imagen: fila 2, columna 2 -->
-          <div class="overflow-hidden rounded-2xl">
-            <img src="img/paraisso_fecha.jpeg" alt="Paraisso al Mar"
-                class="w-full h-auto object-cover">
-          </div>
-
-          <!-- 4. Nombre del sitio: fila 3, columnas 1–2 -->
-          <!-- Rectángulo del lugar con texto y enlace a Google Maps -->
-          <div class="venue-box rounded-2xl bg-white p-6 flex flex-col items-center text-center">
-            <p class="text-lg font-serif text-[#B58360] mb-2">Paraisso al Mar</p>
-            <p class="text-sm text-gray-600">
-              Pulsa en el icono para ver la localización exacta:
+          <!-- 3. Tarjeta beige (capa 1, detrás) -->
+          <div class="alx-card">
+            <div class="alx-badge">HOTEL VÉRTICE 4*</div>
+            <p>
+              El Hotel Vértice os hará un 10% de descuento al utilizar el código:
+              <b>CRISTINAYMANU26</b>
             </p>
-            <a
-              href="https://www.google.com/maps/place/Paraiso+al+mar(Guardias+viejas)/@36.7070854,-2.8568984,17z/data=!3m1!4b1!4m6!3m5!1s0xd705dd449f465d1:0x346edc4f61d5d523!8m2!3d36.7070811!4d-2.8543235!16s%2Fg%2F11str_r0vt?entry=ttu"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="mt-2 inline-block hover:scale-110 transition-transform"
-            >
-              <!-- Usamos un simple icono SVG de Google Maps -->
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="#B58360"
-              >
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
-              </svg>
-            </a>
           </div>
+
+          <!-- 4. Foto (capa 2, encima de la tarjeta) -->
+          <figure class="alx-photo">
+            <img src="img/hotel_vertice.jpeg" alt="Hotel Vértice">
+          </figure>
+
+          <!-- 5. Nota rosa (capa 3, encima de todo) -->
+          <p class="alx-note">
+            Si preferís alojaros en un apartamento, ¡no dudéis en pedirnos ayuda!
+          </p>
+
         </div>
       </section>
 
@@ -304,7 +264,7 @@
         <h2 class="text-3xl font-serif mb-4">Regalo</h2>
       </section>
 
-            <!-- NUESTRA HISTORIA -->
+      <!-- NUESTRA HISTORIA -->
       <section id="historia" class="py-12 px-6 overflow-visible">
         <h2 class="text-3xl font-serif mb-6 text-center px-6">Nuestra Historia</h2>
         <div id="historia-scroll" class="no-scrollbar flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-4 items-center">
