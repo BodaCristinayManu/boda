@@ -74,46 +74,13 @@
     <main class="pt-[2rem]">
 
       <!-- Cuenta atrás -->
-      <section id="cuenta-atras" class="py-12 px-6 text-center" role="region" aria-label="Cuenta atrás hasta la boda">
-        <div class="countdown">
-
-          <!-- Días -->
-          <div class="count-group">
-            <div class="digits">
-              <div class="digit" id="days_h_hundreds"></div>
-              <div class="digit" id="days_h_tens"></div>
-              <div class="digit" id="days_h_units"></div>
-            </div>
-            <div class="count-label">DÍAS</div>
-          </div>
-
-          <!-- Horas -->
-          <div class="count-group">
-            <div class="digits">
-              <div class="digit" id="hours_h_tens"></div>
-              <div class="digit" id="hours_h_units"></div>
-            </div>
-            <div class="count-label">HORAS</div>
-          </div>
-
-          <!-- Minutos -->
-          <div class="count-group">
-            <div class="digits">
-              <div class="digit" id="minutes_h_tens"></div>
-              <div class="digit" id="minutes_h_units"></div>
-            </div>
-            <div class="count-label">MINUTOS</div>
-          </div>
-
-          <!-- Segundos -->
-          <div class="count-group">
-            <div class="digits">
-              <div class="digit" id="seconds_h_tens"></div>
-              <div class="digit" id="seconds_h_units"></div>
-            </div>
-            <div class="count-label">SEGUNDOS</div>
-          </div>
-
+      <section id="cuenta-atras" class="py-10 px-6">
+        <h2 class="text-4xl font-serif text-left mb-8 ml-2">Quedan...</h2>
+        <div id="countdown" class="flex justify-center space-x-5 text-2xl text-center text-[#E9713F]">
+          <div><span id="days" class="block text-4xl">--</span><span class="text-sm text-[#000000]">Días</span></div>
+          <div><span id="hours" class="block text-4xl">--</span><span class="text-sm text-[#000000]">Horas</span></div>
+          <div><span id="minutes" class="block text-4xl">--</span><span class="text-sm text-[#000000]">Minutos</span></div>
+          <div><span id="seconds" class="block text-4xl">--</span><span class="text-sm text-[#000000]">Segundos</span></div>
         </div>
       </section>
 
@@ -160,7 +127,7 @@
       <!-- Alojamiento -->
       <section id="alojamiento" class="py-12 px-6 text-center">
         <!-- 1. Título: Usa tu h2 global, pero el CSS lo alineará a la izquierda -->
-        <h2 class="text-4xl font-serif text-left mb-">Para los que venís de fuera...</h2>
+        <h2 class="text-4xl font-serif text-left">Para los que venís de fuera...</h2>
 
         <!-- 2. "Escenario" contenedor para las capas -->
         <div class="alx-stage">
@@ -197,6 +164,12 @@
           </div>
         </div>
       </div>
+
+      <!-- TRANSPORTE -->
+      <h2 class="text-3xl font-serif text-right mt-4 mr-8">y por el transporte...</h2>
+      <h2 class="text-3xl font-serif text-right mr-8">¡no os preocupéis!</h2>
+      <div class="alx-bus">Habrá servicio de autobuses tanto a la ida como a la vuelta</div>
+
 
       <!-- RSVP -->
       <section id="rsvp" class="py-12 px-6 text-center">

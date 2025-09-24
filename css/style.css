@@ -11,7 +11,7 @@ html, body {
 
 /* ===== Fondo general blanco ===== */
 body {
-  background-color: #fff7f2; /* blanco puro */
+  background-color: #fff7f2; 
 }
 
 /* ===== Títulos ===== */
@@ -90,223 +90,7 @@ h3 {
   display: block;
 }
 
-/* =========================
-   Countdown flip
-   ========================= */
-
-:root{
-  /* control de tamaño y estilo */
-  --digit-size: clamp(56px, 16vw, 96px);
-  --digit-radius: 12px;
-  --digit-bg: rgba(233,113,63,0.82);       /* naranja translúcido */
-  --digit-bg-deep: rgba(200,90,45,0.85);   /* sombra interna */
-  --digit-color: #ffffff;
-  --num-nudge: 0%;     /* micro-ajuste vertical si fuera necesario */
-  --num-scale: 1.4;    /* escala de los números dentro del rectángulo */
-  --hinge-height: 6px; /* grosor de la bisagra central */
-}
-
-/* Contenedor general */
-.countdown {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.count-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.digits {
-  display: flex;
-  gap: 0.35rem;
-}
-
-/* Dígito: fondo continuo y cuadrado perfecto */
-.digit {
-  position: relative;
-  width: var(--digit-size);
-  aspect-ratio: 1 / 1;
-  background: linear-gradient(180deg, var(--digit-bg) 0%, var(--digit-bg-deep) 100%);
-  border-radius: var(--digit-radius);
-  perspective: 1000px;
-  overflow: visible;
-  box-shadow:
-    0 8px 18px rgba(0,0,0,0.08),
-    inset 0 -6px 16px rgba(0,0,0,0.06);
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Card 3D (contenedor de las caras) */
-.digit .card {
-  position: absolute;
-  inset: 0;
-  transform-style: preserve-3d;
-  -webkit-backface-visibility: hidden;
-  transition: transform 0.6s cubic-bezier(.2,.9,.2,1);
-}
-
-/* Las "mitades": no pintan fondo, sólo muestran una porción del número */
-.digit .face {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: calc(50% + 1px); /* pequeño solapamiento para empalmar */
-  overflow: hidden;
-  pointer-events: none;
-  display: block;
-}
-
-.digit .face.top { 
-  top: 0; 
-}
-
-.digit .face.bottom { 
-  bottom: -1px; 
-}
-
-/* Estilos base para números (aplicados a todas las variantes) */
-.digit .face .num,
-.flip-top .num,
-.flip-bottom .num {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 200%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-  font-weight: 800;
-  font-size: calc(var(--num-scale) * clamp(2.4rem, 7.5vw, 4.0rem));
-  color: var(--digit-color);
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1;
-  text-rendering: optimizeLegibility;
-  transform: translateZ(0);
-  will-change: transform;
-}
-
-/* Posicionamiento de números: top muestra mitad superior, bottom mitad inferior */
-.digit .face.top .num,
-.flip-top .num {
-  transform: translateY(calc(var(--num-nudge)));
-}
-
-.digit .face.bottom .num,
-.flip-bottom .num {
-  transform: translateY(calc(-50% + var(--num-nudge)));
-}
-
-/* Línea central (bisagra) con muescas laterales */
-.digit::after {
-  content: "";
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  height: var(--hinge-height);
-  top: calc(50% - (var(--hinge-height) / 2));
-  z-index: 40;
-  border-radius: 4px;
-  background:
-    radial-gradient(circle at 0% 50%, rgba(255,255,255,0.03) 0 9px, transparent 10px),
-    radial-gradient(circle at 100% 50%, rgba(255,255,255,0.03) 0 9px, transparent 10px),
-    rgba(0,0,0,0.12);
-  background-repeat: no-repeat, no-repeat, no-repeat;
-  background-position: left center, right center, center;
-  background-size: 18px 18px, 18px 18px, 100% var(--hinge-height);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06) inset;
-  pointer-events: none;
-}
-
-/* Overlays para animación */
-.flip-top,
-.flip-bottom {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(180deg, var(--digit-bg) 0%, var(--digit-bg-deep) 100%);
-  color: var(--digit-color);
-  overflow: hidden;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform-style: preserve-3d;
-  z-index: 999;
-  pointer-events: none;
-  transform: rotateX(0deg); /* estado inicial neutro */
-}
-
-.flip-top {
-  top: 0;
-  transform-origin: bottom;
-  border-top-left-radius: var(--digit-radius);
-  border-top-right-radius: var(--digit-radius);
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.flip-bottom {
-  bottom: 0;
-  transform-origin: top;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-bottom-left-radius: var(--digit-radius);
-  border-bottom-right-radius: var(--digit-radius);
-}
-
-/* Animaciones */
-@keyframes fold { 
-  0% { transform: rotateX(0deg); } 
-  100% { transform: rotateX(-90deg); } 
-}
-
-@keyframes unfold { 
-  0% { transform: rotateX(90deg); } 
-  100% { transform: rotateX(0deg); } 
-}
-
-/* Clases que activan la animación */
-.flip-top.animate { 
-  animation: fold 0.28s cubic-bezier(.2,.9,.2,1) forwards; 
-}
-
-.flip-bottom.animate { 
-  animation: unfold 0.28s cubic-bezier(.2,.9,.2,1) forwards; 
-}
-
-/* Labels */
-.count-label {
-  margin-top: 0.6rem;
-  font-family: 'Abril Fatface', serif;
-  font-weight: 400;
-  font-size: 0.95rem;
-  color: #5a3f2f;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-}
-
-/* Ajustes visuales para accesibilidad y responsive */
-@media (max-width: 480px) {
-  :root { --digit-size: clamp(40px, 20vw, 56px); --num-scale: 1.15; --hinge-height: 5px; }
-  .digit .face .num { font-size: calc(var(--num-scale) * clamp(1.8rem, 6.5vw, 2.2rem)); }
-}
-
-/* Reduce motion: respeta la preferencia del usuario */
-@media (prefers-reduced-motion: reduce) {
-  .digit .card { transition: none !important; }
-  .flip-top.animate, .flip-bottom.animate { animation: none !important; transform: none !important; }
-}
+/* ===== Countdown ===== */
 
 /* ===== Galería Historia ===== */
 #historia-scroll {
@@ -531,6 +315,23 @@ main section#lugar .lugar-imagen img {
   margin-top: -20%;
 }
 
+.alx-bus {
+  position: relative;
+  top: 1rem;
+  border: 4px solid rgba(249, 130, 63, 1);
+  background: rgba(255, 247, 242, 1);
+  color: rgba(249, 130, 63, 1);
+  font-weight: 800;
+  padding: .55em 1.25em;
+  text-align: center;
+  left: 15%;
+  margin-top: 0.5rem;
+  margin-bottom: 15%;
+  width: 70%;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.10);
+  z-index: 2; /* Asegura que el badge esté encima de la tarjeta */
+}
+
 /* Ajustes responsive */
 @media (max-width: 720px) {
   #alojamiento .alx-stage {
@@ -554,6 +355,13 @@ main section#lugar .lugar-imagen img {
   #alojamiento .alx-note {
     left: -5%;
     width: 103%;
+    padding: .7rem .9rem;
+  }
+  .alx-bus {
+    left: 15%;
+    width: 70%;
+    margin-top: 0.5rem;
+    margin-bottom: 15%;
     padding: .7rem .9rem;
   }
 }
