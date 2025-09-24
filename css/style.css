@@ -91,13 +91,7 @@ h3 {
 }
 
 /* =========================
-   Countdown flip - diseño híbrido (Abril + Inter)
-   Sustituye las reglas antiguas del contador/flip por este bloque.
-   ========================= */
-
-/* =========================
-   Countdown flip - CSS completo
-   Sustituye las reglas antiguas del contador/flip por este bloque.
+   Countdown flip
    ========================= */
 
 :root{
@@ -120,11 +114,13 @@ h3 {
   gap: 1rem;
   flex-wrap: wrap;
 }
+
 .count-group {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .digits {
   display: flex;
   gap: 0.35rem;
@@ -154,8 +150,7 @@ h3 {
   transition: transform 0.6s cubic-bezier(.2,.9,.2,1);
 }
 
-/* Las "mitades": no pintan fondo, sólo muestran una porción del número.
-   Añadimos +1px a la altura/bottom para evitar líneas finas por antialias */
+/* Las "mitades": no pintan fondo, sólo muestran una porción del número */
 .digit .face {
   position: absolute;
   left: 0;
@@ -166,13 +161,18 @@ h3 {
   display: block;
 }
 
-/* posicionamiento top/bottom con leve solapamiento */
-.digit .face.top { top: 0; }
-.digit .face.bottom { bottom: -1px; }
+.digit .face.top { 
+  top: 0; 
+}
 
-/* NÚMEROS: Inter con tabular-nums (alineación estable).
-   El número ocupa 200% de altura; ajustar tamaño con --num-scale. */
-.digit .face .num {
+.digit .face.bottom { 
+  bottom: -1px; 
+}
+
+/* Estilos base para números (aplicados a todas las variantes) */
+.digit .face .num,
+.flip-top .num,
+.flip-bottom .num {
   position: absolute;
   left: 0;
   width: 100%;
@@ -194,11 +194,18 @@ h3 {
   will-change: transform;
 }
 
-/* top/bottom muestran cada mitad aplicando el mismo nudge */
-.digit .face.top .num { transform: translateY(calc(var(--num-nudge))); }
-.digit .face.bottom .num { transform: translateY(calc(-50% + var(--num-nudge))); }
+/* Posicionamiento de números: top muestra mitad superior, bottom mitad inferior */
+.digit .face.top .num,
+.flip-top .num {
+  transform: translateY(calc(var(--num-nudge)));
+}
 
-/* Línea central (bisagra) con muescas laterales para el efecto "tarjeta" */
+.digit .face.bottom .num,
+.flip-bottom .num {
+  transform: translateY(calc(-50% + var(--num-nudge)));
+}
+
+/* Línea central (bisagra) con muescas laterales */
 .digit::after {
   content: "";
   position: absolute;
@@ -219,41 +226,66 @@ h3 {
   pointer-events: none;
 }
 
-/* Overlays para animación (mismo fondo que .digit para continuidad visual) */
-.flip-top, .flip-bottom {
+/* Overlays para animación */
+.flip-top,
+.flip-bottom {
   position: absolute;
   left: 0;
   width: 100%;
   height: 50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(180deg, var(--digit-bg) 0%, var(--digit-bg-deep) 100%);
   color: var(--digit-color);
-  overflow:hidden;
+  overflow: hidden;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   transform-style: preserve-3d;
-  z-index: 999; /* muy por encima para cubrir totalmente */
+  z-index: 999;
   pointer-events: none;
+  transform: rotateX(0deg); /* estado inicial neutro */
 }
 
-/* origen de la transformación */
-.flip-top { top: 0; transform-origin: bottom; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
-.flip-bottom { bottom: 0; transform-origin: top; border-top-left-radius: 0; border-top-right-radius: 0; }
+.flip-top {
+  top: 0;
+  transform-origin: bottom;
+  border-top-left-radius: var(--digit-radius);
+  border-top-right-radius: var(--digit-radius);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
 
-/* frame inicial neutro */
-.flip-top, .flip-bottom { transform: rotateX(0deg); }
+.flip-bottom {
+  bottom: 0;
+  transform-origin: top;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: var(--digit-radius);
+  border-bottom-right-radius: var(--digit-radius);
+}
 
-/* Keyframes: fold = top pliega; unfold = bottom se despliega */
-@keyframes fold { 0% { transform: rotateX(0deg); } 100% { transform: rotateX(-90deg); } }
-@keyframes unfold { 0% { transform: rotateX(90deg); } 100% { transform: rotateX(0deg); } }
+/* Animaciones */
+@keyframes fold { 
+  0% { transform: rotateX(0deg); } 
+  100% { transform: rotateX(-90deg); } 
+}
 
-/* clases que activan la animación (añadidas dinámicamente por JS) */
-.flip-top.animate    { animation: fold 0.28s cubic-bezier(.2,.9,.2,1) forwards; }
-.flip-bottom.animate { animation: unfold 0.28s cubic-bezier(.2,.9,.2,1) forwards; }
+@keyframes unfold { 
+  0% { transform: rotateX(90deg); } 
+  100% { transform: rotateX(0deg); } 
+}
 
-/* LABELS: estilada con Abril Fatface (usa la fuente cargada en HEAD) */
+/* Clases que activan la animación */
+.flip-top.animate { 
+  animation: fold 0.28s cubic-bezier(.2,.9,.2,1) forwards; 
+}
+
+.flip-bottom.animate { 
+  animation: unfold 0.28s cubic-bezier(.2,.9,.2,1) forwards; 
+}
+
+/* Labels */
 .count-label {
   margin-top: 0.6rem;
   font-family: 'Abril Fatface', serif;
@@ -366,6 +398,7 @@ main section#lugar { /* muy parecida a la generica salvo por el padding */
   background: #FDCFB2;
   border-radius: 1.5rem;
   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  margin-bottom: 8rem; /* forzamos el margen superior a ser mayor con lugar */
   position: relative;
   z-index: 1;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -397,7 +430,7 @@ main section#lugar .lugar-imagen img {
 
 /* ==== HORARIO ==== */
 #horario {
-  margin: 8rem auto; /* más aire respecto a lugar */
+  margin: 1rem auto; /* más aire respecto a lugar */
   max-width: 800px;
 }
 
@@ -503,7 +536,7 @@ main section#lugar .lugar-imagen img {
   #alojamiento .alx-stage {
     width: 100%; /* Ancho completo menos un margen */
     padding: 2rem 1rem;
-    margin: 0rem 1rem;
+    margin: 0.5rem 1rem;
     margin-bottom: -20%;
   }
   #alojamiento .alx-photo {
@@ -701,7 +734,7 @@ main section#dresscode {
   transform: translateY(-2px);
 }
 
-/* ===== BANNER  DESCUENTO ===== */
+/* ===== BANNER DESCUENTO ===== */
 /* CONTROL DE VELOCIDAD: cambia 30s por 40s/50s si quieres aún más lento */
 :root {
   --marquee-duration: 10s;
@@ -735,13 +768,6 @@ main section#dresscode {
 @keyframes marquee {
   0%   { transform: translateX(0%); }
   100% { transform: translateX(-50%); } /* -50% porque repetimos contenido */
-}
-
-/* pausa al hover / focus para accesibilidad */
-#hotel-banner:hover .marquee,
-#hotel-banner:focus-within .marquee {
-  animation-play-state: paused;
-  cursor: pointer;
 }
 
 /* respeta preferencia de reducir movimiento */
