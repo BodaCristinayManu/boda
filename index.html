@@ -10,12 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
+  <!-- Number fonts-->
+  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body class="text-[#000000] font-sans">
 
   <!-- NAVBAR -->
-  <nav id="navbar" class="fixed top-0 left-0 w-full z-[9999] transition-all duration-300 px-6 py-4 backdrop-blur-md">
+  <nav id="navbar" class="fixed top-0 left-0 w-full z-[9999] transition-all duration-300 px-6 py-4">
     <div class="flex justify-between items-center max-w-5xl mx-auto">
       <span class="font-serif text-lg">Boda Cristina & Manu</span>
       <button id="menu-btn" class="md:hidden focus:outline-none" aria-label="Abrir menú">
@@ -31,17 +34,17 @@
         id="menu"
         class="
           hidden z-[9998]
-          fixed inset-0 w-full h-full
-          flex-col items-center justify-center
+          fixed inset-0
+          flex-col items-center justify-start
           bg-white md:bg-transparent
-          space-y-8 md:space-y-0 md:flex md:flex-row md:space-x-4
-          text-2xl md:text-sm font-medium uppercase
-          p-8 md:p-0
+          space-y-1 md:space-y-0 md:flex md:flex-row md:space-x-4
+          text-lg md:text-sm font-medium uppercase
+          p-4 md:p-0
         "
-      >
-        <li><a href="#inicio" class="nav-link block md:inline-block">Inicio</a></li>
-        <li><a href="#lugar" class="nav-link block md:inline-block">Lugar</a></li>
-        <li><a href="#horario" class="nav-link block md:inline-block">Horario</a></li>
+            >
+        <li class="w-full md:w-auto"><a href="#inicio" class="nav-link block md:inline-block">Inicio</a></li>
+        <li class="w-full md:w-auto"><a href="#lugar" class="nav-link block md:inline-block">Lugar</a></li>
+        <li class="w-full md:w-auto"><a href="#horario" class="nav-link block md:inline-block">Horario</a></li>
         <li><a href="#alojamiento" class="nav-link block md:inline-block">Alojamiento</a></li>
         <li><a href="#fecha-lugar" class="nav-link block md:inline-block">El Gran Día</a></li>
         <li><a href="#rsvp" class="nav-link block md:inline-block">RSVP</a></li>
@@ -69,18 +72,35 @@
         <source src="video/video_intro.mp4" type="video/mp4" />
         Tu navegador no soporta video.
       </video>
+
+      <!-- TEXTO AL FONDO -->
+      <div class="absolute bottom-20 w-full flex justify-center z-10">
+        <h1 class="amatic">2 MAYO 2026</h1>
+      </div>
     </header>
 
     <main class="pt-[2rem]">
 
       <!-- Cuenta atrás -->
       <section id="cuenta-atras" class="py-10 px-6">
-        <h2 class="text-4xl font-serif text-left mb-8 ml-2">Quedan...</h2>
-        <div id="countdown" class="flex justify-center space-x-5 text-2xl text-center text-[#E9713F]">
-          <div><span id="days" class="block text-4xl">--</span><span class="text-sm text-[#000000]">Días</span></div>
-          <div><span id="hours" class="block text-4xl">--</span><span class="text-sm text-[#000000]">Horas</span></div>
-          <div><span id="minutes" class="block text-4xl">--</span><span class="text-sm text-[#000000]">Minutos</span></div>
-          <div><span id="seconds" class="block text-4xl">--</span><span class="text-sm text-[#000000]">Segundos</span></div>
+        <h2 class="text-4xl text-left font-serif mb-8 ml-2">Quedan...</h2>
+        <div id="countdown" class="flex justify-center space-x-5 text-center">
+          <div>
+            <span id="days" class="numero">--</span>
+            <span class="label">Días</span>
+          </div>
+          <div>
+            <span id="hours" class="numero">--</span>
+            <span class="label">Horas</span>
+          </div>
+          <div>
+            <span id="minutes" class="numero">--</span>
+            <span class="label">Min</span>
+          </div>
+          <div>
+            <span id="seconds" class="numero">--</span>
+            <span class="label">Seg</span>
+          </div>
         </div>
       </section>
 
@@ -168,7 +188,11 @@
       <!-- TRANSPORTE -->
       <h2 class="text-3xl font-serif text-right mt-4 mr-8">y por el transporte...</h2>
       <h2 class="text-3xl font-serif text-right mr-8">¡no os preocupéis!</h2>
-      <div class="alx-bus">Habrá servicio de autobuses tanto a la ida como a la vuelta</div>
+      <div class="alx-bus">
+        <p><b><span style="font-size: 1.2em;">¡Nos encargamos del camino!</span></b></p>
+        <p>Contaremos con servicio de autobús ida y vuelta</p>
+        <p><i><span style="font-size: 0.8em;">Indícanos en el formulario si si quieres plaza</span></i></p>
+      </div>
 
 
       <!-- RSVP -->

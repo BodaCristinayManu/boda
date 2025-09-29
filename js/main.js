@@ -10,11 +10,35 @@ window.addEventListener('load', () => {
   // ====== MENÚ RESPONSIVE ======
   menuBtn.addEventListener('click', e => {
     e.stopPropagation();
-    menu.classList.toggle('hidden');
+    
+    // Toggle del menú con animación
+    if (menu.classList.contains('hidden')) {
+      // Abrir menú
+      menu.classList.remove('hidden');
+      menu.style.backgroundColor = '#fff7f2';
+      
+      // Aplicar animación después de mostrarlo
+      setTimeout(() => {
+        menu.classList.add('active');
+      }, 10);
+    } else {
+      // Cerrar menú con animación
+      menu.classList.remove('active');
+      setTimeout(() => {
+        menu.classList.add('hidden');
+        menu.style.backgroundColor = '';
+      }, 500); // Coincide con la duración de la transición
+    }
   });
+
   document.addEventListener('click', e => {
     if (!navbar.contains(e.target) && !menu.classList.contains('hidden')) {
-      menu.classList.add('hidden');
+      // Cerrar menú con animación
+      menu.classList.remove('active');
+      setTimeout(() => {
+        menu.classList.add('hidden');
+        menu.style.backgroundColor = '';
+      }, 500);
     }
   });
 
@@ -85,6 +109,7 @@ window.addEventListener('load', () => {
     link.addEventListener('click', e => {
       e.preventDefault();
       menu.classList.add('hidden');
+      menu.style.backgroundColor = '';
       const target = document.querySelector(link.getAttribute('href'));
       if (!target) return;
       locoScroll.scrollTo(target, {
