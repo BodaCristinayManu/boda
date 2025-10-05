@@ -91,13 +91,13 @@ h3 {
 @media (max-width: 768px) {
   #menu:not(.hidden) {
     background-color: #fff7f2 !important;
-    top: 75px !important; /* Espacio para la barra superior */
+    top: 65px !important; /* Espacio para la barra superior */
     left: auto !important; /* No ocupar lado izquierdo */
-    right: 20px !important; /* Margen derecho */
+    right: 10px !important; /* Margen derecho */
     width: 50% !important; /* Ancho limitado */
-    max-width: 280px !important; /* Ancho máximo */
+    max-width: 180px !important; /* Ancho máximo */
     height: auto !important; 
-    max-height: 75vh; /* Limita la altura máxima */
+    max-height: 65vh; /* Limita la altura máxima */
     overflow-y: auto; /* Permite scroll si hay muchos items */
     border-radius: 12px; /* Bordes redondeados en todos lados */
     box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.05);
