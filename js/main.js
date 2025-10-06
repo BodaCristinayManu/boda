@@ -151,59 +151,194 @@ window.addEventListener('load', () => {
   //   });
   // });
 
-  // ====== GALERÍA INTERACTIVA ======
-  (function initGallery() {
+  // ====== GALERÍA HISTORIA ======
+  (function historia3DCarousel() {
     const container = document.getElementById('historia-scroll');
     if (!container) return;
-    const items = container.querySelectorAll('.historia-item');
+    const items = Array.from(container.querySelectorAll('.historia-item'));
+    const frames = items.map(it => it.querySelector('.historia-frame') || it);
     if (!items.length) return;
 
-    const halfW = () => container.clientWidth / 2;
-    const minScroll = () => items[0].offsetLeft + items[0].offsetWidth / 2 - halfW();
-    const maxScroll = () => {
-      const last = items[items.length - 1];
-      return last.offsetLeft + last.offsetWidth / 2 - halfW();
-    };
+    // Lee la perspectiva del CSS (fallBack 1000)
+    const PERSPECTIVE = (() => {
+      const v = getComputedStyle(container).perspective;
+      const n = parseFloat(v);
+      return Number.isFinite(n) && n > 0 ? n : 1000;
+    })();
 
-    function updateScales() {
-      const centerX = container.getBoundingClientRect().left + halfW();
-      items.forEach(item => {
-        const rect = item.getBoundingClientRect();
-        const itemCenter = rect.left + rect.width / 2;
-        const dist = Math.abs(centerX - itemCenter);
-        const ratio = Math.min(dist / (container.clientWidth / 2), 1);
-        const scale = 1 + (1 - ratio) * 0.4;
-        const opacity = 0.5 + (1 - ratio) * 0.5;
-        item.style.transform = `scale(${scale})`;
-        item.style.opacity   = opacity;
-        item.style.zIndex    = Math.round((1 - ratio) * 100);
+    // Parámetros del efecto
+    const MAX_DEPTH    = 90;   // px hacia el fondo en laterales (z negativo)
+    const ROT_MAX_DEG  = 11;   // rotación Y en laterales
+    const MIN_OPACITY  = 0.5;  // opacidad mínima en extremos
+    const EDGE_EPS     = 0.6;  // tolerancia para “estar en el borde”
+    const CENTER_SCALE = 1.25; // tamaño cuando está centrada (máximo)
+    const SIDE_SCALE   = 0.90; // tamaño en los extremos
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    let centers = [];
+    let bounds  = { min: 0, max: 0 };
+    let rafId   = null;
+    let scrollEndTimer = null;
+    let isSnapping = false;
+    let ready = false;
+    let isDragging = false;
+
+    const halfW = () => container.clientWidth / 2;
+
+    function computeCenters() {
+      centers = items.map(it => it.offsetLeft + it.offsetWidth / 2);
+    }
+
+    function computeBounds() {
+      if (!centers.length) return;
+      bounds.min = centers[0] - halfW();
+      bounds.max = centers[centers.length - 1] - halfW();
+    }
+
+    function softClampDuringScroll() {
+      // Sólo corrige si se sale mucho de los límites (no pelear con el dedo)
+      const x = container.scrollLeft;
+      if (x < bounds.min - 8) container.scrollLeft = bounds.min;
+      else if (x > bounds.max + 8) container.scrollLeft = bounds.max;
+    }
+
+    function compensatedScaleForZ(z) {
+      // Cancela el cambio de tamaño por perspectiva:
+      // la proyección escala por P/(P - z) -> compensamos con (P - z)/P
+      return (PERSPECTIVE - z) / PERSPECTIVE;
+    }
+
+    function update3D() {
+      if (!ready) return;
+
+      const centerX = container.scrollLeft + halfW();
+      const maxDist = Math.max(halfW(), 1);
+      const atMin = Math.abs(container.scrollLeft - bounds.min) < EDGE_EPS;
+      const atMax = Math.abs(container.scrollLeft - bounds.max) < EDGE_EPS;
+
+      for (let i = 0; i < frames.length; i++) {
+        const frame = frames[i];
+        let dx = centers[i] - centerX;
+
+        if (atMin && i === 0) dx = 0;
+        if (atMax && i === frames.length - 1) dx = 0;
+
+        const t = Math.max(-1, Math.min(1, dx / maxDist)); // -1..1
+        const adx = Math.abs(t);
+
+        const z       = -MAX_DEPTH * adx;     // 0..-MAX_DEPTH
+        const rotY    = -t * ROT_MAX_DEG;     // -ROT..ROT
+
+        // 1) Compensación de perspectiva (mantiene tamaño base constante)
+        const scaleComp = compensatedScaleForZ(z);
+
+        // 2) Énfasis: centra -> CENTER_SCALE, extremos -> SIDE_SCALE
+        const emphasis  = lerp(SIDE_SCALE, CENTER_SCALE, 1 - adx);
+
+        const scale   = scaleComp * emphasis;
+        const opacity = 1 - (1 - MIN_OPACITY) * adx;
+
+        const blur = Math.round(adx * 1.0 * 10) / 10;
+        const shadowAlpha = 0.28 * (1 - adx);
+        frame.style.boxShadow = `0 10px 24px rgba(0,0,0,${shadowAlpha.toFixed(2)})`;
+        frame.style.filter = blur ? `blur(${blur}px)` : 'none';
+
+        const sc = Math.round(scale * 1000) / 1000;
+        frame.style.transform = `translateZ(${z}px) rotateY(${rotY}deg) scale(${sc})`;
+        frame.style.opacity   = opacity.toFixed(3);
+        frame.style.zIndex    = String(1000 - Math.round(adx * 1000));
+      }
+    }
+
+    function onScroll() {
+      if (!ready) return;
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        if (!isDragging) softClampDuringScroll();
+        update3D();
       });
     }
 
-    function clampScroll() {
-      const min = minScroll();
-      const max = maxScroll();
-      if (container.scrollLeft < min) container.scrollLeft = min;
-      if (container.scrollLeft > max) container.scrollLeft = max;
+    function snapToClosest() {
+      if (!ready) return;
+
+      const centerX = container.scrollLeft + halfW();
+      let bestIdx = 0;
+      let bestDist = Infinity;
+
+      for (let i = 0; i < centers.length; i++) {
+        const d = Math.abs(centers[i] - centerX);
+        if (d < bestDist) { bestDist = d; bestIdx = i; }
+      }
+
+      const target  = centers[bestIdx] - halfW();
+      const clamped = Math.max(bounds.min, Math.min(bounds.max, target));
+      const isEdge  = (bestIdx === 0 && Math.abs(clamped - bounds.min) < 2)
+                  || (bestIdx === centers.length - 1 && Math.abs(clamped - bounds.max) < 2);
+
+      isSnapping = true;
+      container.classList.add('snapping');
+      container.scrollTo({ left: clamped, behavior: isEdge ? 'auto' : 'smooth' });
+
+      const SNAP_MS = isEdge ? 0 : 260;
+      setTimeout(() => {
+        isSnapping = false;
+        container.classList.remove('snapping');
+        if (isEdge) container.scrollLeft = clamped;
+        update3D();
+      }, SNAP_MS + 60);
     }
 
+    function startDrag() {
+      isDragging = true;
+      if (!isSnapping) container.classList.remove('snapping'); // sin transición durante drag
+    }
+    function endDrag() { isDragging = false; }
+
     // Eventos
+    container.addEventListener('scroll', onScroll, { passive: true });
     container.addEventListener('scroll', () => {
-      updateScales();
-      clampScroll();
-    });
-    window.addEventListener('resize', () => {
-      clampScroll();
-      updateScales();
-    });
+      if (!ready) return;
+      clearTimeout(scrollEndTimer);
+      scrollEndTimer = setTimeout(() => { if (!isSnapping) snapToClosest(); }, 90);
+    }, { passive: true });
 
-    // Inicializar escalas antes de centrar
-    updateScales();
+    container.addEventListener('pointerdown', startDrag, { passive: true });
+    container.addEventListener('touchstart',   startDrag, { passive: true });
+    window.addEventListener('pointerup', endDrag, { passive: true });
+    window.addEventListener('touchend', endDrag,   { passive: true });
 
-    // ====== CENTRAR PRIMER ÍTEM TRAS PRIMER PINTADO ======
+    // Prioriza scroll horizontal dentro de la galería (evita scroll vertical “colado”)
+    let sx = 0, sy = 0;
+    container.addEventListener('touchstart', (e) => {
+      const t = e.touches[0]; sx = t.clientX; sy = t.clientY;
+    }, { passive: true });
+
+    function initGeometry() {
+      computeCenters();
+      computeBounds();
+    }
+
+    // INIT robusto: calcula ya y coloca 1ª centrada; doble RAF mejora en iOS
     requestAnimationFrame(() => {
-      container.scrollLeft = minScroll();
-      updateScales();
+      requestAnimationFrame(() => {
+        initGeometry();
+        container.scrollLeft = bounds.min;
+        ready = true;
+        update3D();
+      });
+    });
+
+    // Recalcula en resize/orientación y tras load (por si cambian métricas)
+    window.addEventListener('resize', () => {
+      initGeometry();
+      container.scrollLeft = Math.max(bounds.min, Math.min(bounds.max, container.scrollLeft));
+      update3D();
+    });
+    window.addEventListener('load', () => {
+      initGeometry();
+      container.scrollLeft = Math.max(bounds.min, Math.min(bounds.max, container.scrollLeft));
+      update3D();
     });
   })();
 
