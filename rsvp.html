@@ -6,17 +6,19 @@
   <title>RSVP - Cristina & Manu</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
   <style>
     .form-card { background: #fff; border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); padding: 1.25rem; }
-    .btn-primary { background:#004466; color:#fff; padding:0.5rem 1.25rem; border-radius:8px; font-weight:500; }
+    .btn-primary { background:#E9713F; color:#fff; padding:0.5rem 1.25rem; border-radius:8px; font-weight:500; }
     .btn-primary:disabled { opacity:0.6; cursor:not-allowed; }
     .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
+    body {font-family: 'Marcellus', serif; }
   </style>
 </head>
 <body class="text-[#000000] bg-[#FDCFB2]">
 
 <main class="max-w-3xl mx-auto p-6">
-  <h1 class="text-2xl font-serif mb-4">Confirmar asistencia</h1>
+  <h1 class="text-2xl mb-4">Confirmar asistencia</h1>
 
   <!-- FORMULARIO: action apunta al Apps Script, target al iframe para no salir de la página -->
   <form id="rsvpForm" class="form-card" novalidate
@@ -107,7 +109,7 @@
     </div>
 
     <div class="flex items-center gap-4">
-      <button id="submitBtn" type="submit" class="btn-primary">Enviar RSVP</button>
+      <button id="submitBtn" type="submit" class="btn-primary">Enviar</button>
       <div id="formStatus" class="text-sm text-green-600 hidden">Enviado. ¡Gracias!</div>
     </div>
   </form>

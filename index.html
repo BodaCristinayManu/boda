@@ -8,14 +8,18 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@144,600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
   <!-- Number fonts-->
   <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+  <!-- Títulos-->
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+  <!-- Cuenta atras -->
   <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
+  <!-- Cuerpo -->
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body class="text-[#000000] font-sans">
+<body class="text-[#000000] marcellus">
 
   <!-- NAVBAR -->
   <nav id="navbar" class="fixed top-0 left-0 w-full z-[9999] transition-all duration-300 px-6 py-4">
@@ -47,7 +51,7 @@
         <li class="w-full md:w-auto"><a href="#horario" class="nav-link block md:inline-block">Horario</a></li>
         <li><a href="#alojamiento" class="nav-link block md:inline-block">Alojamiento</a></li>
         <li><a href="#rsvp" class="nav-link block md:inline-block">Formulario</a></li>
-        <li><a href="#dresscode" class="nav-link block md:inline-block">Dresscode</a></li>
+        <li><a href="#dresscode" class="nav-link block md:inline-block">Vestimenta</a></li>
         <li><a href="#historia" class="nav-link block md:inline-block">Historia</a></li>
         <li><a href="#contacto" class="nav-link block md:inline-block">Contacto</a></li>
       </ul>
@@ -81,7 +85,12 @@
 
       <!-- Cuenta atrás -->
       <section id="cuenta-atras" class="py-10 px-6">
-        <h2 class="text-4xl text-left font-serif mb-8 ml-2">Quedan...</h2>
+        <h2 class="text-4xl text-left font-serif ml-2">Quedan...</h2>
+        <div class="flex flex-col space-y-3 mb-6">
+          <button id="addToCalendarBtn" class="btn-calendar" aria-label="Añadir al calendario">
+              <img src="img/orange-calendar.svg" alt="" class="icon-svg" />
+          </button>
+        </div>
         <div id="countdown" class="flex justify-center space-x-5 text-center">
           <div>
             <span id="days" class="numero">--</span>
@@ -105,7 +114,7 @@
       <!-- Lugar -->
       <section id="lugar" class="py-12 px-6 text-center">
         <h2 class="text-5xl font-serif mb-4">Paraisso</h2>
-        <h3 class="text-5xl font-serif mb-4"><i>al Mar</i></h3>
+        <h2 class="text-5xl font-serif mb-4"><i>al Mar</i></h2>
         <p>
           Todo pasará en <b><i>Paraisso al Mar</i></b>:<br> el lugar ideal con el estilo moderno
           que le encanta a Manu y la vista al mar que Cristina siempre soñó...<br>
@@ -189,7 +198,7 @@
       <div class="alx-bus">
         <p><b><span style="font-size: 1.2em;">¡Nos encargamos del camino!</span></b></p>
         <p>Contaremos con servicio de autobús ida y vuelta</p>
-        <p><i><span style="font-size: 0.8em;">Indícanos en el formulario si si quieres plaza</span></i></p>
+        <p><i><span style="font-size: 0.8em;">Indícanos en el formulario si quieres plaza</span></i></p>
       </div>
 
 
@@ -221,7 +230,7 @@
           <!-- Slide 1: texto (si quieres que el texto también ocupe todo, lo centré) -->
           <div class="slide snap-center shrink-0 w-full h-full flex items-center justify-center">
             <div class="slide-inner max-w-2xl text-center px-4">
-              <h2 class="text-3xl font-serif mb-4">Dresscode</h2>
+              <h2 class="text-3xl font-serif mb-4">Código de vestimenta</h2>
               <p>
                 Nos hace mucha ilusión imaginar este día con los <strong>colores vivos y vibrantes</strong> de la primavera y el atardecer frente al mar.
                 Queremos que la noche se llene de <strong>alegría, energía y color</strong> 🌅
@@ -289,91 +298,91 @@
 
       <!-- Nuestra historia -->
       <section id="historia" class="py-12 px-6 overflow-visible">
-        <h2 class="text-3xl font-serif mb-6 text-center px-6">Nuestra Historia</h2>
+        <h2 class="text-3xl font-serif mb-0 text-center px-6">Nuestro camino juntos</h2>
 
         <div id="historia-scroll" class="no-scrollbar">
           <div class="historia-item">
             <div class="historia-frame">
               <img src="img/foto1.JPG" alt="Historia 1" class="historia-img" />
             </div>
-            <div class="caption">4 Julio 2019<br>Flechazo a primera vista 👀</div>
+            <div class="caption"><strong>· 4 Julio 2019 ·</strong><br>Flechazo a primera vista 👀</div>
           </div>
 
           <div class="historia-item">
             <div class="historia-frame">
               <img src="img/foto2.JPG" alt="Historia 2" class="historia-img" />
             </div>
-            <div class="caption">20 Julio 2019<br>Aquí empezó “nosotros” 💕</div>
+            <div class="caption"><strong>· 20 Julio 2019 ·</strong><br>Aquí empezó “nosotros” 💕</div>
           </div>
 
           <div class="historia-item">
             <div class="historia-frame">
               <img src="img/foto3.JPG" alt="Historia 3" class="historia-img" />
             </div>
-            <div class="caption">2019-2020<br>Superando la distancia 📞</div>
+            <div class="caption"><strong>· 2019-2020 ·</strong><br>Superando la distancia 📞</div>
           </div>
 
           <div class="historia-item">
             <div class="historia-frame">
               <img src="img/foto4.JPG" alt="Historia 4" class="historia-img" />
             </div>
-            <div class="caption">2020<br>Viviendo una pandemia 🦠</div>
+            <div class="caption"><strong>· 2020 ·</strong><br>Viviendo una pandemia 🦠</div>
           </div>
 
           <div class="historia-item">
             <div class="historia-frame">
               <img src="img/foto5.JPG" alt="Historia 5" class="historia-img" />
             </div>
-            <div class="caption">Sept 2021<br>Empieza nuestra avenutra 🇫🇷</div>
+            <div class="caption"><strong>· Sept 2021 ·</strong><br>Empieza nuestra avenutra 🇫🇷</div>
           </div>
 
           <div class="historia-item">
             <div class="historia-frame">
               <img src="img/foto6.JPG" alt="Historia 6" class="historia-img" />
             </div>
-            <div class="caption">Mayo 2022<br>Nuestro primer hogar 🏠</div>
+            <div class="caption"><strong>· Mayo 2022 ·</strong><br>Nuestro primer hogar 🏠</div>
           </div>
 
           <div class="historia-item">
             <div class="historia-frame">
               <img src="img/foto7.JPG" alt="Historia 7" class="historia-img" />
             </div>
-            <div class="caption">2023<br>Toulouse 🧡<br> nuestra casa</div>
+            <div class="caption"><strong>· 2023 ·</strong><br>Toulouse 🧡<br> nuestra casa</div>
           </div>
 
           <div class="historia-item">
             <div class="historia-frame">
               <img src="img/foto8.JPG" alt="Historia 8" class="historia-img" />
             </div>
-            <div class="caption">Enero 2024<br>Compra de<br> nuestro piso 🖋</div>
+            <div class="caption"><strong>· Enero 2024 ·</strong><br>Compra de<br> nuestro piso 🖋</div>
           </div>
 
           <div class="historia-item">
             <div class="historia-frame">
               <img src="img/foto9.JPG" alt="Historia 9" class="historia-img" />
             </div>
-            <div class="caption">Febrero 2024<br>Mes de <br> reformas 🛠</div>
+            <div class="caption"><strong>· Febrero 2024 ·</strong><br>Mes de <br> reformas 🛠</div>
           </div>
 
           <div class="historia-item">
             <div class="historia-frame">
               <img src="img/foto10.JPG" alt="Historia 10" class="historia-img" />
             </div>
-            <div class="caption">Nov 2024<br>También en los <br> días malos 🏥</div>
+            <div class="caption"><strong>· Nov 2024 ·</strong><br>También en los <br> días malos 🏥</div>
           </div>
 
           <div class="historia-item">
             <div class="historia-frame">
               <img src="img/foto11.JPG" alt="Historia 11" class="historia-img" />
             </div>
-            <div class="caption">14 Dic 2024<br>Pedida en Estrasburgo 💍</div>
+            <div class="caption"><strong>· 14 Dic 2024 ·</strong><br>Pedida en Estrasburgo 💍</div>
           </div>
 
           <div class="historia-item">
             <div class="historia-frame">
               <img src="img/foto12.JPG" alt="Historia 12" class="historia-img" />
             </div>
-            <div class="caption">3 Mayo 2025<br>El reloj del <br> "sí" ⌚</div>
+            <div class="caption"><strong>· 3 Mayo 2025 ·</strong><br>El reloj del <br> "sí" ⌚</div>
           </div>
         </div>
       </section>

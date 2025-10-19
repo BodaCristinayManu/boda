@@ -151,6 +151,73 @@ window.addEventListener('load', () => {
   //   });
   // });
 
+  // ====== BOTON CALENDARIO ======
+  const addButton = document.getElementById('addToCalendarBtn');
+
+  if (addButton) {
+    addButton.addEventListener('click', () => {
+      const event = {
+        title: 'Boda de Cristina y Manu 💍🎉',
+        description: '¡Llegó el gran día! Ven con toda tu energía, tus mejores pasos de baile y muchas ganas de celebrar el amor. 💃🕺',
+        startDate: '2026-05-02',
+        endDateExclusive: '2026-05-03',
+        location: 'Paraisso al Mar, Guardias Viejas, Almería'
+      };
+      createAndDownloadICS(event);
+    });
+  }
+
+  function createAndDownloadICS({ title, description, startDate, endDateExclusive, location }) {
+    const dtStamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const formattedStart = startDate.replace(/-/g, '');
+    const formattedEnd = endDateExclusive.replace(/-/g, '');
+
+    const icsLines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//TuWebBoda//ES',
+      'CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT',
+      `UID:${dtStamp}@tusitio.com`,
+      `DTSTAMP:${dtStamp}`,
+      `DTSTART;VALUE=DATE:${formattedStart}`,
+      `DTEND;VALUE=DATE:${formattedEnd}`,
+      `SUMMARY:${title}`,
+      `DESCRIPTION:${description}`,
+      `LOCATION:${location}`,
+  
+      // ===== RECORDATORIO 1 SEMANA ANTES =====
+      'BEGIN:VALARM',
+      'TRIGGER:-P1WT6H', // 1 semana antes
+      'ACTION:DISPLAY',
+      'DESCRIPTION:¡Sólo una semana para la boda de Cristina y Manu! Revisa tu lista de cosas a hacer 📋',
+      'SUMMARY:Recordatorio - 1 semana antes',
+      'END:VALARM',
+      
+      // ===== RECORDATORIO 1 DÍA ANTES =====
+      'BEGIN:VALARM',
+      'TRIGGER:-P1DT6H', // 1 día antes
+      'ACTION:DISPLAY',
+      'DESCRIPTION:¡Mañana es la gran día! 🥂 No olvides: - Confirmar transporte - Revisar regalo - Llevar ropa de dormir para la fiesta posterior',
+      'SUMMARY:Recordatorio - 1 día antes',
+      'END:VALARM',
+      
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ];
+
+    const blob = new Blob([icsLines.join('\r')], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'boda-cristina-manu.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   // ====== GALERÍA HISTORIA ======
   (function historia3DCarousel() {
     const container = document.getElementById('historia-scroll');

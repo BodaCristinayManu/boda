@@ -11,7 +11,12 @@ html, body {
 
 /* ===== Fondo general blanco ===== */
 body {
-  background-color: #fff7f2; 
+  background-color: #fff7f2;
+  font-family: 'Marcellus',
+}
+
+.marcellus {
+  font-family: 'Marcellus', serif !important;
 }
 
 /* ===== Títulos ===== */
@@ -31,20 +36,6 @@ h2 {
   line-height: 1.1;
   letter-spacing: 0.3px;
   color: #E9713F;
-}
-h3 {
-  font-family: 'Abril Fatface', 'Bodoni Moda', serif;
-  font-weight: 400; /* Abril funciona bien con 400 (display) */
-  font-size: clamp(2rem, 6vw, 4.5rem);
-  line-height: 1.05;
-  letter-spacing: 0.2px;
-
-  color: transparent;                    /* quita relleno */
-  -webkit-text-stroke: 2px #E9713F;      /* contorno (Chrome/Safari/Edge) */
-  -webkit-text-fill-color: transparent;  /* asegura ausencia de relleno */
-  text-stroke: 2px #E9713F;              /* intento estándar */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ===== Navbar dinámico ===== */
@@ -69,7 +60,7 @@ h3 {
 
 #navbar.scrolled {
   background-color: rgba(255, 255, 255, 0.95);
-  color: #004466;
+  color: #E9713F;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -197,12 +188,15 @@ h3 {
   height: 400px;
   padding-block: 10px;
 
-  touch-action: pan-x;
+  touch-action: auto;
   overscroll-behavior-x: contain;
-  overscroll-behavior-y: none;
+  overscroll-behavior-y: contain;
 
   perspective: 1000px;       /* debe coincidir con JS */
   perspective-origin: 50% 50%;
+
+  /* Margenes */
+  margin-bottom: -10%;
 }
 
 .historia-item {
@@ -252,8 +246,6 @@ h3 {
   font-size: 0.95rem;
   color: #333;
   text-align: center;
-  font-family: 'Georgia', serif;
-  font-style: italic;
 
   transform: scale(var(--caption-scale));
   transform-origin: top center;
@@ -506,6 +498,7 @@ main section#dresscode {
     position: relative;
     z-index: 1;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: -5%;
 }
 
 /* El carousel controla la forma y tamaño del rectángulo. Usamos height calculado para Safari */
@@ -673,6 +666,27 @@ main section#dresscode {
 }
 .btn-primary:hover {
   background-color: #9C6F4F;      /* un tono ligeramente más oscuro */
+  transform: translateY(-2px);
+}
+
+/* ===== Botón para el calendario ===== */
+.btn-calendar {
+  display: inline-flex; /* para centrar contenido si es icono o texto */
+  width: 40px;          /* tamaño fijo, ajusta si quieres más grande */
+  height: 40px;
+  background: #fff7f2 !important;
+  color: #E9713F;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 1.2rem;     /* tamaño de icono o texto, ajusta si quieres más pequeño */
+  /*position*/
+  margin-top: -10%;
+  margin-left: 80%;
+}
+
+/* Hover para el botón */
+.btn-calendar:hover {
+  background-color: #9C6F4F;      
   transform: translateY(-2px);
 }
 
