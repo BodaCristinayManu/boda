@@ -14,7 +14,8 @@
   <meta property="og:image" content="img/invitacion.PNG" />
   <meta property="og:url" content="" />
 
-  <!-- Precargar imagen crítica -->
+  <!-- Precargar imágenes críticas -->
+  <link rel="preload" as="image" href="img/carta.PNG" />
   <link rel="preload" as="image" href="img/invitacion.PNG" />
 
   <!-- Fuentes -->
@@ -22,12 +23,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
 
   <style>
     :root{
-      --radius: 18px;
-      --maxw: 420px;
+      --maxw: 400px;
       --shadow: 0 20px 50px rgba(0,0,0,.18);
+      --img-ratio: 3/4;
     }
     *{box-sizing:border-box}
     html,body{height:100%; overflow-x:hidden;}
@@ -42,49 +45,89 @@
       -moz-osx-font-smoothing:grayscale;
     }
     
-    /* --- PANTALLA INICIAL DE PERMISO --- */
+    /* --- PANTALLA INICIAL CON IMAGEN DE FONDO --- */
     #permission-overlay {
       position: fixed;
       inset: 0;
       z-index: 10000;
-      background: #ffffff;
-      display: grid;
-      place-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
       transition: opacity .5s ease, visibility .5s ease;
       -webkit-tap-highlight-color: transparent;
       will-change: opacity;
+      overflow: hidden;
     }
+    
+    /* Imagen de fondo */
+    #permission-overlay::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('img/carta.PNG');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -1;
+      transform: scale(1.05); /* Ligero zoom para evitar bordes blancos */
+    }
+    
+    /* Overlay oscuro opcional para mejorar legibilidad */
+    #permission-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+    }
+    
     #permission-overlay.hidden {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
     }
+    
+    .permission-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      padding: 20px;
+      width: 100%;
+      max-width: 500px;
+    }
+    
     .permission-name {
-      font-family: 'Amatic SC', cursive;
-      font-size: clamp(40px, 10vw, 64px);
+      font-family: 'Marcellus', cursive;
+      font-size: clamp(48px, 12vw, 80px);
       font-weight: 700;
       line-height: 1;
-      letter-spacing: 4px;
-      color: #000000;
-      text-shadow: 3px 4px 10px rgba(0,0,0,0.65);
+      color: #772620;
       text-align: center;
-      margin-top: 40%;
+      margin-top: -70%;
     }
+    
     .permission-text {
-      font-family: "Playfair Display", serif;
-      font-size: clamp(20px, 5vw, 26px);
+      font-family: "Abril Fatface", serif;
+      font-size: clamp(18px, 4vw, 20px);
       font-weight: 700;
-      color: #E9713F;
-      padding: 20px;
+      color: #772620;
       text-align: center;
       animation: pulse 2.5s infinite ease-in-out;
-      margin-top: -90%;
-      will-change: transform;
     }
+    
     @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.03); opacity: 0.95; }
+      0%, 100% { 
+        transform: scale(1); 
+        opacity: 0.9; 
+      }
+      50% { 
+        transform: scale(1.3); 
+        opacity: 1; 
+      }
     }
 
     .wrap{
@@ -99,104 +142,82 @@
     }
     
     .scene{ 
-      perspective:1200px; /* Aumentado para mejor efecto 3D */
+      perspective:1200px;
       width:100%; 
       display:grid; 
       place-items:center;
-      /* Contenedor optimizado */
       contain: layout style;
       will-change: perspective;
     }
-    
+          
     .card{
       width:100%;
       max-width: var(--maxw);
-      aspect-ratio: 2 / 3;
+      aspect-ratio: var(--img-ratio);
       background:#f6f1e9;
-      border-radius: var(--radius);
       overflow:hidden;
       border:1px solid rgba(0,0,0,.06);
       box-shadow: var(--shadow);
       position:relative;
+      margin-top: 8%;
       
-      /* Optimización 3D crítica */
+      /* Optimización 3D */
       transform-style: preserve-3d;
       transform: translate3d(0,0,0) rotateX(0deg) rotateY(0deg);
       will-change: transform;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
-      
-      /* Transición desactivada para usar JS */
-      transition: none;
-      
-      /* Forzar GPU */
-      -webkit-transform: translate3d(0,0,0);
-      -webkit-perspective: 1000;
-      
-      /* Contención para mejor rendimiento */
       contain: paint;
+      isolation: isolate;
     }
-    
-    /* Brillo optimizado con GPU */
-    .card::after{
-      content:"";
-      position:absolute; 
-      inset:-40%;
-      background: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,.22), transparent 60%);
-      transform: translate3d(0, 0, 40px);
-      pointer-events:none;
-      mix-blend-mode:soft-light;
-      will-change: transform;
-    }
-    
+
     .bg{
       position:absolute; 
       inset:0;
       width:100%; 
       height:100%;
-      object-fit:cover; 
-      object-position:center;
+      object-fit: cover;
+      object-position: center;
       display:block;
-      /* Optimización de imagen */
+      
+      /* Optimización */
       image-rendering: -webkit-optimize-contrast;
       image-rendering: crisp-edges;
       will-change: transform;
       transform: translateZ(0);
+      -webkit-transform: translateZ(0);
     }
-    
-    .guest{
-      position:absolute;
-      top: 62%;
-      left: 50%;
-      transform: translate(-50%, -50%) translateZ(2px);
-      width: 90%;
-      text-align: center;
-      color: #ffffff;
-      text-shadow: 0 2px 8px rgba(0,0,0,.35);
-      font-family: "Playfair Display", Georgia, serif;
-      font-weight: 700;
-      font-size: clamp(22px, 6vw, 34px);
-      letter-spacing: .2px;
-      line-height:1.1;
-      pointer-events:none;
-      white-space: normal;
-      word-break: break-word;
-      will-change: transform;
+
+    /* Efecto de brillo opcional */
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: -50%;
+      background: radial-gradient(
+        ellipse at 50% 20%,
+        rgba(255,255,255,0.25) 0%,
+        transparent 60%
+      );
+      transform: translateZ(2px);
+      pointer-events: none;
+      mix-blend-mode: soft-light;
     }
-    
+
     .cta{
       display:inline-block; 
-      width:100%;
+      width: 80%;
       text-align:center; 
-      background:#E9713F; 
+      background:#E9713F;
+      font-family: "Marcellus", serif;
       color:#fff; 
       text-decoration:none;
-      padding:14px 16px; 
       border-radius:12px; 
+      padding:14px 16px; 
       font-weight:600; 
       letter-spacing:.2px;
       box-shadow:0 8px 20px rgba(0,0,0,.18);
-      transform: translateZ(0); /* GPU acceleration */
+      transform: translateZ(0);
+      margin-top: 4%;
     }
     
     .hint{ 
@@ -215,14 +236,29 @@
       .card{ transition:none !important; }
       .permission-text{ animation:none; }
     }
+    
+    /* Ajustes para móviles en landscape */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .permission-name {
+        font-size: clamp(36px, 8vw, 60px);
+      }
+      .permission-text {
+        font-size: clamp(14px, 3vw, 20px);
+      }
+      .permission-content {
+        gap: 20px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- PANTALLA INICIAL DE PERMISOS CON NOMBRE DINÁMICO -->
+  <!-- PANTALLA INICIAL CON IMAGEN DE FONDO -->
   <div id="permission-overlay" role="button" tabindex="0" aria-label="Tocar para descubrir la invitación">
-    <div class="permission-name" id="permission-name">Invitado</div>
-    <div class="permission-text">Toca para descubrir la invitación</div>
+    <div class="permission-content">
+      <div class="permission-name" id="permission-name">Invitado</div>
+      <div class="permission-text">Toca para descubrir <br> tu invitación</div>
+    </div>
   </div>
 
   <div class="wrap">
@@ -232,7 +268,7 @@
       </div>
     </div>
 
-    <a class="cta" id="cta" href="web.html" rel="noopener">Pulsa para acceder a la página web de la boda y ver todos los detalles</a>
+    <a class="cta" id="cta" href="web.html" rel="noopener">Pulsa para ver los detalles y confirmar tu asistencia</a>
     <div class="hint" id="hint">Inclina el móvil para ver el efecto 3D.</div>
   </div>
 
@@ -268,13 +304,13 @@
 
       // ========== CONFIGURACIÓN OPTIMIZADA ==========
       const config = {
-        maxTilt: 20,           // Máximo ángulo de inclinación
-        smoothing: 0.12,       // Factor de suavizado (0.1-0.2 es ideal)
-        deadZone: 0.02,        // Zona muerta mínima
-        gyroSensitivity: 35,   // Sensibilidad del giroscopio
-        mouseSensitivity: 1.2, // Multiplicador para mouse
-        shadowIntensity: 0.3,  // Intensidad de la sombra dinámica
-        updateThreshold: 0.01  // Umbral mínimo de actualización
+        maxTilt: 20,           
+        smoothing: 0.12,       
+        deadZone: 0.02,        
+        gyroSensitivity: 35,   
+        mouseSensitivity: 1.2, 
+        shadowIntensity: 0.3,  
+        updateThreshold: 0.01  
       };
 
       // Estado del movimiento
@@ -297,7 +333,6 @@
       function render(timestamp) {
         if (!state.isAnimating) return;
         
-        // Limitar FPS a 60
         const deltaTime = timestamp - state.lastUpdate;
         if (deltaTime < 16) {
           state.rafId = requestAnimationFrame(render);
@@ -305,33 +340,27 @@
         }
         state.lastUpdate = timestamp;
 
-        // Calcular diferencias
         const diffX = state.targetX - state.currentX;
         const diffY = state.targetY - state.currentY;
         
-        // Aplicar suavizado con física simple
         state.velocityX = diffX * config.smoothing;
         state.velocityY = diffY * config.smoothing;
         
         state.currentX += state.velocityX;
         state.currentY += state.velocityY;
         
-        // Aplicar transformación solo si hay cambio significativo
         if (Math.abs(state.velocityX) > config.updateThreshold || 
             Math.abs(state.velocityY) > config.updateThreshold) {
           
-          // Usar transform3d para forzar GPU
           const transform = `translate3d(0,0,0) rotateX(${state.currentY.toFixed(2)}deg) rotateY(${state.currentX.toFixed(2)}deg)`;
           card.style.transform = transform;
           
-          // Actualizar sombra dinámicamente (opcional, comentar si afecta rendimiento)
           const shadowOffset = Math.abs(state.currentX) + Math.abs(state.currentY);
           const shadowBlur = 20 + shadowOffset * 2;
           const shadowOpacity = 0.18 + (shadowOffset / 40) * config.shadowIntensity;
           card.style.boxShadow = `0 ${shadowBlur}px ${shadowBlur * 2}px rgba(0,0,0,${shadowOpacity})`;
         }
         
-        // Continuar animación si no está en reposo
         if (Math.abs(diffX) > config.updateThreshold || Math.abs(diffY) > config.updateThreshold) {
           state.rafId = requestAnimationFrame(render);
         } else {
@@ -358,22 +387,19 @@
       let mouseThrottleTimer = null;
       
       function handleMouseMove(e) {
-        // Throttling para reducir cálculos
         if (mouseThrottleTimer) return;
         
         mouseThrottleTimer = setTimeout(() => {
           mouseThrottleTimer = null;
-        }, 16); // ~60fps
+        }, 16);
 
         const rect = card.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
-        // Calcular posición normalizada desde el centro
         const normX = ((e.clientX - centerX) / (rect.width / 2)) * config.mouseSensitivity;
         const normY = ((e.clientY - centerY) / (rect.height / 2)) * config.mouseSensitivity;
         
-        // Aplicar límites y asignar
         state.targetX = Math.max(-config.maxTilt, Math.min(config.maxTilt, normX * config.maxTilt));
         state.targetY = Math.max(-config.maxTilt, Math.min(config.maxTilt, -normY * config.maxTilt));
         
@@ -403,7 +429,6 @@
         state.targetY = 0;
         startAnimation();
         
-        // Restaurar sombra después de un pequeño delay
         setTimeout(() => {
           card.style.boxShadow = 'var(--shadow)';
         }, 300);
@@ -416,13 +441,11 @@
         const { beta, gamma } = ev;
         if (beta === null || gamma === null) return;
 
-        // Throttling del giroscopio
         if (gyroThrottleTimer) return;
         gyroThrottleTimer = setTimeout(() => {
           gyroThrottleTimer = null;
-        }, 20); // 50fps para giroscopio
+        }, 20);
 
-        // Calibración inicial
         if (state.beta0 === null) {
           state.beta0 = beta;
           state.gamma0 = gamma;
@@ -430,11 +453,9 @@
           return;
         }
 
-        // Calcular deltas con sensibilidad
         const deltaBeta = (beta - state.beta0) / config.gyroSensitivity;
         const deltaGamma = (gamma - state.gamma0) / config.gyroSensitivity;
         
-        // Aplicar zona muerta y límites
         if (Math.abs(deltaGamma) > config.deadZone) {
           state.targetX = Math.max(-1, Math.min(1, deltaGamma)) * config.maxTilt;
         }
@@ -454,7 +475,6 @@
 
       // ========== EVENTOS ==========
       
-      // Mouse events con passive para mejor scrolling
       if (!hasTouch) {
         card.addEventListener('mouseenter', () => {
           card.classList.remove('smooth');
@@ -467,7 +487,6 @@
         }, { passive: true });
       }
 
-      // Touch events
       if (hasTouch) {
         card.addEventListener('touchstart', (e) => {
           card.classList.remove('smooth');
@@ -486,7 +505,6 @@
       function initializeMotion() {
         permissionOverlay.classList.add('hidden');
         
-        // Intentar activar giroscopio
         if (typeof DeviceOrientationEvent !== 'undefined') {
           if (typeof DeviceOrientationEvent.requestPermission === 'function' && isiOS) {
             DeviceOrientationEvent.requestPermission()
@@ -502,17 +520,14 @@
                 hint.textContent = 'Usa el dedo para mover la tarjeta.';
               });
           } else {
-            // Android o desktop con giroscopio
             attachGyro();
           }
         }
         
-        // Precalentar la animación
         startAnimation();
         setTimeout(resetTilt, 100);
       }
 
-      // Evento principal
       permissionOverlay.addEventListener('click', initializeMotion, { once: true });
 
       // ========== CALIBRACIÓN CON DOBLE TAP ==========
@@ -523,12 +538,10 @@
         
         if (tapLength < 500 && tapLength > 0) {
           e.preventDefault();
-          // Reiniciar calibración
           state.beta0 = null;
           state.gamma0 = null;
           hint.textContent = 'Calibración reiniciada.';
           
-          // Vibración suave si está disponible
           if ('vibrate' in navigator) {
             navigator.vibrate(50);
           }
