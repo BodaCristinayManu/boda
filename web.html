@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Boda Cristina & Manu</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@144,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
+  <!-- Number fonts-->
+  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
+  <!-- Títulos-->
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+  <!-- Cuenta atras -->
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
+  <!-- Cuerpo -->
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="text-[#000000] marcellus">
+
+  <!-- Pantalla de Carga -->
+  <div id="loading-screen">
+    <div class="loading-text">
+      Se vienen cositas
+      <span class="dots">
+        <span class="dot1"></span>
+        <span class="dot2"></span>
+        <span class="dot3"></span>
+      </span>
+    </div>
+  </div>
+
+  <div id="page-content">
+    <!-- NAVBAR -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-[9999] transition-all duration-300 px-6 py-4">
+      <div class="flex justify-between items-center max-w-5xl mx-auto">
+        <span class="font-serif text-lg">Boda Cristina & Manu</span>
+        <button id="menu-btn" class="md:hidden focus:outline-none" aria-label="Abrir menú">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+
+        <!-- Menú -->
+        <ul
+          id="menu"
+          class="
+            hidden z-[9998]
+            fixed inset-0
+            flex-col items-center justify-start
+            bg-white md:bg-transparent
+            space-y-1 md:space-y-0 md:flex md:flex-row md:space-x-4
+            text-lg md:text-sm font-medium uppercase
+            p-4 md:p-0
+          "
+              >
+          <li class="w-full md:w-auto"><a href="#inicio" class="nav-link block md:inline-block">Inicio</a></li>
+          <li class="w-full md:w-auto"><a href="#lugar" class="nav-link block md:inline-block">Lugar</a></li>
+          <li class="w-full md:w-auto"><a href="#horario" class="nav-link block md:inline-block">Horario</a></li>
+          <li><a href="#alojamiento" class="nav-link block md:inline-block">Alojamiento</a></li>
+          <li><a href="#rsvp" class="nav-link block md:inline-block">Formulario</a></li>
+          <li><a href="#dresscode" class="nav-link block md:inline-block">Vestimenta</a></li>
+          <li><a href="#historia" class="nav-link block md:inline-block">Historia</a></li>
+          <li><a href="#contacto" class="nav-link block md:inline-block">Contacto</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- SCROLL CONTAINER -->
+    <div data-scroll-container>
+
+      <!-- HERO -->
+      <header id="inicio" class="video-section relative w-full h-screen overflow-hidden">
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          class="w-full h-full object-cover"
+        >
+          <source src="video/video_intro.mp4" type="video/mp4" />
+          Tu navegador no soporta video.
+        </video>
+
+        <!-- TEXTO AL FONDO -->
+        <div class="absolute bottom-20 w-full flex justify-center z-10">
+          <h1 class="amatic">2 MAYO 2026</h1>
+        </div>
+      </header>
+
+      <main class="pt-[2rem]">
+
+        <!-- Cuenta atrás -->
+        <section id="cuenta-atras" class="py-10 px-6">
+          <h2 class="text-4xl text-left font-serif ml-2">Quedan...</h2>
+          <div class="flex flex-col space-y-3 mb-6">
+            <button id="addToCalendarBtn" class="btn-calendar" aria-label="Añadir al calendario">
+                <img src="img/orange-calendar.svg" alt="" class="icon-svg" />
+            </button>
+          </div>
+          <div id="countdown" class="flex justify-center space-x-5 text-center">
+            <div>
+              <span id="days" class="numero">--</span>
+              <span class="label">Días</span>
+            </div>
+            <div>
+              <span id="hours" class="numero">--</span>
+              <span class="label">Horas</span>
+            </div>
+            <div>
+              <span id="minutes" class="numero">--</span>
+              <span class="label">Min</span>
+            </div>
+            <div>
+              <span id="seconds" class="numero">--</span>
+              <span class="label">Seg</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Lugar -->
+        <section id="lugar" class="py-12 px-6 text-center">
+          <h2 class="text-5xl font-serif mb-4">Paraisso</h2>
+          <h2 class="text-5xl font-serif mb-4"><i>al Mar</i></h2>
+          <p>
+            Todo pasará en <b><i>Paraisso al Mar</i></b>:<br> el lugar ideal con el estilo moderno
+            que le encanta a Manu y la vista al mar que Cristina siempre soñó...<br>
+            ¡El sitio perfecto para todos!
+          </p>
+          <p>
+            <br><i><span style="font-size: 0.8em;">Toca la imagen para ver la ubicación</span></i><br><br><br>
+          </p>
+          <div class="lugar-imagen">
+            <a
+              href="https://www.google.com/maps/place/Paraiso+al+mar(Guardias+viejas)/@36.7070854,-2.8568984,17z/data=!3m1!4b1!4m6!3m5!1s0xd705dd449f465d1:0x346edc4f61d5d523!8m2!3d36.7070811!4d-2.8543235!16s%2Fg%2F11str_r0vt?entry=ttu"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-2 inline-block hover:scale-110 transition-transform"
+            >
+              <img src="img/paraisso.jpeg" alt="Paraisso al Mar">
+            </a>
+          </div>
+        </section>
+
+        <!-- HORARIO -->
+        <section id="horario">
+          <div class="video-wrapper">
+            <video
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="auto"
+            >
+              <source src="video/video_horario.mp4" type="video/mp4" />
+              Tu navegador no soporta video.
+            </video>
+          </div>
+        </section>
+
+        <!-- Alojamiento -->
+        <section id="alojamiento" class="py-12 px-6 text-center">
+          <!-- 1. Título: Usa tu h2 global, pero el CSS lo alineará a la izquierda -->
+          <h2 class="text-4xl font-serif text-left">Para los que venís de fuera...</h2>
+
+          <!-- 2. "Escenario" contenedor para las capas -->
+          <div class="alx-stage">
+
+            <!-- 3. Tarjeta beige (capa 1, detrás) -->
+            <div class="alx-card">
+              <div class="alx-badge">HOTEL VÉRTICE 4*</div>
+              <p>
+                El Hotel Vértice os hará un 10% de descuento al utilizar el código:
+                <b>CRISTINAYMANU26</b>
+              </p>
+            </div>
+
+            <!-- 4. Foto (capa 2, encima de la tarjeta) -->
+            <figure class="alx-photo">
+              <img src="img/hotel_vertice.jpeg" alt="Hotel Vértice">
+            </figure>
+
+            <!-- 5. Nota rosa (capa 3, encima de todo) -->
+            <p class="alx-note">
+              Si preferís alojaros en un apartamento, ¡no dudéis en pedirnos ayuda!
+            </p>
+
+          </div>
+        </section>
+
+        <!-- BANNER DESCUENTO -->
+        <div id="hotel-banner" class="relative overflow-hidden bg-[#eb568e] text-white py-2 mt-6" role="region" aria-label="Oferta de hotel con descuento">
+          <div class="marquee-wrap">
+            <div class="marquee" aria-hidden="true">
+              <span class="marquee-item">🎉 10% DESCUENTO EN HOTEL VÉRTICE CON EL CÓDIGO "CRISTINAYMANU26" 🎉</span>
+              <span class="marquee-item">🎉 10% DESCUENTO EN HOTEL VÉRTICE CON EL CÓDIGO "CRISTINAYMANU26" 🎉</span>
+              <!-- duplicamos para continuidad -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TRANSPORTE -->
+        <h2 class="text-3xl font-serif text-right mt-4 mr-8">y por el transporte...</h2>
+        <h2 class="text-3xl font-serif text-right mr-8">¡no os preocupéis!</h2>
+        <div class="alx-bus">
+          <p><b><span style="font-size: 1.2em;">¡Nos encargamos del camino!</span></b></p>
+          <p>Contaremos con servicio de autobús ida y vuelta</p>
+          <p><i><span style="font-size: 0.8em;">Indícanos en el formulario si quieres plaza</span></i></p>
+        </div>
+
+
+        <!-- RSVP -->
+        <section id="rsvp" class="py-12 px-6 text-center">
+          <h2 class="text-3xl font-serif mb-4">¿Nos acompañas?</h2>
+
+          <p class="max-w-2xl mx-auto mb-6">
+            Ayúdanos a preparar la boda tal como la soñamos 💭💛<br><br>
+            <strong>Rellena este formulario</strong> con todo lo que necesitamos saber: acompañantes 👥, menú 🍽, alojamiento 🛌, transporte 🚗, o cualquier detalle que quieras contarnos
+          </p>
+
+          <div class="mb-6">
+            <a href="rsvp.html"
+              class="btn-primary inline-block px-6 py-3 text-lg"
+              aria-label="Ir al formulario completo de RSVP">
+              Ir al formulario
+            </a>
+          </div>
+        </section>
+
+        <!-- DRESSCODE -->
+        <section id="dresscode" class="text-center overflow-hidden">
+          <!-- título: lo dejamos en el HTML por accesibilidad, se ocultará visualmente por CSS -->
+
+          <!-- Contenedor del carrusel: NOTA importante -> dots dentro para superposición -->
+          <div class="carousel no-scrollbar flex overflow-x-auto snap-x snap-mandatory w-full scroll-smooth">
+
+            <!-- Slide 1: texto (si quieres que el texto también ocupe todo, lo centré) -->
+            <div class="slide snap-center shrink-0 w-full h-full flex items-center justify-center">
+              <div class="slide-inner max-w-2xl text-center px-4">
+                <h2 class="text-3xl font-serif mb-4">Código de vestimenta</h2>
+                <p>
+                  Nos hace mucha ilusión imaginar este día con los <strong>colores vivos y vibrantes</strong> de la primavera y el atardecer frente al mar.
+                  Queremos que la noche se llene de <strong>alegría, energía y color</strong> 🌅
+                  <br>
+                  💃 <strong><u>Ellas</u></strong>: largo o corto, vestido o traje — lo que os haga sentir increíbles. <strong>¡Colores vivos, nada de tonos pastel!</strong><br>
+                  👔 <strong><u>Ellos</u></strong>: traje completo, corbata o pajarita. <strong>¡Nos encantaría que fuerais atrevidos! </strong>
+                <br><br>
+                <i><span style="font-size: 0.8em;"><strong>Deslizad</strong> para inspiraros y ver cómo os imaginamos a en una noche llena de <strong>color</strong> 💛</span></i>
+                </p>
+              </div>
+            </div>
+
+            <!-- Slide 2: imagen -->
+            <div class="slide snap-center shrink-0 w-full h-full">
+              <img src="img/dresscode_rosa.png" alt="Inspiración rosa" />
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide snap-center shrink-0 w-full h-full">
+              <img src="img/dresscode_verde.PNG" alt="Inspiración verde" />
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="slide snap-center shrink-0 w-full h-full">
+              <img src="img/dresscode_amarillo.PNG" alt="Inspiración amarillo" />
+            </div>
+
+            <!-- Slide 5 -->
+            <div class="slide snap-center shrink-0 w-full h-full">
+              <img src="img/dresscode_morado.PNG" alt="Inspiración morado" />
+            </div>
+
+            <!-- Slide 6 -->
+            <div class="slide snap-center shrink-0 w-full h-full">
+              <img src="img/dresscode_rojo.PNG" alt="Inspiración rojo" />
+            </div>
+            <!-- Slide 7 -->
+            <div class="slide snap-center shrink-0 w-full h-full">
+              <img src="img/dresscode_naranja.PNG" alt="Inspiración naranja" />
+            </div>
+
+            <!-- Slide 8 -->
+            <div class="slide snap-center shrink-0 w-full h-full">
+              <img src="img/dresscode_estampados.PNG" alt="Inspiración estampados" />
+            </div>
+
+            <!-- Slide 9 -->
+            <div class="slide snap-center shrink-0 w-full h-full">
+              <img src="img/dresscode_corbatas.PNG" alt="Inspiración corbatas" />
+            </div>
+          </div>
+          <!-- DOTS: dentro del carousel para que se superpongan -->
+          <div class="dots-wrapper" role="tablist" aria-label="Indicador de inspiración">
+            <button class="dot" role="tab" aria-label="Slide 1"></button>
+            <button class="dot" role="tab" aria-label="Slide 2"></button>
+            <button class="dot" role="tab" aria-label="Slide 3"></button>
+            <button class="dot" role="tab" aria-label="Slide 4"></button>
+            <button class="dot" role="tab" aria-label="Slide 5"></button>
+            <button class="dot" role="tab" aria-label="Slide 6"></button>
+            <button class="dot" role="tab" aria-label="Slide 7"></button>
+            <button class="dot" role="tab" aria-label="Slide 8"></button>
+            <button class="dot" role="tab" aria-label="Slide 9"></button>
+          </div>
+        </section>
+
+        <!-- Nuestra historia -->
+        <section id="historia" class="py-12 px-6 overflow-visible">
+          <h2 class="text-3xl font-serif mb-0 text-center px-6">Nuestro camino juntos</h2>
+
+          <div id="historia-scroll" class="no-scrollbar">
+            <div class="historia-item">
+              <div class="historia-frame">
+                <img src="img/foto1.JPG" alt="Historia 1" class="historia-img" />
+              </div>
+              <div class="caption"><strong>· 4 Julio 2019 ·</strong><br>Flechazo a primera vista 👀</div>
+            </div>
+
+            <div class="historia-item">
+              <div class="historia-frame">
+                <img src="img/foto2.JPG" alt="Historia 2" class="historia-img" />
+              </div>
+              <div class="caption"><strong>· 20 Julio 2019 ·</strong><br>Aquí empezó “nosotros” 💕</div>
+            </div>
+
+            <div class="historia-item">
+              <div class="historia-frame">
+                <img src="img/foto3.JPG" alt="Historia 3" class="historia-img" />
+              </div>
+              <div class="caption"><strong>· 2019-2020 ·</strong><br>Superando la distancia 📞</div>
+            </div>
+
+            <div class="historia-item">
+              <div class="historia-frame">
+                <img src="img/foto4.JPG" alt="Historia 4" class="historia-img" />
+              </div>
+              <div class="caption"><strong>· 2020 ·</strong><br>Viviendo una pandemia 🦠</div>
+            </div>
+
+            <div class="historia-item">
+              <div class="historia-frame">
+                <img src="img/foto5.JPG" alt="Historia 5" class="historia-img" />
+              </div>
+              <div class="caption"><strong>· Sept 2021 ·</strong><br>Empieza nuestra avenutra 🇫🇷</div>
+            </div>
+
+            <div class="historia-item">
+              <div class="historia-frame">
+                <img src="img/foto6.JPG" alt="Historia 6" class="historia-img" />
+              </div>
+              <div class="caption"><strong>· Mayo 2022 ·</strong><br>Nuestro primer hogar 🏠</div>
+            </div>
+
+            <div class="historia-item">
+              <div class="historia-frame">
+                <img src="img/foto7.JPG" alt="Historia 7" class="historia-img" />
+              </div>
+              <div class="caption"><strong>· 2023 ·</strong><br>Toulouse 🧡<br> nuestra casa</div>
+            </div>
+
+            <div class="historia-item">
+              <div class="historia-frame">
+                <img src="img/foto8.JPG" alt="Historia 8" class="historia-img" />
+              </div>
+              <div class="caption"><strong>· Enero 2024 ·</strong><br>Compra de<br> nuestro piso 🖋</div>
+            </div>
+
+            <div class="historia-item">
+              <div class="historia-frame">
+                <img src="img/foto9.JPG" alt="Historia 9" class="historia-img" />
+              </div>
+              <div class="caption"><strong>· Febrero 2024 ·</strong><br>Mes de <br> reformas 🛠</div>
+            </div>
+
+            <div class="historia-item">
+              <div class="historia-frame">
+                <img src="img/foto10.JPG" alt="Historia 10" class="historia-img" />
+              </div>
+              <div class="caption"><strong>· Nov 2024 ·</strong><br>También en los <br> días malos 🏥</div>
+            </div>
+
+            <div class="historia-item">
+              <div class="historia-frame">
+                <img src="img/foto11.JPG" alt="Historia 11" class="historia-img" />
+              </div>
+              <div class="caption"><strong>· 14 Dic 2024 ·</strong><br>Pedida en Estrasburgo 💍</div>
+            </div>
+
+            <div class="historia-item">
+              <div class="historia-frame">
+                <img src="img/foto12.JPG" alt="Historia 12" class="historia-img" />
+              </div>
+              <div class="caption"><strong>· 3 Mayo 2025 ·</strong><br>El reloj del <br> "sí" ⌚</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Contacto -->
+        <section id="contacto" class="py-12 px-6 text-center">
+          <h2 class="text-3xl font-serif mb-4">Contacto</h2>
+          <p>
+            <i>¿Tenéis alguna duda o pregunta?</i><br><br>
+            Escribidnos, intentaremos ayudaros en todo lo posible ✉💛 <br><br>
+            <strong>Manu : <i>635 33 35 08</i><br></strong>
+            <strong>Cristina : <i>680 61 20 81</i> <br><br></strong>
+            Y si necesitáis hablar con nuestra wedding planner, ella está totalmente disponible para lo que necesitéis 📞👰‍♀<br><br>
+            <a href="https://www.instagram.com/de_pitimini_eventos/"><strong><i>@de_pitimini_eventos</i></strong></a>
+          </p>
+        </section>
+
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="text-center py-6 text-sm text-[#000000]">
+        Con cariño, Cristina y Manu · 2 Mayo 2026
+      </footer>
+    </div>
+    <!-- SCROLL CONTAINER FIN -->
+  </div>
+
+  <!-- LIBRERÍAS Y SCRIPTS -->
+  <script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

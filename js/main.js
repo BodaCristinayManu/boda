@@ -1,5 +1,23 @@
 // Espera a que todo (imágenes, videos, fuentes) esté cargado
 window.addEventListener('load', () => {
+  // ===== GESTIÓN DE PANTALLA DE CARGA (Añadido) =====
+  const loadingScreen = document.getElementById('loading-screen');
+  const pageContent = document.getElementById('page-content');
+
+  if (loadingScreen && pageContent) {
+    // Oculta la pantalla de carga con un fade-out
+    loadingScreen.style.opacity = '0';
+    // Muestra el contenido principal con un fade-in
+    pageContent.style.visibility = 'visible';
+    pageContent.style.opacity = '1';
+
+    // Después de la transición, elimina la pantalla de carga para no interferir
+    setTimeout(() => {
+      loadingScreen.style.display = 'none';
+    }, 800); // Coincide con la duración de la transición de opacidad del CSS
+  }
+  // ========================================================
+
   // ====== ELEMENTOS GLOBALES ======
   const menuBtn       = document.getElementById('menu-btn');
   const menu          = document.getElementById('menu');

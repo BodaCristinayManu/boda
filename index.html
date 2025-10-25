@@ -1,419 +1,557 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Boda Cristina & Manu</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Invitación</title>
+  <meta name="theme-color" content="#f6f1e9" />
+  <meta name="description" content="Tarjeta de invitación. Pulsa para ver los detalles de la boda." />
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@144,600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;800&display=swap" rel="stylesheet">
-  <!-- Number fonts-->
-  <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
-  <!-- Títulos-->
-  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
-  <!-- Cuenta atras -->
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Invitación" />
+  <meta property="og:description" content="Pulsa para ver todos los detalles de la boda." />
+  <meta property="og:image" content="img/invitacion.PNG" />
+  <meta property="og:url" content="" />
+
+  <!-- Precargar imagen crítica -->
+  <link rel="preload" as="image" href="img/invitacion.PNG" />
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&display=swap" rel="stylesheet">
-  <!-- Cuerpo -->
-  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    :root{
+      --radius: 18px;
+      --maxw: 420px;
+      --shadow: 0 20px 50px rgba(0,0,0,.18);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%; overflow-x:hidden;}
+    body{
+      margin:0;
+      display:grid;
+      place-items:center;
+      background: #ffffff;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color:#E9713F;
+      -webkit-font-smoothing:antialiased; 
+      -moz-osx-font-smoothing:grayscale;
+    }
+    
+    /* --- PANTALLA INICIAL DE PERMISO --- */
+    #permission-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: #ffffff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: opacity .5s ease, visibility .5s ease;
+      -webkit-tap-highlight-color: transparent;
+      will-change: opacity;
+    }
+    #permission-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .permission-name {
+      font-family: 'Amatic SC', cursive;
+      font-size: clamp(40px, 10vw, 64px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 4px;
+      color: #000000;
+      text-shadow: 3px 4px 10px rgba(0,0,0,0.65);
+      text-align: center;
+      margin-top: 40%;
+    }
+    .permission-text {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(20px, 5vw, 26px);
+      font-weight: 700;
+      color: #E9713F;
+      padding: 20px;
+      text-align: center;
+      animation: pulse 2.5s infinite ease-in-out;
+      margin-top: -90%;
+      will-change: transform;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.03); opacity: 0.95; }
+    }
+
+    .wrap{
+      width:100%;
+      max-width:520px;
+      padding:24px 16px 28px;
+      display:flex; 
+      flex-direction:column; 
+      gap:16px; 
+      align-items:center;
+      margin:0 auto;
+    }
+    
+    .scene{ 
+      perspective:1200px; /* Aumentado para mejor efecto 3D */
+      width:100%; 
+      display:grid; 
+      place-items:center;
+      /* Contenedor optimizado */
+      contain: layout style;
+      will-change: perspective;
+    }
+    
+    .card{
+      width:100%;
+      max-width: var(--maxw);
+      aspect-ratio: 2 / 3;
+      background:#f6f1e9;
+      border-radius: var(--radius);
+      overflow:hidden;
+      border:1px solid rgba(0,0,0,.06);
+      box-shadow: var(--shadow);
+      position:relative;
+      
+      /* Optimización 3D crítica */
+      transform-style: preserve-3d;
+      transform: translate3d(0,0,0) rotateX(0deg) rotateY(0deg);
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      
+      /* Transición desactivada para usar JS */
+      transition: none;
+      
+      /* Forzar GPU */
+      -webkit-transform: translate3d(0,0,0);
+      -webkit-perspective: 1000;
+      
+      /* Contención para mejor rendimiento */
+      contain: paint;
+    }
+    
+    /* Brillo optimizado con GPU */
+    .card::after{
+      content:"";
+      position:absolute; 
+      inset:-40%;
+      background: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,.22), transparent 60%);
+      transform: translate3d(0, 0, 40px);
+      pointer-events:none;
+      mix-blend-mode:soft-light;
+      will-change: transform;
+    }
+    
+    .bg{
+      position:absolute; 
+      inset:0;
+      width:100%; 
+      height:100%;
+      object-fit:cover; 
+      object-position:center;
+      display:block;
+      /* Optimización de imagen */
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      will-change: transform;
+      transform: translateZ(0);
+    }
+    
+    .guest{
+      position:absolute;
+      top: 62%;
+      left: 50%;
+      transform: translate(-50%, -50%) translateZ(2px);
+      width: 90%;
+      text-align: center;
+      color: #ffffff;
+      text-shadow: 0 2px 8px rgba(0,0,0,.35);
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(22px, 6vw, 34px);
+      letter-spacing: .2px;
+      line-height:1.1;
+      pointer-events:none;
+      white-space: normal;
+      word-break: break-word;
+      will-change: transform;
+    }
+    
+    .cta{
+      display:inline-block; 
+      width:100%;
+      text-align:center; 
+      background:#E9713F; 
+      color:#fff; 
+      text-decoration:none;
+      padding:14px 16px; 
+      border-radius:12px; 
+      font-weight:600; 
+      letter-spacing:.2px;
+      box-shadow:0 8px 20px rgba(0,0,0,.18);
+      transform: translateZ(0); /* GPU acceleration */
+    }
+    
+    .hint{ 
+      font-size:12px; 
+      opacity:.65; 
+      text-align:center; 
+      margin-top:6px 
+    }
+    
+    /* Clase para activar transformación suave */
+    .card.smooth {
+      transition: transform 0.08s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    
+    @media (prefers-reduced-motion: reduce){
+      .card{ transition:none !important; }
+      .permission-text{ animation:none; }
+    }
+  </style>
 </head>
-<body class="text-[#000000] marcellus">
+<body>
 
-  <!-- NAVBAR -->
-  <nav id="navbar" class="fixed top-0 left-0 w-full z-[9999] transition-all duration-300 px-6 py-4">
-    <div class="flex justify-between items-center max-w-5xl mx-auto">
-      <span class="font-serif text-lg">Boda Cristina & Manu</span>
-      <button id="menu-btn" class="md:hidden focus:outline-none" aria-label="Abrir menú">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <line x1="3" y1="12" x2="21" y2="12"/>
-          <line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
-
-      <!-- Menú -->
-      <ul
-        id="menu"
-        class="
-          hidden z-[9998]
-          fixed inset-0
-          flex-col items-center justify-start
-          bg-white md:bg-transparent
-          space-y-1 md:space-y-0 md:flex md:flex-row md:space-x-4
-          text-lg md:text-sm font-medium uppercase
-          p-4 md:p-0
-        "
-            >
-        <li class="w-full md:w-auto"><a href="#inicio" class="nav-link block md:inline-block">Inicio</a></li>
-        <li class="w-full md:w-auto"><a href="#lugar" class="nav-link block md:inline-block">Lugar</a></li>
-        <li class="w-full md:w-auto"><a href="#horario" class="nav-link block md:inline-block">Horario</a></li>
-        <li><a href="#alojamiento" class="nav-link block md:inline-block">Alojamiento</a></li>
-        <li><a href="#rsvp" class="nav-link block md:inline-block">Formulario</a></li>
-        <li><a href="#dresscode" class="nav-link block md:inline-block">Vestimenta</a></li>
-        <li><a href="#historia" class="nav-link block md:inline-block">Historia</a></li>
-        <li><a href="#contacto" class="nav-link block md:inline-block">Contacto</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <!-- SCROLL CONTAINER -->
-  <div data-scroll-container>
-
-    <!-- HERO -->
-    <header id="inicio" class="video-section relative w-full h-screen overflow-hidden">
-      <video
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-        class="w-full h-full object-cover"
-      >
-        <source src="video/video_intro.mp4" type="video/mp4" />
-        Tu navegador no soporta video.
-      </video>
-
-      <!-- TEXTO AL FONDO -->
-      <div class="absolute bottom-20 w-full flex justify-center z-10">
-        <h1 class="amatic">2 MAYO 2026</h1>
-      </div>
-    </header>
-
-    <main class="pt-[2rem]">
-
-      <!-- Cuenta atrás -->
-      <section id="cuenta-atras" class="py-10 px-6">
-        <h2 class="text-4xl text-left font-serif ml-2">Quedan...</h2>
-        <div class="flex flex-col space-y-3 mb-6">
-          <button id="addToCalendarBtn" class="btn-calendar" aria-label="Añadir al calendario">
-              <img src="img/orange-calendar.svg" alt="" class="icon-svg" />
-          </button>
-        </div>
-        <div id="countdown" class="flex justify-center space-x-5 text-center">
-          <div>
-            <span id="days" class="numero">--</span>
-            <span class="label">Días</span>
-          </div>
-          <div>
-            <span id="hours" class="numero">--</span>
-            <span class="label">Horas</span>
-          </div>
-          <div>
-            <span id="minutes" class="numero">--</span>
-            <span class="label">Min</span>
-          </div>
-          <div>
-            <span id="seconds" class="numero">--</span>
-            <span class="label">Seg</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Lugar -->
-      <section id="lugar" class="py-12 px-6 text-center">
-        <h2 class="text-5xl font-serif mb-4">Paraisso</h2>
-        <h2 class="text-5xl font-serif mb-4"><i>al Mar</i></h2>
-        <p>
-          Todo pasará en <b><i>Paraisso al Mar</i></b>:<br> el lugar ideal con el estilo moderno
-          que le encanta a Manu y la vista al mar que Cristina siempre soñó...<br>
-          ¡El sitio perfecto para todos!
-        </p>
-        <p>
-          <br><i><span style="font-size: 0.8em;">Toca la imagen para ver la ubicación</span></i><br><br><br>
-        </p>
-        <div class="lugar-imagen">
-          <a
-            href="https://www.google.com/maps/place/Paraiso+al+mar(Guardias+viejas)/@36.7070854,-2.8568984,17z/data=!3m1!4b1!4m6!3m5!1s0xd705dd449f465d1:0x346edc4f61d5d523!8m2!3d36.7070811!4d-2.8543235!16s%2Fg%2F11str_r0vt?entry=ttu"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="mt-2 inline-block hover:scale-110 transition-transform"
-          >
-            <img src="img/paraisso.jpeg" alt="Paraisso al Mar">
-          </a>
-        </div>
-      </section>
-
-      <!-- HORARIO -->
-      <section id="horario">
-        <div class="video-wrapper">
-          <video
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="auto"
-          >
-            <source src="video/video_horario.mp4" type="video/mp4" />
-            Tu navegador no soporta video.
-          </video>
-        </div>
-      </section>
-
-      <!-- Alojamiento -->
-      <section id="alojamiento" class="py-12 px-6 text-center">
-        <!-- 1. Título: Usa tu h2 global, pero el CSS lo alineará a la izquierda -->
-        <h2 class="text-4xl font-serif text-left">Para los que venís de fuera...</h2>
-
-        <!-- 2. "Escenario" contenedor para las capas -->
-        <div class="alx-stage">
-
-          <!-- 3. Tarjeta beige (capa 1, detrás) -->
-          <div class="alx-card">
-            <div class="alx-badge">HOTEL VÉRTICE 4*</div>
-            <p>
-              El Hotel Vértice os hará un 10% de descuento al utilizar el código:
-              <b>CRISTINAYMANU26</b>
-            </p>
-          </div>
-
-          <!-- 4. Foto (capa 2, encima de la tarjeta) -->
-          <figure class="alx-photo">
-            <img src="img/hotel_vertice.jpeg" alt="Hotel Vértice">
-          </figure>
-
-          <!-- 5. Nota rosa (capa 3, encima de todo) -->
-          <p class="alx-note">
-            Si preferís alojaros en un apartamento, ¡no dudéis en pedirnos ayuda!
-          </p>
-
-        </div>
-      </section>
-
-      <!-- BANNER DESCUENTO -->
-      <div id="hotel-banner" class="relative overflow-hidden bg-[#eb568e] text-white py-2 mt-6" role="region" aria-label="Oferta de hotel con descuento">
-        <div class="marquee-wrap">
-          <div class="marquee" aria-hidden="true">
-            <span class="marquee-item">🎉 10% DESCUENTO EN HOTEL VÉRTICE CON EL CÓDIGO "CRISTINAYMANU26" 🎉</span>
-            <span class="marquee-item">🎉 10% DESCUENTO EN HOTEL VÉRTICE CON EL CÓDIGO "CRISTINAYMANU26" 🎉</span>
-            <!-- duplicamos para continuidad -->
-          </div>
-        </div>
-      </div>
-
-      <!-- TRANSPORTE -->
-      <h2 class="text-3xl font-serif text-right mt-4 mr-8">y por el transporte...</h2>
-      <h2 class="text-3xl font-serif text-right mr-8">¡no os preocupéis!</h2>
-      <div class="alx-bus">
-        <p><b><span style="font-size: 1.2em;">¡Nos encargamos del camino!</span></b></p>
-        <p>Contaremos con servicio de autobús ida y vuelta</p>
-        <p><i><span style="font-size: 0.8em;">Indícanos en el formulario si quieres plaza</span></i></p>
-      </div>
-
-
-      <!-- RSVP -->
-      <section id="rsvp" class="py-12 px-6 text-center">
-        <h2 class="text-3xl font-serif mb-4">¿Nos acompañas?</h2>
-
-        <p class="max-w-2xl mx-auto mb-6">
-          Ayúdanos a preparar la boda tal como la soñamos 💭💛<br><br>
-          <strong>Rellena este formulario</strong> con todo lo que necesitamos saber: acompañantes 👥, menú 🍽, alojamiento 🛌, transporte 🚗, o cualquier detalle que quieras contarnos
-        </p>
-
-        <div class="mb-6">
-          <a href="rsvp.html"
-            class="btn-primary inline-block px-6 py-3 text-lg"
-            aria-label="Ir al formulario completo de RSVP">
-            Ir al formulario
-          </a>
-        </div>
-      </section>
-
-      <!-- DRESSCODE -->
-      <section id="dresscode" class="text-center overflow-hidden">
-        <!-- título: lo dejamos en el HTML por accesibilidad, se ocultará visualmente por CSS -->
-
-        <!-- Contenedor del carrusel: NOTA importante -> dots dentro para superposición -->
-        <div class="carousel no-scrollbar flex overflow-x-auto snap-x snap-mandatory w-full scroll-smooth">
-
-          <!-- Slide 1: texto (si quieres que el texto también ocupe todo, lo centré) -->
-          <div class="slide snap-center shrink-0 w-full h-full flex items-center justify-center">
-            <div class="slide-inner max-w-2xl text-center px-4">
-              <h2 class="text-3xl font-serif mb-4">Código de vestimenta</h2>
-              <p>
-                Nos hace mucha ilusión imaginar este día con los <strong>colores vivos y vibrantes</strong> de la primavera y el atardecer frente al mar.
-                Queremos que la noche se llene de <strong>alegría, energía y color</strong> 🌅
-                <br>
-                💃 <strong><u>Ellas</u></strong>: largo o corto, vestido o traje — lo que os haga sentir increíbles. <strong>¡Colores vivos, nada de tonos pastel!</strong><br>
-                👔 <strong><u>Ellos</u></strong>: traje completo, corbata o pajarita. <strong>¡Nos encantaría que fuerais atrevidos! </strong>
-              <br><br>
-              <i><span style="font-size: 0.8em;"><strong>Deslizad</strong> para inspiraros y ver cómo os imaginamos a en una noche llena de <strong>color</strong> 💛</span></i>
-              </p>
-            </div>
-          </div>
-
-          <!-- Slide 2: imagen -->
-          <div class="slide snap-center shrink-0 w-full h-full">
-            <img src="img/dresscode_rosa.png" alt="Inspiración rosa" />
-          </div>
-
-          <!-- Slide 3 -->
-          <div class="slide snap-center shrink-0 w-full h-full">
-            <img src="img/dresscode_verde.PNG" alt="Inspiración verde" />
-          </div>
-
-          <!-- Slide 4 -->
-          <div class="slide snap-center shrink-0 w-full h-full">
-            <img src="img/dresscode_amarillo.PNG" alt="Inspiración amarillo" />
-          </div>
-
-          <!-- Slide 5 -->
-          <div class="slide snap-center shrink-0 w-full h-full">
-            <img src="img/dresscode_morado.PNG" alt="Inspiración morado" />
-          </div>
-
-          <!-- Slide 6 -->
-          <div class="slide snap-center shrink-0 w-full h-full">
-            <img src="img/dresscode_rojo.PNG" alt="Inspiración rojo" />
-          </div>
-          <!-- Slide 7 -->
-          <div class="slide snap-center shrink-0 w-full h-full">
-            <img src="img/dresscode_naranja.PNG" alt="Inspiración naranja" />
-          </div>
-
-          <!-- Slide 8 -->
-          <div class="slide snap-center shrink-0 w-full h-full">
-            <img src="img/dresscode_estampados.PNG" alt="Inspiración estampados" />
-          </div>
-
-          <!-- Slide 9 -->
-          <div class="slide snap-center shrink-0 w-full h-full">
-            <img src="img/dresscode_corbatas.PNG" alt="Inspiración corbatas" />
-          </div>
-        </div>
-        <!-- DOTS: dentro del carousel para que se superpongan -->
-        <div class="dots-wrapper" role="tablist" aria-label="Indicador de inspiración">
-          <button class="dot" role="tab" aria-label="Slide 1"></button>
-          <button class="dot" role="tab" aria-label="Slide 2"></button>
-          <button class="dot" role="tab" aria-label="Slide 3"></button>
-          <button class="dot" role="tab" aria-label="Slide 4"></button>
-          <button class="dot" role="tab" aria-label="Slide 5"></button>
-          <button class="dot" role="tab" aria-label="Slide 6"></button>
-          <button class="dot" role="tab" aria-label="Slide 7"></button>
-          <button class="dot" role="tab" aria-label="Slide 8"></button>
-          <button class="dot" role="tab" aria-label="Slide 9"></button>
-        </div>
-      </section>
-
-      <!-- Nuestra historia -->
-      <section id="historia" class="py-12 px-6 overflow-visible">
-        <h2 class="text-3xl font-serif mb-0 text-center px-6">Nuestro camino juntos</h2>
-
-        <div id="historia-scroll" class="no-scrollbar">
-          <div class="historia-item">
-            <div class="historia-frame">
-              <img src="img/foto1.JPG" alt="Historia 1" class="historia-img" />
-            </div>
-            <div class="caption"><strong>· 4 Julio 2019 ·</strong><br>Flechazo a primera vista 👀</div>
-          </div>
-
-          <div class="historia-item">
-            <div class="historia-frame">
-              <img src="img/foto2.JPG" alt="Historia 2" class="historia-img" />
-            </div>
-            <div class="caption"><strong>· 20 Julio 2019 ·</strong><br>Aquí empezó “nosotros” 💕</div>
-          </div>
-
-          <div class="historia-item">
-            <div class="historia-frame">
-              <img src="img/foto3.JPG" alt="Historia 3" class="historia-img" />
-            </div>
-            <div class="caption"><strong>· 2019-2020 ·</strong><br>Superando la distancia 📞</div>
-          </div>
-
-          <div class="historia-item">
-            <div class="historia-frame">
-              <img src="img/foto4.JPG" alt="Historia 4" class="historia-img" />
-            </div>
-            <div class="caption"><strong>· 2020 ·</strong><br>Viviendo una pandemia 🦠</div>
-          </div>
-
-          <div class="historia-item">
-            <div class="historia-frame">
-              <img src="img/foto5.JPG" alt="Historia 5" class="historia-img" />
-            </div>
-            <div class="caption"><strong>· Sept 2021 ·</strong><br>Empieza nuestra avenutra 🇫🇷</div>
-          </div>
-
-          <div class="historia-item">
-            <div class="historia-frame">
-              <img src="img/foto6.JPG" alt="Historia 6" class="historia-img" />
-            </div>
-            <div class="caption"><strong>· Mayo 2022 ·</strong><br>Nuestro primer hogar 🏠</div>
-          </div>
-
-          <div class="historia-item">
-            <div class="historia-frame">
-              <img src="img/foto7.JPG" alt="Historia 7" class="historia-img" />
-            </div>
-            <div class="caption"><strong>· 2023 ·</strong><br>Toulouse 🧡<br> nuestra casa</div>
-          </div>
-
-          <div class="historia-item">
-            <div class="historia-frame">
-              <img src="img/foto8.JPG" alt="Historia 8" class="historia-img" />
-            </div>
-            <div class="caption"><strong>· Enero 2024 ·</strong><br>Compra de<br> nuestro piso 🖋</div>
-          </div>
-
-          <div class="historia-item">
-            <div class="historia-frame">
-              <img src="img/foto9.JPG" alt="Historia 9" class="historia-img" />
-            </div>
-            <div class="caption"><strong>· Febrero 2024 ·</strong><br>Mes de <br> reformas 🛠</div>
-          </div>
-
-          <div class="historia-item">
-            <div class="historia-frame">
-              <img src="img/foto10.JPG" alt="Historia 10" class="historia-img" />
-            </div>
-            <div class="caption"><strong>· Nov 2024 ·</strong><br>También en los <br> días malos 🏥</div>
-          </div>
-
-          <div class="historia-item">
-            <div class="historia-frame">
-              <img src="img/foto11.JPG" alt="Historia 11" class="historia-img" />
-            </div>
-            <div class="caption"><strong>· 14 Dic 2024 ·</strong><br>Pedida en Estrasburgo 💍</div>
-          </div>
-
-          <div class="historia-item">
-            <div class="historia-frame">
-              <img src="img/foto12.JPG" alt="Historia 12" class="historia-img" />
-            </div>
-            <div class="caption"><strong>· 3 Mayo 2025 ·</strong><br>El reloj del <br> "sí" ⌚</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Contacto -->
-      <section id="contacto" class="py-12 px-6 text-center">
-        <h2 class="text-3xl font-serif mb-4">Contacto</h2>
-        <p>
-          <i>¿Tenéis alguna duda o pregunta?</i><br><br>
-          Escribidnos, intentaremos ayudaros en todo lo posible ✉💛 <br><br>
-          <strong>Manu : <i>635 33 35 08</i><br></strong>
-          <strong>Cristina : <i>680 61 20 81</i> <br><br></strong>
-          Y si necesitáis hablar con nuestra wedding planner, ella está totalmente disponible para lo que necesitéis 📞👰‍♀<br><br>
-          <a href="https://www.instagram.com/de_pitimini_eventos/"><strong><i>@de_pitimini_eventos</i></strong></a>
-        </p>
-      </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="text-center py-6 text-sm text-[#000000]">
-      Con cariño, Cristina y Manu · 2 Mayo 2026
-    </footer>
+  <!-- PANTALLA INICIAL DE PERMISOS CON NOMBRE DINÁMICO -->
+  <div id="permission-overlay" role="button" tabindex="0" aria-label="Tocar para descubrir la invitación">
+    <div class="permission-name" id="permission-name">Invitado</div>
+    <div class="permission-text">Toca para descubrir la invitación</div>
   </div>
-  <!-- SCROLL CONTAINER FIN -->
 
-  <!-- LIBRERÍAS Y SCRIPTS -->
-  <script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
-  <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
-  <script src="js/main.js"></script>
+  <div class="wrap">
+    <div class="scene">
+      <div class="card" id="card">
+        <img id="bg" class="bg" alt="Invitación" src="img/invitacion.PNG" loading="eager" />
+      </div>
+    </div>
+
+    <a class="cta" id="cta" href="web.html" rel="noopener">Pulsa para acceder a la página web de la boda y ver todos los detalles</a>
+    <div class="hint" id="hint">Inclina el móvil para ver el efecto 3D.</div>
+  </div>
+
+  <script>
+    // Personalización
+    (function personalize(){
+      const p = new URLSearchParams(location.search);
+      const name = (p.get('n') || '').trim();
+      
+      document.getElementById('permission-name').textContent = name || 'Invitado';
+      
+      const ogUrl = document.querySelector('meta[property="og:url"]');
+      if (ogUrl) ogUrl.setAttribute('content', location.href.split('#')[0]);
+    })();
+
+    // ✅ SISTEMA DE MOVIMIENTO ULTRA-OPTIMIZADO
+    (function tilt(){
+      const card = document.getElementById('card');
+      const hint = document.getElementById('hint');
+      const permissionOverlay = document.getElementById('permission-overlay');
+
+      // Detección de capacidades
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+      const inApp = /(instagram|fbav|fban|line|wechat|whatsapp)/i.test(navigator.userAgent);
+      const isSecure = location.protocol === 'https:';
+      const hasTouch = 'ontouchstart' in window;
+
+      if (reduceMotion){ 
+        hint.textContent = 'Movimiento reducido activado en tu dispositivo.'; 
+        return; 
+      }
+
+      // ========== CONFIGURACIÓN OPTIMIZADA ==========
+      const config = {
+        maxTilt: 20,           // Máximo ángulo de inclinación
+        smoothing: 0.12,       // Factor de suavizado (0.1-0.2 es ideal)
+        deadZone: 0.02,        // Zona muerta mínima
+        gyroSensitivity: 35,   // Sensibilidad del giroscopio
+        mouseSensitivity: 1.2, // Multiplicador para mouse
+        shadowIntensity: 0.3,  // Intensidad de la sombra dinámica
+        updateThreshold: 0.01  // Umbral mínimo de actualización
+      };
+
+      // Estado del movimiento
+      let state = {
+        currentX: 0,
+        currentY: 0,
+        targetX: 0,
+        targetY: 0,
+        velocityX: 0,
+        velocityY: 0,
+        beta0: null,
+        gamma0: null,
+        isGyroActive: false,
+        rafId: null,
+        lastUpdate: 0,
+        isAnimating: false
+      };
+
+      // ========== MOTOR DE ANIMACIÓN OPTIMIZADO ==========
+      function render(timestamp) {
+        if (!state.isAnimating) return;
+        
+        // Limitar FPS a 60
+        const deltaTime = timestamp - state.lastUpdate;
+        if (deltaTime < 16) {
+          state.rafId = requestAnimationFrame(render);
+          return;
+        }
+        state.lastUpdate = timestamp;
+
+        // Calcular diferencias
+        const diffX = state.targetX - state.currentX;
+        const diffY = state.targetY - state.currentY;
+        
+        // Aplicar suavizado con física simple
+        state.velocityX = diffX * config.smoothing;
+        state.velocityY = diffY * config.smoothing;
+        
+        state.currentX += state.velocityX;
+        state.currentY += state.velocityY;
+        
+        // Aplicar transformación solo si hay cambio significativo
+        if (Math.abs(state.velocityX) > config.updateThreshold || 
+            Math.abs(state.velocityY) > config.updateThreshold) {
+          
+          // Usar transform3d para forzar GPU
+          const transform = `translate3d(0,0,0) rotateX(${state.currentY.toFixed(2)}deg) rotateY(${state.currentX.toFixed(2)}deg)`;
+          card.style.transform = transform;
+          
+          // Actualizar sombra dinámicamente (opcional, comentar si afecta rendimiento)
+          const shadowOffset = Math.abs(state.currentX) + Math.abs(state.currentY);
+          const shadowBlur = 20 + shadowOffset * 2;
+          const shadowOpacity = 0.18 + (shadowOffset / 40) * config.shadowIntensity;
+          card.style.boxShadow = `0 ${shadowBlur}px ${shadowBlur * 2}px rgba(0,0,0,${shadowOpacity})`;
+        }
+        
+        // Continuar animación si no está en reposo
+        if (Math.abs(diffX) > config.updateThreshold || Math.abs(diffY) > config.updateThreshold) {
+          state.rafId = requestAnimationFrame(render);
+        } else {
+          state.isAnimating = false;
+        }
+      }
+
+      function startAnimation() {
+        if (!state.isAnimating) {
+          state.isAnimating = true;
+          state.rafId = requestAnimationFrame(render);
+        }
+      }
+
+      function stopAnimation() {
+        state.isAnimating = false;
+        if (state.rafId) {
+          cancelAnimationFrame(state.rafId);
+          state.rafId = null;
+        }
+      }
+
+      // ========== CONTROL POR MOUSE OPTIMIZADO ==========
+      let mouseThrottleTimer = null;
+      
+      function handleMouseMove(e) {
+        // Throttling para reducir cálculos
+        if (mouseThrottleTimer) return;
+        
+        mouseThrottleTimer = setTimeout(() => {
+          mouseThrottleTimer = null;
+        }, 16); // ~60fps
+
+        const rect = card.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        // Calcular posición normalizada desde el centro
+        const normX = ((e.clientX - centerX) / (rect.width / 2)) * config.mouseSensitivity;
+        const normY = ((e.clientY - centerY) / (rect.height / 2)) * config.mouseSensitivity;
+        
+        // Aplicar límites y asignar
+        state.targetX = Math.max(-config.maxTilt, Math.min(config.maxTilt, normX * config.maxTilt));
+        state.targetY = Math.max(-config.maxTilt, Math.min(config.maxTilt, -normY * config.maxTilt));
+        
+        startAnimation();
+      }
+
+      // ========== CONTROL TÁCTIL OPTIMIZADO ==========
+      function handleTouch(e) {
+        if (!e.touches || !e.touches[0]) return;
+        
+        const touch = e.touches[0];
+        const rect = card.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        const normX = ((touch.clientX - centerX) / (rect.width / 2));
+        const normY = ((touch.clientY - centerY) / (rect.height / 2));
+        
+        state.targetX = Math.max(-config.maxTilt, Math.min(config.maxTilt, normX * config.maxTilt));
+        state.targetY = Math.max(-config.maxTilt, Math.min(config.maxTilt, -normY * config.maxTilt));
+        
+        startAnimation();
+      }
+
+      function resetTilt() {
+        state.targetX = 0;
+        state.targetY = 0;
+        startAnimation();
+        
+        // Restaurar sombra después de un pequeño delay
+        setTimeout(() => {
+          card.style.boxShadow = 'var(--shadow)';
+        }, 300);
+      }
+
+      // ========== GIROSCOPIO OPTIMIZADO ==========
+      let gyroThrottleTimer = null;
+      
+      function handleGyro(ev) {
+        const { beta, gamma } = ev;
+        if (beta === null || gamma === null) return;
+
+        // Throttling del giroscopio
+        if (gyroThrottleTimer) return;
+        gyroThrottleTimer = setTimeout(() => {
+          gyroThrottleTimer = null;
+        }, 20); // 50fps para giroscopio
+
+        // Calibración inicial
+        if (state.beta0 === null) {
+          state.beta0 = beta;
+          state.gamma0 = gamma;
+          hint.textContent = '¡Listo! Mueve el teléfono para ver el efecto 3D.';
+          return;
+        }
+
+        // Calcular deltas con sensibilidad
+        const deltaBeta = (beta - state.beta0) / config.gyroSensitivity;
+        const deltaGamma = (gamma - state.gamma0) / config.gyroSensitivity;
+        
+        // Aplicar zona muerta y límites
+        if (Math.abs(deltaGamma) > config.deadZone) {
+          state.targetX = Math.max(-1, Math.min(1, deltaGamma)) * config.maxTilt;
+        }
+        
+        if (Math.abs(deltaBeta) > config.deadZone) {
+          state.targetY = Math.max(-1, Math.min(1, -deltaBeta)) * config.maxTilt;
+        }
+        
+        startAnimation();
+      }
+
+      function attachGyro() {
+        if (state.isGyroActive) return;
+        state.isGyroActive = true;
+        window.addEventListener('deviceorientation', handleGyro, { passive: true });
+      }
+
+      // ========== EVENTOS ==========
+      
+      // Mouse events con passive para mejor scrolling
+      if (!hasTouch) {
+        card.addEventListener('mouseenter', () => {
+          card.classList.remove('smooth');
+        }, { passive: true });
+        
+        card.addEventListener('mousemove', handleMouseMove, { passive: true });
+        card.addEventListener('mouseleave', () => {
+          card.classList.add('smooth');
+          resetTilt();
+        }, { passive: true });
+      }
+
+      // Touch events
+      if (hasTouch) {
+        card.addEventListener('touchstart', (e) => {
+          card.classList.remove('smooth');
+          handleTouch(e);
+        }, { passive: true });
+        
+        card.addEventListener('touchmove', handleTouch, { passive: true });
+        
+        card.addEventListener('touchend', () => {
+          card.classList.add('smooth');
+          resetTilt();
+        }, { passive: true });
+      }
+
+      // ========== INICIALIZACIÓN ==========
+      function initializeMotion() {
+        permissionOverlay.classList.add('hidden');
+        
+        // Intentar activar giroscopio
+        if (typeof DeviceOrientationEvent !== 'undefined') {
+          if (typeof DeviceOrientationEvent.requestPermission === 'function' && isiOS) {
+            DeviceOrientationEvent.requestPermission()
+              .then(state => {
+                if (state === 'granted') {
+                  attachGyro();
+                  hint.textContent = '¡Giroscopio activado! Mueve tu dispositivo.';
+                } else {
+                  hint.textContent = 'Usa el dedo para mover la tarjeta.';
+                }
+              })
+              .catch(() => {
+                hint.textContent = 'Usa el dedo para mover la tarjeta.';
+              });
+          } else {
+            // Android o desktop con giroscopio
+            attachGyro();
+          }
+        }
+        
+        // Precalentar la animación
+        startAnimation();
+        setTimeout(resetTilt, 100);
+      }
+
+      // Evento principal
+      permissionOverlay.addEventListener('click', initializeMotion, { once: true });
+
+      // ========== CALIBRACIÓN CON DOBLE TAP ==========
+      let lastTap = 0;
+      card.addEventListener('touchend', (e) => {
+        const currentTime = Date.now();
+        const tapLength = currentTime - lastTap;
+        
+        if (tapLength < 500 && tapLength > 0) {
+          e.preventDefault();
+          // Reiniciar calibración
+          state.beta0 = null;
+          state.gamma0 = null;
+          hint.textContent = 'Calibración reiniciada.';
+          
+          // Vibración suave si está disponible
+          if ('vibrate' in navigator) {
+            navigator.vibrate(50);
+          }
+        }
+        lastTap = currentTime;
+      }, { passive: false });
+
+      // ========== LIMPIEZA AL DESCARGAR ==========
+      window.addEventListener('beforeunload', () => {
+        stopAnimation();
+        window.removeEventListener('deviceorientation', handleGyro);
+      });
+
+      // ========== OPTIMIZACIÓN PARA VISIBILIDAD ==========
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          stopAnimation();
+        } else if (state.isGyroActive) {
+          startAnimation();
+        }
+      });
+
+    })();
+  </script>
 </body>
 </html>
