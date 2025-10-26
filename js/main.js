@@ -566,7 +566,8 @@ window.addEventListener('load', () => {
       }
 
       // clamp y scrollTo
-      targetIndex = Math.max(0, Math.min(dots.length - 1, targetIndex));
+      const numSlides = dots.length;
+      targetIndex = (targetIndex + numSlides) % numSlides;
       scrollToIndex(targetIndex);
     }
 

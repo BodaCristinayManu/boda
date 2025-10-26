@@ -369,7 +369,7 @@ main section#lugar:hover {
 main section#lugar .lugar-imagen {
   position: absolute;
   left: 50%;
-  top: 100%; /* bajamos la imagen con respecto a la rección */
+  top: 100%; /* bajamos la imagen con respecto a la sección */
   transform: translate(-50%, -50%);
   width: clamp(280px, 75%, 800px);
   max-width: 640px;
@@ -722,24 +722,58 @@ main section#dresscode {
 }
 
 /* ===== Botón para el calendario ===== */
-.btn-calendar {
-  display: inline-flex; /* para centrar contenido si es icono o texto */
-  width: 40px;          /* tamaño fijo, ajusta si quieres más grande */
-  height: 40px;
-  background: #fff7f2 !important;
-  color: #E9713F;
+#addToCalendarBtn {
+  /* Estilos base del botón */
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 45px;
+  height: 45px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  font-size: 1.2rem;     /* tamaño de icono o texto, ajusta si quieres más pequeño */
-  /*position*/
   margin-top: -10%;
   margin-left: 80%;
+  border-radius: 50%;
+  border: 1px solid #E9713F;
+  
+  /* APLICAMOS LA ANIMACIÓN DIRECTAMENTE AQUÍ */
+  animation: pulse 2.5s infinite ease-in-out;
 }
 
-/* Hover para el botón */
-.btn-calendar:hover {
-  background-color: #9C6F4F;      
+/* El estilo hover sigue funcionando igual */
+#addToCalendarBtn:hover {
+  background-color: #9C6F4F;
   transform: translateY(-2px);
+  /* Detenemos la animación en hover para que el efecto de subir sea más claro */
+  animation-play-state: paused;
+}
+
+/* Estilos para el nuevo texto */
+#addToCalendarBtn .btn-calendar-text {
+  font-size: 0.5rem; /* 8px, muy pequeño para que quepa */
+  color: #E9713F;
+  font-family: 'Marcellus', sans-serif; /* O la fuente que prefieras */
+  font-weight: bold;
+  line-height: 1; /* Elimina espacio extra de la línea */
+  display: block;
+  margin-top: 2px;
+}
+
+/* El icono dentro del botón */
+#addToCalendarBtn .icon-svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Definición de la animación de pulso (sin cambios) */
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 0.9; 
+  }  50% { 
+    transform: scale(1.3); 
+    opacity: 1; 
+  }
 }
 
 /* ===== BANNER DESCUENTO ===== */
