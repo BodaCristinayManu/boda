@@ -38,6 +38,52 @@ h2 {
   color: #E9713F;
 }
 
+/* ===== BLOQUEO DE ORIENTACIÓN Y ORDENADORES ===== */
+#orientation-blocker {
+  /* Por defecto, el mensaje está oculto */
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Ocupa toda la pantalla */
+  height: 100vh;
+  z-index: 999999; /* El número más alto para estar por encima de todo */
+  background-color: #fff7f2;
+  color: #000000;
+  font-family: 'Marcellus', serif;
+}
+
+#orientation-blocker-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+/* === LA REGLA MÁGICA (FINAL) === */
+/* Se activa en:
+   1. Dispositivos con ancho MAYOR a 1024px (ordenadores).
+   2. O en dispositivos con orientación horizontal.
+*/
+@media (min-width: 1025px), (orientation: landscape) {
+  
+  /* 1. Muestra el mensaje de bloqueo */
+  #orientation-blocker {
+    display: block;
+  }
+
+  /* 2. Oculta TODO lo demás de forma forzada */
+  /* Usamos !important para ganar a cualquier otra regla, incluso de JavaScript */
+  body > *:not(#orientation-blocker) {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+
 /* ===== PRELOADER ===== */
 #loading-screen {
   position: fixed;
