@@ -69,26 +69,34 @@ window.addEventListener('load', () => {
 
   // ====== COUNTDOWN ======
   (function initCountdown() {
-    const daysEl    = document.getElementById('days');
-    const hoursEl   = document.getElementById('hours');
-    const minutesEl = document.getElementById('minutes');
-    const secondsEl = document.getElementById('seconds');
-    const targetTime = new Date("2026-05-02T18:00:00").getTime();
+      const daysEl    = document.getElementById('days');
+      const hoursEl   = document.getElementById('hours');
+      const minutesEl = document.getElementById('minutes');
+      const secondsEl = document.getElementById('seconds');
+      const targetTime = new Date("2026-05-02T16:15:00Z").getTime();
 
-    function update() {
-      const diff = targetTime - Date.now();
-      const d = Math.max(0, Math.floor(diff / 86400000));
-      const h = Math.max(0, Math.floor((diff % 86400000) / 3600000));
-      const m = Math.max(0, Math.floor((diff % 3600000) / 60000));
-      const s = Math.max(0, Math.floor((diff % 60000) / 1000));
-      daysEl.innerText    = d;
-      hoursEl.innerText   = h;
-      minutesEl.innerText = m;
-      secondsEl.innerText = s;
-    }
-    update();
-    setInterval(update, 1000);
-  })();
+      function update() {
+        const diff = targetTime - Date.now();
+        if (diff <= 0) {
+          // Después (o al llegar) a la hora de la boda, fijamos a cero todos los contadores.
+          daysEl.innerText    = '00';
+          hoursEl.innerText   = '00';
+          minutesEl.innerText = '00';
+          secondsEl.innerText = '00';
+          return;
+        }
+        const d = Math.max(0, Math.floor(diff / 86400000));
+        const h = Math.max(0, Math.floor((diff % 86400000) / 3600000));
+        const m = Math.max(0, Math.floor((diff % 3600000) / 60000));
+        const s = Math.max(0, Math.floor((diff % 60000) / 1000));
+        daysEl.innerText    = d;
+        hoursEl.innerText   = h;
+        minutesEl.innerText = m;
+        secondsEl.innerText = s;
+      }
+      update();
+      setInterval(update, 1000);
+    })();
 
   // ====== LOCOMOTIVE + GSAP SCROLLTRIGGER ======
   gsap.registerPlugin(ScrollTrigger);
@@ -216,7 +224,7 @@ window.addEventListener('load', () => {
       'BEGIN:VALARM',
       'TRIGGER:-P1DT6H', // 1 día antes
       'ACTION:DISPLAY',
-      'DESCRIPTION:¡Mañana es la gran día! 🥂 No olvides: - Confirmar transporte - Revisar regalo - Llevar ropa de dormir para la fiesta posterior',
+      'DESCRIPTION:¡Mañana es la gran día! 🥂',
       'SUMMARY:Recordatorio - 1 día antes',
       'END:VALARM',
       

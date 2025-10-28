@@ -13,6 +13,37 @@
     .btn-primary:disabled { opacity:0.6; cursor:not-allowed; }
     .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
     body {font-family: 'Marcellus', serif; }
+    
+    /* ✅ Estilos para el mensaje de éxito */
+    .success-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      text-align: center;
+      z-index: 1000;
+      max-width: 90%;
+      width: 400px;
+    }
+    .success-message h2 {
+      color: #E9713F;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .success-message p {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .success-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
   </style>
 </head>
 <body class="text-[#000000] bg-[#FDCFB2]">
@@ -20,7 +51,7 @@
 <main class="max-w-3xl mx-auto p-6">
   <h1 class="text-2xl mb-4">Confirmar asistencia</h1>
 
-  <!-- FORMULARIO: action apunta al Apps Script, target al iframe para no salir de la página -->
+  <!-- FORMULARIO -->
   <form id="rsvpForm" class="form-card" novalidate
         action="https://script.google.com/macros/s/AKfycbxmglZywqeZDp8Qdq2HqtpCf6AcRwsh_H_kXXBXgC4lOxb58-Fmi_l7J1SO0m9upG8t/exec"
         method="POST"
@@ -114,15 +145,16 @@
     </div>
   </form>
 
-  <!-- iframe invisible para recibir la respuesta sin salir de la página -->
+  <!-- iframe invisible -->
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 </main>
 
 <script>
 (() => {
-  // === CONFIG (no cambiar) ===
+  // === CONFIG ===
   const APPS_SCRIPT_TOKEN = "Estrasburgo141224";
-  // ===========================
+  const REDIRECT_DELAY = 3500; // 3.5 segundos antes de redirigir
+  // ==============
 
   // elementos
   const form = document.getElementById('rsvpForm');
@@ -141,7 +173,7 @@
   // companion counter
   let companionCounter = 0;
 
-  // helpers (igual que antes)
+  // helpers
   function updateCompanions() {
     if (!numInvInput) return;
     const total = parseInt(numInvInput.value,10) || 1;
@@ -206,39 +238,65 @@
     }
   }
 
+  // ✅ FUNCIÓN PARA MOSTRAR MENSAJE DE ÉXITO Y REDIRIGIR
+  function showSuccessAndRedirect() {
+    // Crear overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'success-overlay';
+    
+    // Crear mensaje
+    const successBox = document.createElement('div');
+    successBox.className = 'success-message';
+    successBox.innerHTML = `
+      <h2>✅ ¡Confirmación recibida!</h2>
+      <p>Gracias por confirmar tu asistencia.<br>Nos vemos el 2 de mayo 💛</p>
+      <p style="font-size: 0.9rem; color: #666;">Redirigiendo en <span id="countdown">${Math.ceil(REDIRECT_DELAY/1000)}</span> segundos...</p>
+    `;
+    
+    document.body.appendChild(overlay);
+    document.body.appendChild(successBox);
+    
+    // Countdown visual
+    const countdownEl = document.getElementById('countdown');
+    let secondsLeft = Math.ceil(REDIRECT_DELAY/1000);
+    const countdownInterval = setInterval(() => {
+      secondsLeft--;
+      if (countdownEl) countdownEl.textContent = secondsLeft;
+      if (secondsLeft <= 0) clearInterval(countdownInterval);
+    }, 1000);
+    
+    // Redirigir después del delay
+    setTimeout(() => {
+      window.location.href = 'web.html#rsvp';
+    }, REDIRECT_DELAY);
+  }
+
   // listeners
   form.querySelectorAll('input[name="asiste"]').forEach(r => r.addEventListener('change', ()=>toggleBlocks(true)));
   if (numInvInput) numInvInput.addEventListener('input', updateCompanions);
   if (transporteSelect) transporteSelect.addEventListener('change', toggleTransportQuestion);
 
-  // iframe load: se dispara cuando el Web App responde -> consideramos envío OK
+  // ✅ iframe load: detecta envío exitoso
   const iframe = document.getElementById('hidden_iframe');
   if (iframe) {
     iframe.addEventListener('load', () => {
-      // una carga del iframe indica que el servidor respondió (no podemos leer la respuesta por CORS)
-      status.classList.remove('hidden');
-      status.textContent = '✅ ¡Confirmación recibida! Gracias.';
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Enviar RSVP';
-      // opción: limpiar form
-      form.reset();
-      updateCompanions();
-      toggleBlocks(true);
+      // Solo activar si el formulario fue enviado (el iframe se carga vacío al inicio)
+      if (submitBtn.disabled) {
+        showSuccessAndRedirect();
+      }
     });
   }
 
-  // submit: preparamos campos y hacemos form.submit() (no fetch)
+  // submit
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
-    // validar HTML5 antes de enviar
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
 
-    // concatenar nombres de acompañantes en un campo oculto adicional para enviar
-    // creamos/actualizamos un input hidden con name "acompanantes"
+    // concatenar acompañantes
     const companionInputs = Array.from(companionsList.querySelectorAll('input'))
       .map(i => i.value.trim())
       .filter(Boolean);
@@ -256,7 +314,7 @@
     submitBtn.textContent = 'Enviando...';
     status.classList.add('hidden');
 
-    // enviar por POST al Apps Script (form target = hidden_iframe evitará navegación de la página)
+    // enviar
     form.submit();
   });
 

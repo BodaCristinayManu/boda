@@ -12,7 +12,7 @@ html, body {
 /* ===== Fondo general blanco ===== */
 body {
   background-color: #fff7f2;
-  font-family: 'Marcellus',
+  font-family: 'Marcellus', serif;
 }
 
 .marcellus {
@@ -194,7 +194,7 @@ h2 {
   }
   
   #menu a {
-    color: #E9713F !important;
+    color: #E9713F;
     opacity: 0;
     transform: translateY(-10px);
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -222,7 +222,7 @@ h2 {
   #menu li:nth-child(10) a { transition-delay: 0.5s; }
   
   #menu a:hover {
-    color: #B58360 !important;
+    color: #B58360;
     background-color: rgba(233, 113, 63, 0.05);
     border-radius: 6px;
   }
@@ -369,16 +369,16 @@ main section {
 
 /* ==== Tarjetas beige (todas menos #horario y #fecha-lugar) ==== */
 /* ==== Al final solo es Formulario, Regalo y Contacto ==== */
-main section:not(#horario):not(#historia):not(#cuenta-atras):not(#dresscode):not(#alojamiento) {
+.card-beige {
   background: #FDCFB2;
   border-radius: 1.5rem;
-  padding: 2rem 2rem;
+  padding: 2rem;
   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   position: relative;
   z-index: 1;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-main section:not(#horario):not(#historia):not(#cuenta-atras):not(#dresscode):not(#alojamiento):hover {
+.card-beige:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
@@ -440,7 +440,7 @@ main section#lugar .lugar-imagen img {
 .video-wrapper {
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  height: 500px; /* ajusta la altura como quieras */
+  height: 450px; /* ajusta la altura como quieras */
 }
 
 #horario video {
@@ -457,32 +457,33 @@ main section#lugar .lugar-imagen img {
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
 
-/* ===== ALOJAMIENTO ===== */
-/* 2. "Escenario" que contiene todas las capas y controla los desbordes */
-/* ===== ALOJAMIENTO ===== */
-/* Asegura el ancho similar a la referencia y centra */
+/* ===== ALOJAMIENTO (foto más abajo, nota más arriba, bus restaurado) ===== */
+
 #alojamiento .alx-stage {
   width: min(92vw, 560px);
   position: relative;
   padding: 3rem 2rem;
   margin: 1.5rem 1rem;
   overflow: visible;
+  box-sizing: border-box;
 }
 
-/* Tarjeta beige: mantener detrás, alineada a la derecha */
+/* Tarjeta beige */
 #alojamiento .alx-card {
   position: relative;
   z-index: 1;
   width: 78%;
-  margin-left: auto; /* Empuja la tarjeta a la derecha */
+  margin-left: auto;
   background: #FDCFB2;
   border-radius: 24px;
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.10);
   text-align: center;
-  transform: none; /* Asegura que no haya transformaciones previas */
+  transform: none;
+  padding: 2.5rem 1.5rem;
+  box-sizing: border-box;
 }
 
-/* Badge naranja dentro de la tarjeta: prominente */
+/* Badge */
 #alojamiento .alx-badge {
   position: relative;
   top: -3rem;
@@ -492,46 +493,50 @@ main section#lugar .lugar-imagen img {
   padding: .55em 1.25em;
   border-radius: 24px;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.10);
-  z-index: 2; /* Asegura que el badge esté encima de la tarjeta */
+  z-index: 4;
+  white-space: nowrap;
 }
 
-/* Foto: debe solaparse por encima de la tarjeta, más ancha y con sombra mayor */
+/* FOTO: más abajo */
 #alojamiento .alx-photo {
   position: absolute;
-  z-index: 2; /* Encima de la tarjeta */
+  z-index: 3;
   width: 56%;
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
-  transform: translateZ(0); /* Mejor rendimiento para animaciones/GPU */
+  left: 4%;
+  top: 1.2rem;
+  transform: translateZ(0);
 }
 #alojamiento .alx-photo img {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
   display: block;
 }
 
-/* Nota rosa: encima de todo, centrada respecto a la fotografía y la tarjeta */
+/* NOTA ROSA: estética original y más arriba */
 #alojamiento .alx-note {
-  position: absolute;
-  z-index: 1; /* Encima de la foto y la tarjeta */
-  bottom: 5rem; /* Ligeramente por debajo del contenedor, efecto "colgante" */
-  width: 80%;
-  background: #f5a3b7;
-  color: #eb568e;
-  padding: .85rem 1rem;
-  line-height: 1;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
-  transform: translateY(30px); /* Pequeño empuje para que parezca flotante */
+    position: relative;
+    z-index: 5;
+    width: 120%;
+    left: 45%;
+    transform: translate(-50%, 30px);
+    margin-top: 0.35rem;
+    background: #f5a3b7;
+    color: #eb568e;
+    line-height: 1;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
 }
 
-/* Texto dentro de la tarjeta - evitar que el párrafo ocupe todo el ancho */
+/* Párrafo dentro de la tarjeta */
 #alojamiento .alx-card p {
-  max-width: 100%; /* Limita el ancho del párrafo */
+  max-width: 100%;
   font-size: 0.98rem;
-  margin-top: -20%;
+  margin-top: -2rem;
+  margin-bottom: 0.5rem;
 }
 
 .alx-bus {
@@ -551,31 +556,33 @@ main section#lugar .lugar-imagen img {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Ajustes responsive */
+/* Responsive móvil */
 @media (max-width: 720px) {
   #alojamiento .alx-stage {
-    width: 100%; /* Ancho completo menos un margen */
+    width: 100%;
     padding: 2rem 1rem;
     margin: 0.5rem 1rem;
-    margin-bottom: -20%;
+    margin-bottom: -5%;
   }
+
   #alojamiento .alx-photo {
-    left: -5%;
-    top: 45px;
-    width: 40%;
+    left: -6%;
+    top: 4.5rem;
+    width: 42%;
     border-radius: 14px;
     box-shadow: 0 12px 28px rgba(0,0,0,0.22);
-    margin: 1.5rem 1rem;
   }
+
   #alojamiento .alx-card {
     width: 70%;
-    padding: 1rem 2rem 6rem;
+    padding: 2rem 1.25rem 4.5rem;
   }
+
   #alojamiento .alx-note {
-    left: -5%;
-    width: 103%;
     padding: .7rem .9rem;
+    margin-top: -6.25rem;
   }
+
   .alx-bus {
     left: 10%;
     width: 80%;
@@ -588,7 +595,7 @@ main section#lugar .lugar-imagen img {
 /* ===== Dresscode (carrusel) ===== */
 /* Forzar que la sección no reciba padding/beige genérico */
 main section#dresscode {
-    background: #fff7f2 !important;
+    background: #fff7f2;
     border: 3px solid #E9713F;
     border-radius: 1.5rem;
     padding: 0 !important;
@@ -670,19 +677,19 @@ main section#dresscode {
 
 /* Dots: encima de la imagen, centrados, con alto z-index */
 #dresscode .dots-wrapper {
-    position: absolute !important;
-    bottom: 10px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    z-index: 90 !important;
-    display: inline-flex !important;
-    gap: 0.5rem !important;
-    padding: 6px 8px !important;
-    border-radius: 999px !important;
-    background: rgba(0,0,0,0.22) !important;
-    backdrop-filter: blur(3px) !important;
-    -webkit-backdrop-filter: blur(3px) !important;
-    pointer-events: auto !important;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 90;
+    display: inline-flex;
+    gap: 0.5rem;
+    padding: 6px 8px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.22);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    pointer-events: auto;
 }
 
 /* puntos (mejor usar button por accesibilidad) */
@@ -778,7 +785,8 @@ main section#dresscode {
   height: 45px;
   cursor: pointer;
   margin-top: -10%;
-  margin-left: 80%;
+  margin-left: auto; /* El margen automático empujará el botón a la derecha */
+  margin-right: 1rem; /* Añade un pequeño margen para que no se pegue al borde */
   border-radius: 50%;
   border: 1px solid #E9713F;
   
@@ -823,45 +831,60 @@ main section#dresscode {
 }
 
 /* ===== BANNER DESCUENTO ===== */
-/* CONTROL DE VELOCIDAD: cambia 30s por 40s/50s si quieres aún más lento */
 :root {
-  --marquee-duration: 10s;
+  --marquee-duration: 15s;  /* ajusta la velocidad aquí */
+  --marquee-gap: 3rem;      /* separación entre frases dentro de cada grupo */
 }
 
-/* wrapper y máscara */
 .marquee-wrap {
   position: relative;
   width: 100%;
-  overflow: hidden;
+  overflow: hidden;  /* máscara */
 }
 
-/* la franja que se mueve */
+/* Track que se mueve (contiene dos copias idénticas) */
 .marquee {
-  display: inline-flex;
-  gap: 3rem;
-  white-space: nowrap;
+  display: flex;
+  width: max-content;              /* que mida por su contenido */
   will-change: transform;
-  align-items: center;
+  backface-visibility: hidden;     /* reduce parpadeos */
+  transform: translate3d(0,0,0);   /* fuerza composición en GPU */
   animation: marquee var(--marquee-duration) linear infinite;
 }
 
-/* items dentro de la franja */
+/* Cada copia del contenido (grupo) */
+.marquee__group {
+  flex-shrink: 0;                  /* no se encoge */
+  display: inline-flex;
+  align-items: center;
+  gap: var(--marquee-gap);         /* separación entre frases */
+}
+
 .marquee-item {
   font-weight: 700;
   letter-spacing: 0.02em;
-  padding: 0 1rem;
+  padding: 0 1rem;                 /* acolchado interno de cada frase */
+  white-space: nowrap;             /* no cortar líneas */
 }
 
-/* keyframes: de derecha -> izquierda */
 @keyframes marquee {
-  0%   { transform: translateX(0%); }
-  100% { transform: translateX(-50%); } /* -50% porque repetimos contenido */
+  from { transform: translate3d(0,0,0); }
+  to   { transform: translate3d(-50%,0,0); } /* desplazamos exactamente una copia */
 }
 
-/* respeta preferencia de reducir movimiento */
+/* Accesibilidad: respetar preferencia de reducir movimiento */
 @media (prefers-reduced-motion: reduce) {
-  .marquee {
-    animation: none;
-    transform: translateX(0);
-  }
+  .marquee { animation: none; transform: none; }
+}
+
+/* ===== NOTICIAS ===== */
+main section#news {
+    background: #fff7f2;
+    border: 3px solid #E9713F;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
